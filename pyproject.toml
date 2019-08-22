@@ -1,0 +1,49 @@
+[tool]
+[tool.dephell]
+# used for packaging
+# $ dephell deps convert
+[tool.dephell.main]
+from = {format = "poetry", path = "pyproject.toml"}
+to = {format = "setuppy", path = "setup.py"}
+envs = ["main"]
+
+# explicitly specify your versioning scheme to let your users know what they can expect
+versioning = "semver"
+
+[tool.dephell.dev]
+from = {format = "poetry", path = "pyproject.toml"}
+to = {format = "setuppy", path = "setup.py"}
+envs = ["main","dev"]
+
+
+[tool.dephell.pipenv]
+from = {format = "poetry", path = "pyproject.toml"}
+to = {format = "pipfile", path = "Pipfile"}
+
+
+[tool.poetry]
+name = "inari"
+version = "0.0.1"
+description = "Write docstrings in markdown!"
+license = "MIT"
+authors = ["T.K. <me@example.com>"]
+readme = "README.md"
+
+[tool.poetry.scripts]
+inari = 'inari.cli:run'
+
+[tool.poetry.plugins] 
+[tool.poetry.plugins."mkdocs.plugins"]
+inari = "inari.mkdocs_plugin:Plugin"
+
+[tool.poetry.dependencies]
+python = ">=3.7"
+mkdocs = {optional = true, version = "*"}
+[tool.poetry.dev-dependencies]
+black = "*"
+flake8 = "*"
+mypy = "*"
+rope = "*"
+
+[tool.poetry.extras]
+mkdocs = ["mkdocs"]
