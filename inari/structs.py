@@ -90,7 +90,7 @@ class ModStruct(BaseStruct):
 
         else:
             self.out_dir = pathlib.Path(out_dir)
-            name = mod.__name__.rsplit(".", 1)[-1]
+            name = out_name or mod.__name__.rsplit(".", 1)[-1]
             self.filename = f"{name}.md"
             # no submodules.
             self.submods = []
