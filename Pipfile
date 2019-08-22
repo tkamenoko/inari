@@ -12,6 +12,7 @@ rope = "*"
 
 [packages]
 mkdocs = "*"
+inari = {editable = true,path = "."}
 
 [requires]
 python_version = "3.7"

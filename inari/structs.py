@@ -1,31 +1,45 @@
-"""inari --- write docstrings in markdown"""
-
-
 import inspect
 import os
 import pathlib
 import re
 from types import ModuleType
-from typing import Any, Callable, List, TypeVar
+from typing import Any, Callable, List
 
 from .format import cleanup, modify_attrs
 
 
 def is_var(obj) -> bool:
+
     return not any(
         [
             inspect.ismodule(obj),
             inspect.isclass(obj),
             inspect.ismethod(obj),
             inspect.isfunction(obj),
-            isinstance(obj, TypeVar),
         ]
     )
 
 
-class ModStruct:
-    mod: ModuleType
+class BaseStruct:
+    """Base class for collecting docstrings."""
+    name_to_path: dict
     doc: str
+    abs_path: str
+
+    def __init__(self, abs_path="", name_to_path: dict = None):
+        if name_to_path is None:
+            name_to_path = {}
+        self.name_to_path = name_to_path
+        self.abs_path = abs_path
+
+    def doc_str(self) -> str:
+        """Create documents from its contents."""
+        raise NotImplementedError
+
+
+class ModStruct(BaseStruct):
+    """Module docs, submodules, classes, funcs, and variables.."""
+    mod: ModuleType
 
     submods: List["ModStruct"]
     vars: List["VarStruct"]
@@ -34,18 +48,14 @@ class ModStruct:
 
     out_dir: pathlib.Path
     filename: str
-    name_to_path: dict
-    abs_path: str
     relpaths: dict
 
     def __init__(
         self, mod: ModuleType, out_dir, name_to_path=None, out_name: str = None
     ):
         self.mod = mod
-        if name_to_path is None:
-            name_to_path = {}
-        self.name_to_path = name_to_path
-        self.abs_path = "/" + mod.__name__.replace(".", "/")
+        abs_path = "/" + mod.__name__.replace(".", "/")
+        super().__init__(abs_path=abs_path, name_to_path=name_to_path)
         self.name_to_path[mod.__name__] = self.abs_path
         self.relpaths = {}
 
@@ -92,6 +102,7 @@ class ModStruct:
         self.init_funcs()
 
     def init_classes(self):
+        """Find public classes defined in the module."""
         mod_classes = [
             x[1]
             for x in inspect.getmembers(self.mod, inspect.isclass)
@@ -103,17 +114,32 @@ class ModStruct:
         ]
 
     def init_vars(self):
+        """Find variables having docstrings."""
+        src = inspect.getsource(self.mod)
+        var_docs = {
+            x[0].split("=")[0].strip(): inspect.cleandoc(x[1])
+            for x in re.findall(r'(.*)\n"""((?s:.+))"""', src)
+        }
+
         mod_vars = [
-            x[1]
+            {"name": x[0], "value": x[1], "doc": var_docs[x[0]]}
             for x in inspect.getmembers(self.mod, is_var)
-            if (not x[0].startswith("_")) and (inspect.getmodule(x[1]) == self.mod)
+            if (not x[0].startswith("_")) and (x[0] in var_docs)
         ]
+
         self.vars = [
-            VarStruct(v, name_to_path=self.name_to_path, abs_path=self.abs_path)
+            VarStruct(
+                v["value"],
+                name_to_path=self.name_to_path,
+                abs_path=self.abs_path,
+                name=v["name"],
+                doc=v["doc"],
+            )
             for v in mod_vars
         ]
 
     def init_funcs(self):
+        """Find public functions in the module."""
         mod_funcs = [
             x[1]
             for x in inspect.getmembers(
@@ -179,6 +205,16 @@ class ModStruct:
         return cleanup(doc)
 
     def make_relpaths(self):
+        """
+        Create mapping between object name to relative path.
+
+        ~~~markdown
+
+        `ful.path.to.mod.cls` -> [`cls`](../../mod/cls)
+
+        ~~~
+        
+        """
         for name, path in self.name_to_path.items():
             if "#" in path:
                 relpath, hash_ = path.split("#")
@@ -191,15 +227,17 @@ class ModStruct:
             self.relpaths[name] = (relpath, hash_)
 
     def make_links(self, doc: str) -> str:
+        """
+        Create internal link on back-quoted name.
+        """
         for q_name, rel_hash in self.relpaths.items():
             short_name = q_name.rsplit(".", 1)[-1]
+            # append a space after short_name because of avoiding unexpected replacing.
             doc = doc.replace(f"`{q_name}`", f"[`{short_name} `]({''.join(rel_hash)})")
         return doc
 
-    def __str__(self):
-        return str({self.out_dir / self.filename: [str(x) for x in self.submods]})
-
     def write(self):
+        """Write documents to files. Directories are created automatically."""
         # create dir.
         os.makedirs(self.out_dir, exist_ok=True)
         # write self.
@@ -212,14 +250,18 @@ class ModStruct:
             submod.write()
 
 
-class VarStruct:
+class VarStruct(BaseStruct):
+    """Module variables and class properties."""
     var: Any
-    doc: str
+
     name: str
 
-    def __init__(self, var, name_to_path: dict, abs_path: str, name=None):
+    def __init__(
+        self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None
+    ):
+        super().__init__(name_to_path=name_to_path)
         self.var = var
-        self.doc = inspect.getdoc(var) or ""
+        self.doc = doc or inspect.getdoc(var) or ""
         name = name or var.__name__
         self.name = name.rsplit(".")[-1]
         full_name = ".".join([n for n in abs_path.split("/") if n])
@@ -229,7 +271,7 @@ class VarStruct:
         else:
             q_name = full_name + "#" + self.name
             abs_path = f"{abs_path}.{self.name}"
-        name_to_path[q_name] = abs_path
+        self.name_to_path[q_name] = abs_path
 
     def doc_str(self) -> str:
         if self.doc:
@@ -239,15 +281,25 @@ class VarStruct:
         return modify_attrs(doc)
 
 
-class ClsStruct:
+class ClsStruct(BaseStruct):
+    """
+    Class with methods and properties. Attribute docs should be written in class
+        docstring like this:
+
+    **Attributes**
+
+    * cls (`type`): object class.
+    * vars
+    * methods
+    * hash_
+
+    """
+    # TODO: get ancestor
     cls: type
-    doc: str
 
     vars: List[VarStruct]
     methods: List["FuncStruct"]
 
-    name_to_path: dict
-    abs_path: str
     hash_: str
 
     def __init__(self, cls, abs_path: str, name_to_path: dict):
@@ -257,10 +309,10 @@ class ClsStruct:
 
         full_name = ".".join([n for n in abs_path.split("/") if n])
         q_name = full_name + "." + self.cls.__qualname__
-        self.name_to_path = name_to_path
         self.hash_ = "#" + q_name.rsplit(".", 1)[-1]
-        self.abs_path = abs_path + self.hash_
-        name_to_path[q_name] = self.abs_path
+        abs_path = abs_path + self.hash_
+        super().__init__(abs_path=abs_path, name_to_path=name_to_path)
+        self.name_to_path[q_name] = self.abs_path
 
         self.init_vars()
         self.init_methods()
@@ -338,9 +390,9 @@ class ClsStruct:
         return "\n\n".join([head, cls_doc, vars_doc, methods_doc])
 
 
-class FuncStruct:
+class FuncStruct(BaseStruct):
+    """Functions and methods."""
     func: Callable
-    doc: str
     hash_: str
 
     def __init__(self, f: Callable, name_to_path: dict, abs_path: str):
@@ -356,8 +408,9 @@ class FuncStruct:
             q_name = full_name + "." + f.__name__
 
         self.hash_ = "#" + abs_path.split("#")[-1]
+        super().__init__(abs_path=abs_path, name_to_path=name_to_path)
 
-        name_to_path[q_name] = abs_path
+        self.name_to_path[q_name] = self.abs_path
 
     def doc_str(self) -> str:
         # is method?
@@ -374,5 +427,4 @@ class FuncStruct:
         defs = f"```python\n{source}\n```"
         docs = "\n\n".join([head, defs, self.doc])
         return docs
-
 

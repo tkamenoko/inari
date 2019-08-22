@@ -8,8 +8,8 @@ def cleanup(doc: str) -> str:
 def modify_attrs(doc: str) -> str:
     # more readable args, attrs and returns.
     result = re.sub(
-        r"^\*\s+([^\s():`[\]]+)\s*(\()?(`.+`)?(\))?\s*(:.*)?",
-        r"* **\1** \2\3\4\5",
+        r"^\*\s+([^\s():`[\]]+)\s*(\()?(`.+`)?(\))?\s*(:.+)?\n",
+        r"* **\1** \2\3\4\5\n",
         doc,
         flags=re.MULTILINE,
     )
