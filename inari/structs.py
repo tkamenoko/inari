@@ -22,6 +22,7 @@ def is_var(obj) -> bool:
 
 class BaseStruct:
     """Base class for collecting docstrings."""
+
     name_to_path: dict
     doc: str
     abs_path: str
@@ -39,6 +40,7 @@ class BaseStruct:
 
 class ModStruct(BaseStruct):
     """Module docs, submodules, classes, funcs, and variables.."""
+
     mod: ModuleType
 
     submods: List["ModStruct"]
@@ -252,6 +254,7 @@ class ModStruct(BaseStruct):
 
 class VarStruct(BaseStruct):
     """Module variables and class properties."""
+
     var: Any
 
     name: str
@@ -294,6 +297,7 @@ class ClsStruct(BaseStruct):
     * hash_
 
     """
+
     # TODO: get ancestor
     cls: type
 
@@ -392,6 +396,7 @@ class ClsStruct(BaseStruct):
 
 class FuncStruct(BaseStruct):
     """Functions and methods."""
+
     func: Callable
     hash_: str
 
@@ -415,7 +420,7 @@ class FuncStruct(BaseStruct):
     def doc_str(self) -> str:
         # is method?
         if self.hash_ != "#" + self.func.__name__:
-            head = f"**{self.func.__name__}**{{: {self.hash_} }}"
+            head = f"[**{self.func.__name__}**]({self.hash_}){{: {self.hash_} }}"
         else:
             head = f"### {self.func.__name__} {{: {self.hash_} }}"
         full_source = inspect.getsource(self.func)

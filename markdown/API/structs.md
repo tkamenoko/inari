@@ -18,7 +18,7 @@ Initialize self.  See help(type(self)) for accurate signature.
 
 #### Methods {: #BaseStruct-methods }
 
-**doc_str**{: #BaseStruct.doc_str }
+[**doc_str**](#BaseStruct.doc_str){: #BaseStruct.doc_str }
 
 ```python
 def doc_str(self) -> str
@@ -51,7 +51,7 @@ Initialize self.  See help(type(self)) for accurate signature.
 
 #### Methods {: #ClsStruct-methods }
 
-**doc_str**{: #ClsStruct.doc_str }
+[**doc_str**](#ClsStruct.doc_str){: #ClsStruct.doc_str }
 
 ```python
 def doc_str(self) -> str
@@ -61,7 +61,7 @@ Create documents from its contents.
 
 ------
 
-**init_methods**{: #ClsStruct.init_methods }
+[**init_methods**](#ClsStruct.init_methods){: #ClsStruct.init_methods }
 
 ```python
 def init_methods(self)
@@ -70,7 +70,7 @@ def init_methods(self)
 
 ------
 
-**init_vars**{: #ClsStruct.init_vars }
+[**init_vars**](#ClsStruct.init_vars){: #ClsStruct.init_vars }
 
 ```python
 def init_vars(self)
@@ -94,7 +94,7 @@ Initialize self.  See help(type(self)) for accurate signature.
 
 #### Methods {: #FuncStruct-methods }
 
-**doc_str**{: #FuncStruct.doc_str }
+[**doc_str**](#FuncStruct.doc_str){: #FuncStruct.doc_str }
 
 ```python
 def doc_str(self) -> str
@@ -120,7 +120,7 @@ Initialize self.  See help(type(self)) for accurate signature.
 
 #### Methods {: #ModStruct-methods }
 
-**doc_str**{: #ModStruct.doc_str }
+[**doc_str**](#ModStruct.doc_str){: #ModStruct.doc_str }
 
 ```python
 def doc_str(self) -> str
@@ -130,7 +130,7 @@ Create documents from its contents.
 
 ------
 
-**init_classes**{: #ModStruct.init_classes }
+[**init_classes**](#ModStruct.init_classes){: #ModStruct.init_classes }
 
 ```python
 def init_classes(self)
@@ -140,7 +140,7 @@ Find public classes defined in the module.
 
 ------
 
-**init_funcs**{: #ModStruct.init_funcs }
+[**init_funcs**](#ModStruct.init_funcs){: #ModStruct.init_funcs }
 
 ```python
 def init_funcs(self)
@@ -150,7 +150,7 @@ Find public functions in the module.
 
 ------
 
-**init_vars**{: #ModStruct.init_vars }
+[**init_vars**](#ModStruct.init_vars){: #ModStruct.init_vars }
 
 ```python
 def init_vars(self)
@@ -160,7 +160,7 @@ Find variables having docstrings.
 
 ------
 
-**make_links**{: #ModStruct.make_links }
+[**make_links**](#ModStruct.make_links){: #ModStruct.make_links }
 
 ```python
 def make_links(self, doc: str) -> str
@@ -170,7 +170,7 @@ Create internal link on back-quoted name.
 
 ------
 
-**make_relpaths**{: #ModStruct.make_relpaths }
+[**make_relpaths**](#ModStruct.make_relpaths){: #ModStruct.make_relpaths }
 
 ```python
 def make_relpaths(self)
@@ -186,7 +186,7 @@ Create mapping between object name to relative path.
 
 ------
 
-**write**{: #ModStruct.write }
+[**write**](#ModStruct.write){: #ModStruct.write }
 
 ```python
 def write(self)
@@ -212,7 +212,7 @@ Initialize self.  See help(type(self)) for accurate signature.
 
 #### Methods {: #VarStruct-methods }
 
-**doc_str**{: #VarStruct.doc_str }
+[**doc_str**](#VarStruct.doc_str){: #VarStruct.doc_str }
 
 ```python
 def doc_str(self) -> str

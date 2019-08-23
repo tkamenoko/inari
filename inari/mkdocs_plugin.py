@@ -15,6 +15,11 @@ class Plugin(BasePlugin):
         ("out-name", config_options.Type(str, default=None)),
     )
 
+    def on_config(self, config):
+        md_ext = config["markdown_extensions"]
+        if "attr_list" not in md_ext:
+            md_ext.append("attr_list")
+
     def on_files(self, files, config):
         sys.path.append(os.getcwd())
         out_dir = config["docs_dir"]
