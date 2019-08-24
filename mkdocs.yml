@@ -1,0 +1,9 @@
+site_name: My Docs
+
+docs_dir: "markdown"
+site_dir: "docs"
+
+plugins:
+    - inari:
+        module: inari
+        out-name: API

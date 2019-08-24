@@ -22,6 +22,7 @@ def is_var(obj) -> bool:
 
 class BaseStruct:
     """Base class for collecting docstrings."""
+
     name_to_path: dict
     doc: str
     abs_path: str
@@ -39,6 +40,7 @@ class BaseStruct:
 
 class ModStruct(BaseStruct):
     """Module docs, submodules, classes, funcs, and variables.."""
+
     mod: ModuleType
 
     submods: List["ModStruct"]
@@ -118,7 +120,7 @@ class ModStruct(BaseStruct):
         src = inspect.getsource(self.mod)
         var_docs = {
             x[0].split("=")[0].strip(): inspect.cleandoc(x[1])
-            for x in re.findall(r'(.*)\n"""((?s:.+))"""', src)
+            for x in re.findall(r'(.*)\n"""((?s:.+))"""\n', src)
         }
 
         mod_vars = [
@@ -252,6 +254,7 @@ class ModStruct(BaseStruct):
 
 class VarStruct(BaseStruct):
     """Module variables and class properties."""
+
     var: Any
 
     name: str
@@ -294,6 +297,7 @@ class ClsStruct(BaseStruct):
     * hash_
 
     """
+
     # TODO: get ancestor
     cls: type
 
@@ -354,7 +358,11 @@ class ClsStruct(BaseStruct):
         head = f"### {name} {{: {self.hash_} }}"
         try:
             pos = inspect.getsource(self.cls).find("def __init__(")
-            def_args = inspect.getsource(self.cls)[pos:].split(")", 1)[0]
+            def_args = (
+                inspect.getsource(self.cls)[pos:]
+                .split(":\n    ", 1)[0]
+                .rsplit(")", 1)[0]
+            )
             args = (def_args.replace("def", "", 1).replace("__init__", "", 1)).strip()
             if not args:
                 raise ValueError
@@ -392,6 +400,7 @@ class ClsStruct(BaseStruct):
 
 class FuncStruct(BaseStruct):
     """Functions and methods."""
+
     func: Callable
     hash_: str
 
@@ -415,13 +424,13 @@ class FuncStruct(BaseStruct):
     def doc_str(self) -> str:
         # is method?
         if self.hash_ != "#" + self.func.__name__:
-            head = f"**{self.func.__name__}**{{: {self.hash_} }}"
+            head = f"[**{self.func.__name__}**]({self.hash_}){{: {self.hash_} }}"
         else:
             head = f"### {self.func.__name__} {{: {self.hash_} }}"
         full_source = inspect.getsource(self.func)
         no_decolators = re.sub(r"^\s*@.+$", "", full_source, flags=re.MULTILINE)
-        args, returns = no_decolators.split(")", 1)
-        returns = returns.split(":", 1)[0]
+        sig = no_decolators.split(":\n", 1)[0]
+        args, returns = sig.rsplit(")", 1)
         source = f"{args}){returns}".strip()
         # TODO: remove newline?
         defs = f"```python\n{source}\n```"

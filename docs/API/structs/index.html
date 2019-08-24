@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Module inari.structs - My Docs</title>
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="../../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <!-- Expander button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../..">My Docs</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li >
+                                <a href="../..">Welcome to MkDocs</a>
+                            </li>
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    
+<li >
+    <a href="../">Module inari</a>
+</li>
+                                    
+<li >
+    <a href="../format/">Module inari.format</a>
+</li>
+                                    
+<li >
+    <a href="../mkdocs_plugin/">Module inari.mkdocs_plugin</a>
+</li>
+                                    
+<li class="active">
+    <a href="./">Module inari.structs</a>
+</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                            <li >
+                                <a rel="next" href="../mkdocs_plugin/">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="disabled">
+                                <a rel="prev" >
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#module-inaristructs">Module inari.structs</a></li>
+            <li><a href="#classes">Classes</a></li>
+            <li><a href="#functions">Functions</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="module-inaristructs">Module inari.structs</h1>
+<h2 id="classes">Classes</h2>
+<h3 id="BaseStruct">BaseStruct</h3>
+<pre><code class="python">class BaseStruct(self, abs_path=&quot;&quot;, name_to_path: dict = None)
+</code></pre>
+
+<p>Base class for collecting docstrings.</p>
+<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<hr />
+<h4 id="BaseStruct-methods">Methods</h4>
+<p><a href="#BaseStruct.doc_str" id="BaseStruct.doc_str"><strong>doc_str</strong></a></p>
+<pre><code class="python">def doc_str(self) -&gt; str
+</code></pre>
+
+<p>Create documents from its contents.</p>
+<hr />
+<h3 id="ClsStruct">ClsStruct</h3>
+<pre><code class="python">class ClsStruct(self, cls, abs_path: str, name_to_path: dict)
+</code></pre>
+
+<p>Class with methods and properties. Attribute docs should be written in class
+    docstring like this:</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li><strong>cls</strong> (<code>type</code>): object class.</li>
+<li><strong>vars</strong> </li>
+<li><strong>methods</strong> </li>
+<li>hash_</li>
+</ul>
+<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<hr />
+<h4 id="ClsStruct-methods">Methods</h4>
+<p><a href="#ClsStruct.doc_str" id="ClsStruct.doc_str"><strong>doc_str</strong></a></p>
+<pre><code class="python">def doc_str(self) -&gt; str
+</code></pre>
+
+<p>Create documents from its contents.</p>
+<hr />
+<p><a href="#ClsStruct.init_methods" id="ClsStruct.init_methods"><strong>init_methods</strong></a></p>
+<pre><code class="python">def init_methods(self)
+</code></pre>
+
+<hr />
+<p><a href="#ClsStruct.init_vars" id="ClsStruct.init_vars"><strong>init_vars</strong></a></p>
+<pre><code class="python">def init_vars(self)
+</code></pre>
+
+<hr />
+<h3 id="FuncStruct">FuncStruct</h3>
+<pre><code class="python">class FuncStruct(self, f: Callable, name_to_path: dict, abs_path: str)
+</code></pre>
+
+<p>Functions and methods.</p>
+<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<hr />
+<h4 id="FuncStruct-methods">Methods</h4>
+<p><a href="#FuncStruct.doc_str" id="FuncStruct.doc_str"><strong>doc_str</strong></a></p>
+<pre><code class="python">def doc_str(self) -&gt; str
+</code></pre>
+
+<p>Create documents from its contents.</p>
+<hr />
+<h3 id="ModStruct">ModStruct</h3>
+<pre><code class="python">class ModStruct(
+        self, mod: ModuleType, out_dir, name_to_path=None, out_name: str = None)
+</code></pre>
+
+<p>Module docs, submodules, classes, funcs, and variables..</p>
+<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<hr />
+<h4 id="ModStruct-methods">Methods</h4>
+<p><a href="#ModStruct.doc_str" id="ModStruct.doc_str"><strong>doc_str</strong></a></p>
+<pre><code class="python">def doc_str(self) -&gt; str
+</code></pre>
+
+<p>Create documents from its contents.</p>
+<hr />
+<p><a href="#ModStruct.init_classes" id="ModStruct.init_classes"><strong>init_classes</strong></a></p>
+<pre><code class="python">def init_classes(self)
+</code></pre>
+
+<p>Find public classes defined in the module.</p>
+<hr />
+<p><a href="#ModStruct.init_funcs" id="ModStruct.init_funcs"><strong>init_funcs</strong></a></p>
+<pre><code class="python">def init_funcs(self)
+</code></pre>
+
+<p>Find public functions in the module.</p>
+<hr />
+<p><a href="#ModStruct.init_vars" id="ModStruct.init_vars"><strong>init_vars</strong></a></p>
+<pre><code class="python">def init_vars(self)
+</code></pre>
+
+<p>Find variables having docstrings.</p>
+<hr />
+<p><a href="#ModStruct.make_links" id="ModStruct.make_links"><strong>make_links</strong></a></p>
+<pre><code class="python">def make_links(self, doc: str) -&gt; str
+</code></pre>
+
+<p>Create internal link on back-quoted name.</p>
+<hr />
+<p><a href="#ModStruct.make_relpaths" id="ModStruct.make_relpaths"><strong>make_relpaths</strong></a></p>
+<pre><code class="python">def make_relpaths(self)
+</code></pre>
+
+<p>Create mapping between object name to relative path.</p>
+<pre><code class="markdown">
+`ful.path.to.mod.cls` -&gt; [`cls`](../../mod/cls)
+
+</code></pre>
+
+<hr />
+<p><a href="#ModStruct.write" id="ModStruct.write"><strong>write</strong></a></p>
+<pre><code class="python">def write(self)
+</code></pre>
+
+<p>Write documents to files. Directories are created automatically.</p>
+<hr />
+<h3 id="VarStruct">VarStruct</h3>
+<pre><code class="python">class VarStruct(
+        self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None)
+</code></pre>
+
+<p>Module variables and class properties.</p>
+<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<hr />
+<h4 id="VarStruct-methods">Methods</h4>
+<p><a href="#VarStruct.doc_str" id="VarStruct.doc_str"><strong>doc_str</strong></a></p>
+<pre><code class="python">def doc_str(self) -&gt; str
+</code></pre>
+
+<p>Create documents from its contents.</p>
+<h2 id="functions">Functions</h2>
+<h3 id="is_var">is_var</h3>
+<pre><code class="python">def is_var(obj) -&gt; bool
+</code></pre></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js" defer></script>
+
+        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
