@@ -100,21 +100,21 @@
 
 <h1 id="module-inaristructs">Module inari.structs</h1>
 <h2 id="classes">Classes</h2>
-<h3 id="basestruct-basestruct">BaseStruct {: #BaseStruct }</h3>
+<h3 id="BaseStruct">BaseStruct</h3>
 <pre><code class="python">class BaseStruct(self, abs_path=&quot;&quot;, name_to_path: dict = None)
 </code></pre>
 
 <p>Base class for collecting docstrings.</p>
 <p>Initialize self.  See help(type(self)) for accurate signature.</p>
 <hr />
-<h4 id="methods-basestruct-methods">Methods {: #BaseStruct-methods }</h4>
-<p><a href="#BaseStruct.doc_str"><strong>doc_str</strong></a>{: #BaseStruct.doc_str }</p>
+<h4 id="BaseStruct-methods">Methods</h4>
+<p><a href="#BaseStruct.doc_str" id="BaseStruct.doc_str"><strong>doc_str</strong></a></p>
 <pre><code class="python">def doc_str(self) -&gt; str
 </code></pre>
 
 <p>Create documents from its contents.</p>
 <hr />
-<h3 id="clsstruct-clsstruct">ClsStruct {: #ClsStruct }</h3>
+<h3 id="ClsStruct">ClsStruct</h3>
 <pre><code class="python">class ClsStruct(self, cls, abs_path: str, name_to_path: dict)
 </code></pre>
 
@@ -129,38 +129,38 @@
 </ul>
 <p>Initialize self.  See help(type(self)) for accurate signature.</p>
 <hr />
-<h4 id="methods-clsstruct-methods">Methods {: #ClsStruct-methods }</h4>
-<p><a href="#ClsStruct.doc_str"><strong>doc_str</strong></a>{: #ClsStruct.doc_str }</p>
+<h4 id="ClsStruct-methods">Methods</h4>
+<p><a href="#ClsStruct.doc_str" id="ClsStruct.doc_str"><strong>doc_str</strong></a></p>
 <pre><code class="python">def doc_str(self) -&gt; str
 </code></pre>
 
 <p>Create documents from its contents.</p>
 <hr />
-<p><a href="#ClsStruct.init_methods"><strong>init_methods</strong></a>{: #ClsStruct.init_methods }</p>
+<p><a href="#ClsStruct.init_methods" id="ClsStruct.init_methods"><strong>init_methods</strong></a></p>
 <pre><code class="python">def init_methods(self)
 </code></pre>
 
 <hr />
-<p><a href="#ClsStruct.init_vars"><strong>init_vars</strong></a>{: #ClsStruct.init_vars }</p>
+<p><a href="#ClsStruct.init_vars" id="ClsStruct.init_vars"><strong>init_vars</strong></a></p>
 <pre><code class="python">def init_vars(self)
 </code></pre>
 
 <hr />
-<h3 id="funcstruct-funcstruct">FuncStruct {: #FuncStruct }</h3>
+<h3 id="FuncStruct">FuncStruct</h3>
 <pre><code class="python">class FuncStruct(self, f: Callable, name_to_path: dict, abs_path: str)
 </code></pre>
 
 <p>Functions and methods.</p>
 <p>Initialize self.  See help(type(self)) for accurate signature.</p>
 <hr />
-<h4 id="methods-funcstruct-methods">Methods {: #FuncStruct-methods }</h4>
-<p><a href="#FuncStruct.doc_str"><strong>doc_str</strong></a>{: #FuncStruct.doc_str }</p>
+<h4 id="FuncStruct-methods">Methods</h4>
+<p><a href="#FuncStruct.doc_str" id="FuncStruct.doc_str"><strong>doc_str</strong></a></p>
 <pre><code class="python">def doc_str(self) -&gt; str
 </code></pre>
 
 <p>Create documents from its contents.</p>
 <hr />
-<h3 id="modstruct-modstruct">ModStruct {: #ModStruct }</h3>
+<h3 id="ModStruct">ModStruct</h3>
 <pre><code class="python">class ModStruct(
         self, mod: ModuleType, out_dir, name_to_path=None, out_name: str = None)
 </code></pre>
@@ -168,38 +168,38 @@
 <p>Module docs, submodules, classes, funcs, and variables..</p>
 <p>Initialize self.  See help(type(self)) for accurate signature.</p>
 <hr />
-<h4 id="methods-modstruct-methods">Methods {: #ModStruct-methods }</h4>
-<p><a href="#ModStruct.doc_str"><strong>doc_str</strong></a>{: #ModStruct.doc_str }</p>
+<h4 id="ModStruct-methods">Methods</h4>
+<p><a href="#ModStruct.doc_str" id="ModStruct.doc_str"><strong>doc_str</strong></a></p>
 <pre><code class="python">def doc_str(self) -&gt; str
 </code></pre>
 
 <p>Create documents from its contents.</p>
 <hr />
-<p><a href="#ModStruct.init_classes"><strong>init_classes</strong></a>{: #ModStruct.init_classes }</p>
+<p><a href="#ModStruct.init_classes" id="ModStruct.init_classes"><strong>init_classes</strong></a></p>
 <pre><code class="python">def init_classes(self)
 </code></pre>
 
 <p>Find public classes defined in the module.</p>
 <hr />
-<p><a href="#ModStruct.init_funcs"><strong>init_funcs</strong></a>{: #ModStruct.init_funcs }</p>
+<p><a href="#ModStruct.init_funcs" id="ModStruct.init_funcs"><strong>init_funcs</strong></a></p>
 <pre><code class="python">def init_funcs(self)
 </code></pre>
 
 <p>Find public functions in the module.</p>
 <hr />
-<p><a href="#ModStruct.init_vars"><strong>init_vars</strong></a>{: #ModStruct.init_vars }</p>
+<p><a href="#ModStruct.init_vars" id="ModStruct.init_vars"><strong>init_vars</strong></a></p>
 <pre><code class="python">def init_vars(self)
 </code></pre>
 
 <p>Find variables having docstrings.</p>
 <hr />
-<p><a href="#ModStruct.make_links"><strong>make_links</strong></a>{: #ModStruct.make_links }</p>
+<p><a href="#ModStruct.make_links" id="ModStruct.make_links"><strong>make_links</strong></a></p>
 <pre><code class="python">def make_links(self, doc: str) -&gt; str
 </code></pre>
 
 <p>Create internal link on back-quoted name.</p>
 <hr />
-<p><a href="#ModStruct.make_relpaths"><strong>make_relpaths</strong></a>{: #ModStruct.make_relpaths }</p>
+<p><a href="#ModStruct.make_relpaths" id="ModStruct.make_relpaths"><strong>make_relpaths</strong></a></p>
 <pre><code class="python">def make_relpaths(self)
 </code></pre>
 
@@ -210,13 +210,13 @@
 </code></pre>
 
 <hr />
-<p><a href="#ModStruct.write"><strong>write</strong></a>{: #ModStruct.write }</p>
+<p><a href="#ModStruct.write" id="ModStruct.write"><strong>write</strong></a></p>
 <pre><code class="python">def write(self)
 </code></pre>
 
 <p>Write documents to files. Directories are created automatically.</p>
 <hr />
-<h3 id="varstruct-varstruct">VarStruct {: #VarStruct }</h3>
+<h3 id="VarStruct">VarStruct</h3>
 <pre><code class="python">class VarStruct(
         self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None)
 </code></pre>
@@ -224,14 +224,14 @@
 <p>Module variables and class properties.</p>
 <p>Initialize self.  See help(type(self)) for accurate signature.</p>
 <hr />
-<h4 id="methods-varstruct-methods">Methods {: #VarStruct-methods }</h4>
-<p><a href="#VarStruct.doc_str"><strong>doc_str</strong></a>{: #VarStruct.doc_str }</p>
+<h4 id="VarStruct-methods">Methods</h4>
+<p><a href="#VarStruct.doc_str" id="VarStruct.doc_str"><strong>doc_str</strong></a></p>
 <pre><code class="python">def doc_str(self) -&gt; str
 </code></pre>
 
 <p>Create documents from its contents.</p>
 <h2 id="functions">Functions</h2>
-<h3 id="is_var-is_var">is_var {: #is_var }</h3>
+<h3 id="is_var">is_var</h3>
 <pre><code class="python">def is_var(obj) -&gt; bool
 </code></pre></div>
         </div>
