@@ -120,7 +120,7 @@ class ModStruct(BaseStruct):
         src = inspect.getsource(self.mod)
         var_docs = {
             x[0].split("=")[0].strip(): inspect.cleandoc(x[1])
-            for x in re.findall(r'(.*)\n"""((?s:.+))"""', src)
+            for x in re.findall(r'(.*)\n"""((?s:.+))"""\n', src)
         }
 
         mod_vars = [
