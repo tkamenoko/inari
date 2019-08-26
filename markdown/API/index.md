@@ -1,6 +1,6 @@
 # Module inari
 
-inari --- write docstrings in markdown
+inari --- Write docstrings in Markdown!
 
 ## Submodules
 

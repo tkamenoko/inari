@@ -1,7 +1,7 @@
-import sys
-import os
-import importlib
 import argparse
+import importlib
+import os
+import sys
 
 from .structs import ModStruct
 
@@ -11,8 +11,7 @@ parser.add_argument("out_dir", help="directory to write documents.", metavar="ou
 parser.add_argument(
     "-n",
     "--name",
-    help="name of root directry, like `{out-dir}/{name}/{submods}` ."
-    + " Default: module name.",
+    help="root directry name like `{out-dir}/{name}/{submods}` . Default: module name.",
 )
 
 

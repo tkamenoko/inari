@@ -1,4 +1,4 @@
-"""inari --- write docstrings in markdown"""
+"""inari --- Write docstrings in Markdown!"""
 
 
 from .structs import ModStruct, VarStruct, FuncStruct, ClsStruct

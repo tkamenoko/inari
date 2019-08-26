@@ -24,9 +24,9 @@ to = {format = "pipfile", path = "Pipfile"}
 [tool.poetry]
 name = "inari"
 version = "0.0.1"
-description = "Write docstrings in markdown!"
+description = "Write docstrings in Markdown!"
 license = "MIT"
-authors = ["T.K. <me@example.com>"]
+authors = ["T.Kameyama <tkamenoko@vivaldi.net>"]
 readme = "README.md"
 
 [tool.poetry.scripts]
