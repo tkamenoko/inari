@@ -1,29 +1,4 @@
 [tool]
-[tool.dephell]
-# used for packaging
-# $ dephell deps convert
-[tool.dephell.main]
-from = {format = "poetry", path = "pyproject.toml"}
-to = {format = "setuppy", path = "setup.py"}
-envs = ["main"]
-
-# explicitly specify your versioning scheme to let your users know what they can expect
-versioning = "semver"
-
-[tool.dephell.dev]
-from = {format = "poetry", path = "pyproject.toml"}
-envs = ["main","dev"]
-
-[tool.dephell.doc]
-from = {format = "poetry", path = "pyproject.toml"}
-envs = ["main","dev", "docs"]
-
-
-[tool.dephell.pipenv]
-from = {format = "poetry", path = "pyproject.toml"}
-to = {format = "pipfile", path = "Pipfile"}
-
-
 [tool.poetry]
 name = "inari"
 version = "0.0.1"
@@ -44,11 +19,14 @@ python = ">=3.7"
 mkdocs = {optional = true, version = "*"}
 mkdocs-material = {optional = true, version = "*"}
 [tool.poetry.dev-dependencies]
-black = "*"
 flake8 = "*"
 mypy = "*"
 rope = "*"
-
+black = {version = "*", allows-prereleases = true}
 [tool.poetry.extras]
 mkdocs = ["mkdocs"]
 docs = ["mkdocs","mkdocs-material"]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
