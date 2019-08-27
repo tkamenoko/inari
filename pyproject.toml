@@ -12,8 +12,11 @@ versioning = "semver"
 
 [tool.dephell.dev]
 from = {format = "poetry", path = "pyproject.toml"}
-to = {format = "setuppy", path = "setup.py"}
 envs = ["main","dev"]
+
+[tool.dephell.doc]
+from = {format = "poetry", path = "pyproject.toml"}
+envs = ["main","dev", "docs"]
 
 
 [tool.dephell.pipenv]
@@ -39,6 +42,7 @@ inari = "inari.mkdocs_plugin:Plugin"
 [tool.poetry.dependencies]
 python = ">=3.7"
 mkdocs = {optional = true, version = "*"}
+mkdocs-material = {optional = true, version = "*"}
 [tool.poetry.dev-dependencies]
 black = "*"
 flake8 = "*"
@@ -47,3 +51,4 @@ rope = "*"
 
 [tool.poetry.extras]
 mkdocs = ["mkdocs"]
+docs = ["mkdocs","mkdocs-material"]

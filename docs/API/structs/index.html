@@ -1,291 +1,861 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        
-        
-        
-        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.1">
+    
+    
+      
         <title>Module inari.structs - My Docs</title>
-        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
-        <link href="../../css/font-awesome.min.css" rel="stylesheet">
-        <link href="../../css/base.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
-        <script src="../../js/jquery-1.10.2.min.js" defer></script>
-        <script src="../../js/bootstrap-3.0.3.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-        <script>hljs.initHighlightingOnLoad();</script> 
-    </head>
-
-    <body>
-
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-            <div class="container">
-
-                <!-- Collapsed navigation -->
-                <div class="navbar-header">
-                    <!-- Expander button -->
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="../..">My Docs</a>
-                </div>
-
-                <!-- Expanded navigation -->
-                <div class="navbar-collapse collapse">
-                        <!-- Main navigation -->
-                        <ul class="nav navbar-nav">
-                            <li >
-                                <a href="../..">Welcome to MkDocs</a>
-                            </li>
-                            <li class="dropdown active">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">API <b class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    
-<li >
-    <a href="../">Module inari</a>
-</li>
-                                    
-<li >
-    <a href="../format/">Module inari.format</a>
-</li>
-                                    
-<li >
-    <a href="../mkdocs_plugin/">Module inari.mkdocs_plugin</a>
-</li>
-                                    
-<li class="active">
-    <a href="./">Module inari.structs</a>
-</li>
-                                </ul>
-                            </li>
-                        </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                            <li >
-                                <a rel="next" href="../mkdocs_plugin/">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li class="disabled">
-                                <a rel="prev" >
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                    </ul>
-                </div>
-            </div>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#module-inaristructs" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="My Docs" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              My Docs
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Module inari.structs
+              
+            </span>
+          
         </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="My Docs" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
 
-        <div class="container">
-                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
-    <ul class="nav bs-sidenav">
-        <li class="main active"><a href="#module-inaristructs">Module inari.structs</a></li>
-            <li><a href="#classes">Classes</a></li>
-            <li><a href="#functions">Functions</a></li>
+
+  <li class="md-nav__item">
+    <a href="../.." title="inari" class="md-nav__link">
+      inari
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      API
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        API
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="Module inari" class="md-nav__link">
+      Module inari
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../format/" title="Module inari.format" class="md-nav__link">
+      Module inari.format
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../mkdocs_plugin/" title="Module inari.mkdocs_plugin" class="md-nav__link">
+      Module inari.mkdocs_plugin
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Module inari.structs
+      </label>
+    
+    <a href="./" title="Module inari.structs" class="md-nav__link md-nav__link--active">
+      Module inari.structs
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classes" title="Classes" class="md-nav__link">
+    Classes
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#BaseStruct" title="BaseStruct" class="md-nav__link">
+    BaseStruct
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#BaseStruct-methods" title="Methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ClsStruct" title="ClsStruct" class="md-nav__link">
+    ClsStruct
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ClsStruct-methods" title="Methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#FuncStruct" title="FuncStruct" class="md-nav__link">
+    FuncStruct
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#FuncStruct-methods" title="Methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ModStruct" title="ModStruct" class="md-nav__link">
+    ModStruct
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ModStruct-methods" title="Methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#VarStruct" title="VarStruct" class="md-nav__link">
+    VarStruct
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#VarStruct-methods" title="Methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" title="Functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#is_var" title="is_var" class="md-nav__link">
+    is_var
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
     </ul>
-</div></div>
-                <div class="col-md-9" role="main">
+  
+</nav>
+    
+  </li>
 
-<h1 id="module-inaristructs">Module inari.structs</h1>
-<h2 id="classes">Classes</h2>
-<h3 id="BaseStruct">BaseStruct</h3>
-<pre><code class="python">class BaseStruct(self, abs_path=&quot;&quot;, name_to_path: dict = None)
-</code></pre>
+        
+      </ul>
+    </nav>
+  </li>
 
-<p>Base class for collecting docstrings.</p>
-<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classes" title="Classes" class="md-nav__link">
+    Classes
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#BaseStruct" title="BaseStruct" class="md-nav__link">
+    BaseStruct
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#BaseStruct-methods" title="Methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ClsStruct" title="ClsStruct" class="md-nav__link">
+    ClsStruct
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ClsStruct-methods" title="Methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#FuncStruct" title="FuncStruct" class="md-nav__link">
+    FuncStruct
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#FuncStruct-methods" title="Methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ModStruct" title="ModStruct" class="md-nav__link">
+    ModStruct
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ModStruct-methods" title="Methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#VarStruct" title="VarStruct" class="md-nav__link">
+    VarStruct
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#VarStruct-methods" title="Methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" title="Functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#is_var" title="is_var" class="md-nav__link">
+    is_var
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="module-inaristructs">Module inari.structs<a class="headerlink" href="#module-inaristructs" title="Permanent link">&para;</a></h1>
+<h2 id="classes">Classes<a class="headerlink" href="#classes" title="Permanent link">&para;</a></h2>
+<h3 id="BaseStruct">BaseStruct<a class="headerlink" href="#BaseStruct" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">BaseStruct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abs_path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">name_to_path</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Base class for collecting objects with docstrings.</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li><strong>name_to_path</strong> (<code>dict</code>): Mapping of <code>{"module.name.class": "module/name#class"}</code>
+.</li>
+<li><strong>doc</strong> (<code>str</code>): Docstrings of the object.</li>
+<li><strong>abs_path</strong> (<code>str</code>): Absolute path of the object. Root is <code>out_dir</code>
+.</li>
+</ul>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>abs_path</strong> (<code>str</code>): Absolute path of the object.</li>
+<li><strong>name_to_path</strong> (<code>dict</code>): Mapping of name and path.</li>
+</ul>
 <hr />
-<h4 id="BaseStruct-methods">Methods</h4>
+<h4 id="BaseStruct-methods">Methods<a class="headerlink" href="#BaseStruct-methods" title="Permanent link">&para;</a></h4>
 <p><a href="#BaseStruct.doc_str" id="BaseStruct.doc_str"><strong>doc_str</strong></a></p>
-<pre><code class="python">def doc_str(self) -&gt; str
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">doc_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</pre></div>
+</td></tr></table>
 
 <p>Create documents from its contents.</p>
 <hr />
-<h3 id="ClsStruct">ClsStruct</h3>
-<pre><code class="python">class ClsStruct(self, cls, abs_path: str, name_to_path: dict)
-</code></pre>
+<h3 id="ClsStruct">ClsStruct<a class="headerlink" href="#ClsStruct" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">ClsStruct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">abs_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name_to_path</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Class with methods and properties. Attribute docs should be written in class
     docstring like this:</p>
 <p><strong>Attributes</strong></p>
 <ul>
-<li><strong>cls</strong> (<code>type</code>): object class.</li>
-<li><strong>vars</strong> </li>
-<li><strong>methods</strong> </li>
-<li>hash_</li>
+<li><strong>cls</strong> (<code>type</code>): Target class.</li>
+<li><strong>vars</strong> (<code>List[VarStruct]</code>): Class properties.</li>
+<li><strong>methods</strong> (<code>List[FuncStruct]</code>): Methods of the class.</li>
+<li><strong>hash_</strong> (<code>str</code>): Used for HTML id.</li>
 </ul>
-<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>cls</strong> (<code>type</code>): Class to make documents.</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
+.</li>
+<li><strong>name_to_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
+.</li>
+</ul>
 <hr />
-<h4 id="ClsStruct-methods">Methods</h4>
+<h4 id="ClsStruct-methods">Methods<a class="headerlink" href="#ClsStruct-methods" title="Permanent link">&para;</a></h4>
 <p><a href="#ClsStruct.doc_str" id="ClsStruct.doc_str"><strong>doc_str</strong></a></p>
-<pre><code class="python">def doc_str(self) -&gt; str
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">doc_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</pre></div>
+</td></tr></table>
 
 <p>Create documents from its contents.</p>
 <hr />
 <p><a href="#ClsStruct.init_methods" id="ClsStruct.init_methods"><strong>init_methods</strong></a></p>
-<pre><code class="python">def init_methods(self)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">init_methods</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <p><a href="#ClsStruct.init_vars" id="ClsStruct.init_vars"><strong>init_vars</strong></a></p>
-<pre><code class="python">def init_vars(self)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">init_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
-<h3 id="FuncStruct">FuncStruct</h3>
-<pre><code class="python">class FuncStruct(self, f: Callable, name_to_path: dict, abs_path: str)
-</code></pre>
+<h3 id="FuncStruct">FuncStruct<a class="headerlink" href="#FuncStruct" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">FuncStruct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">name_to_path</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">abs_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Functions and methods.</p>
-<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li><strong>func</strong> (<code>Callable</code>): Target function.</li>
+<li><strong>hash_</strong> (<code>str</code>): Used for HTML id.</li>
+</ul>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>f</strong> (<code>Callable</code>): Target function.</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
+.</li>
+<li><strong>name_to_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
+.</li>
+</ul>
 <hr />
-<h4 id="FuncStruct-methods">Methods</h4>
+<h4 id="FuncStruct-methods">Methods<a class="headerlink" href="#FuncStruct-methods" title="Permanent link">&para;</a></h4>
 <p><a href="#FuncStruct.doc_str" id="FuncStruct.doc_str"><strong>doc_str</strong></a></p>
-<pre><code class="python">def doc_str(self) -&gt; str
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">doc_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</pre></div>
+</td></tr></table>
 
 <p>Create documents from its contents.</p>
 <hr />
-<h3 id="ModStruct">ModStruct</h3>
-<pre><code class="python">class ModStruct(
-        self, mod: ModuleType, out_dir, name_to_path=None, out_name: str = None)
-</code></pre>
+<h3 id="ModStruct">ModStruct<a class="headerlink" href="#ModStruct" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">ModStruct</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">mod</span><span class="p">:</span> <span class="n">ModuleType</span><span class="p">,</span>
+        <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">],</span>
+        <span class="n">name_to_path</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+        <span class="n">out_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,)</span>
+</pre></div>
+</td></tr></table>
 
-<p>Module docs, submodules, classes, funcs, and variables..</p>
-<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<p>Module docs, submodules, classes, funcs, and variables.</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li><strong>mod</strong> (<code>ModuleType</code>): Module to make documents.</li>
+<li><strong>submods</strong> (<code>List[ModStruct]</code>): List of submodules, wrapped by
+    <a href="./#ModStruct"><code>ModStruct</code></a> .</li>
+<li><strong>vars</strong> (<code>List[VarStruct]</code>): List of module-level variables, wrapped by
+    <a href="./#VarStruct"><code>VarStruct</code></a> .</li>
+<li><strong>classes</strong> (<code>List[ClsStruct]</code>): List of public classes, wrapped by
+    <a href="./#ClsStruct"><code>ClsStruct</code></a> .</li>
+<li><strong>funcs</strong> (<code>List[FuncStruct]</code>): List of public functions, wrapped by
+    <a href="./#FuncStruct"><code>FuncStruct</code></a> .</li>
+<li><strong>out_dir</strong> (<code>pathlib.Path</code>): Output directly.</li>
+<li><strong>filename</strong> (<code>str</code>): Output filename, like <code>index.md</code> , <code>submodule.md</code>
+.</li>
+<li><strong>relpaths</strong> (<code>dict</code>): Store relational paths. See
+    <a href="./#ModStruct.make_relpaths"><code>make_relpaths</code></a> .</li>
+</ul>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>mod</strong> (<code>ModuleType</code>): Module to make documents.</li>
+<li><strong>out_dir</strong> (<code>Union[str,Path]</code>): Output directoly.</li>
+<li><strong>name_to_path</strong> (<code>dict</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
+.</li>
+<li><strong>out_name</strong> (<code>str</code>): If given, name of output file/directoly will be orverridden.</li>
+</ul>
 <hr />
-<h4 id="ModStruct-methods">Methods</h4>
+<h4 id="ModStruct-methods">Methods<a class="headerlink" href="#ModStruct-methods" title="Permanent link">&para;</a></h4>
 <p><a href="#ModStruct.doc_str" id="ModStruct.doc_str"><strong>doc_str</strong></a></p>
-<pre><code class="python">def doc_str(self) -&gt; str
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">doc_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</pre></div>
+</td></tr></table>
 
 <p>Create documents from its contents.</p>
 <hr />
 <p><a href="#ModStruct.init_classes" id="ModStruct.init_classes"><strong>init_classes</strong></a></p>
-<pre><code class="python">def init_classes(self)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">init_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Find public classes defined in the module.</p>
 <hr />
 <p><a href="#ModStruct.init_funcs" id="ModStruct.init_funcs"><strong>init_funcs</strong></a></p>
-<pre><code class="python">def init_funcs(self)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">init_funcs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Find public functions in the module.</p>
 <hr />
 <p><a href="#ModStruct.init_vars" id="ModStruct.init_vars"><strong>init_vars</strong></a></p>
-<pre><code class="python">def init_vars(self)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">init_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Find variables having docstrings.</p>
 <hr />
 <p><a href="#ModStruct.make_links" id="ModStruct.make_links"><strong>make_links</strong></a></p>
-<pre><code class="python">def make_links(self, doc: str) -&gt; str
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">make_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</pre></div>
+</td></tr></table>
 
 <p>Create internal link on back-quoted name.</p>
+<p>To ignore this, append a space like <code>"foo.bar "</code> .</p>
 <hr />
 <p><a href="#ModStruct.make_relpaths" id="ModStruct.make_relpaths"><strong>make_relpaths</strong></a></p>
-<pre><code class="python">def make_relpaths(self)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">make_relpaths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Create mapping between object name to relative path.</p>
-<pre><code class="markdown">
-`ful.path.to.mod.cls` -&gt; [`cls`](../../mod/cls)
-
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="ss">`ful.path.to.mod.cls`</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="ss">`cls`</span><span class="p">](..</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="k">mod</span><span class="c1">#cls)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <p><a href="#ModStruct.write" id="ModStruct.write"><strong>write</strong></a></p>
-<pre><code class="python">def write(self)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Write documents to files. Directories are created automatically.</p>
 <hr />
-<h3 id="VarStruct">VarStruct</h3>
-<pre><code class="python">class VarStruct(
-        self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None)
-</code></pre>
+<h3 id="VarStruct">VarStruct<a class="headerlink" href="#VarStruct" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">VarStruct</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">,</span> <span class="n">name_to_path</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">abs_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Module variables and class properties.</p>
-<p>Initialize self.  See help(type(self)) for accurate signature.</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li><strong>var</strong> : Module-level object or class property, not module/class/function.</li>
+<li><strong>name</strong> (<code>str</code>): Name of the object.</li>
+</ul>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>var</strong> : Target object.</li>
+<li><strong>name_to_path</strong> (<code>dict</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
+.</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
+.</li>
+<li><strong>name</strong> (<code>str</code>): Fallback of <code>var.__name__</code>
+.</li>
+<li><strong>doc</strong> (<code>str</code>): Fallback of <code>inspect.getdoc(var)</code>
+.</li>
+</ul>
 <hr />
-<h4 id="VarStruct-methods">Methods</h4>
+<h4 id="VarStruct-methods">Methods<a class="headerlink" href="#VarStruct-methods" title="Permanent link">&para;</a></h4>
 <p><a href="#VarStruct.doc_str" id="VarStruct.doc_str"><strong>doc_str</strong></a></p>
-<pre><code class="python">def doc_str(self) -&gt; str
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">doc_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</pre></div>
+</td></tr></table>
 
 <p>Create documents from its contents.</p>
-<h2 id="functions">Functions</h2>
-<h3 id="is_var">is_var</h3>
-<pre><code class="python">def is_var(obj) -&gt; bool
-</code></pre></div>
-        </div>
+<h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
+<h3 id="is_var">is_var<a class="headerlink" href="#is_var" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">is_var</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span>
+</pre></div>
+</td></tr></table>
 
-        <footer class="col-md-12">
-            <hr>
-            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
-        </footer>
-        <script>
-            var base_url = "../..",
-                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
-        </script>
-        <script src="../../js/base.js" defer></script>
+<p>Utility for filtering unexpected objects.</p>
+                
+                  
+                
+              
+              
+                
 
-        <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
-            </div>
-            <div class="modal-body">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th style="width: 20%;">Keys</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="help shortcut"><kbd>?</kbd></td>
-                    <td>Open this help</td>
-                  </tr>
-                  <tr>
-                    <td class="next shortcut"><kbd>n</kbd></td>
-                    <td>Next page</td>
-                  </tr>
-                  <tr>
-                    <td class="prev shortcut"><kbd>p</kbd></td>
-                    <td>Previous page</td>
-                  </tr>
-                  <tr>
-                    <td class="search shortcut"><kbd>s</kbd></td>
-                    <td>Search</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="modal-footer">
-            </div>
+
+              
+            </article>
+          </div>
         </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../mkdocs_plugin/" title="Module inari.mkdocs_plugin" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Module inari.mkdocs_plugin
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
     </div>
-</div>
-
-    </body>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c648116f.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
+      
+    
+  </body>
 </html>

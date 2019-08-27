@@ -6,13 +6,13 @@ verify_ssl = true
 [dev-packages]
 black = "*"
 flake8 = "*"
-green = "*"
 mypy = "*"
 rope = "*"
 
 [packages]
 mkdocs = "*"
-inari = {editable = true,path = "."}
+mkdocs-material = "*"
+inari = {editable=true, path="."}
 
 [requires]
 python_version = "3.7"

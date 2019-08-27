@@ -22,10 +22,10 @@ setup(
     long_description=readme,
     name='inari',
     version='0.0.1',
-    description='Write docstrings in markdown!',
+    description='Write docstrings in Markdown!',
     python_requires='>=3.7',
-    author='T.K.',
-    author_email='me@example.com',
+    author='T.Kameyama',
+    author_email='tkamenoko@vivaldi.net',
     license='MIT',
     entry_points={
         'console_scripts': ['inari = inari.cli:run'],
@@ -36,6 +36,7 @@ setup(
     install_requires=[],
     extras_require={
         'dev': ['black', 'flake8', 'mypy', 'rope'],
+        'docs': ['mkdocs', 'mkdocs-material'],
         'mkdocs': ['mkdocs']
     },
 )
