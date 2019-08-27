@@ -9,9 +9,7 @@
 class Plugin()
 ```
 
-Plugin base class.
-
-All plugins should subclass this class.
+MkDocs Plugin class.
 
 
 ------

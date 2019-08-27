@@ -80,7 +80,7 @@ pip install inari
 inari sample docs
 # Generate `docs/sample.md` .
 ```
-
+ 
 ## Features
 
 * Minimum configuration.

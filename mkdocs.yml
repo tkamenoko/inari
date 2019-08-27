@@ -5,6 +5,16 @@ site_dir: "docs"
 repo_url: "https://github.com/tkamenoko/inari/"
 edit_uri: null
 
+nav:
+    - Home: index.md
+    - Getting Started: getting-started.md
+    - Docstrings Syntax: docstrings-syntax.md
+    - API:
+      - inari: API/index.md
+      - submodules:
+        - structs: API/structs.md
+        - format: API/format.md
+        - mkdocs_plugin: API/mkdocs_plugin.md
 
 theme:
   name: 'material'

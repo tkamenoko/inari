@@ -9,6 +9,10 @@ from .structs import ModStruct
 
 
 class Plugin(BasePlugin):
+    """
+    MkDocs Plugin class.
+    """
+
     # out-dir is config["docs_dir"]
     config_scheme = (
         ("module", config_options.Type(str, required=True)),
