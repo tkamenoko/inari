@@ -737,11 +737,9 @@
 <p>Base class for collecting objects with docstrings.</p>
 <p><strong>Attributes</strong></p>
 <ul>
-<li><strong>name_to_path</strong> (<code>dict</code>): Mapping of <code>{"module.name.class": "module/name#class"}</code>
-.</li>
+<li><strong>name_to_path</strong> (<code>dict</code>): Mapping of <code>{"module.name.class": "module/name#class"}</code> .</li>
 <li><strong>doc</strong> (<code>str</code>): Docstrings of the object.</li>
-<li><strong>abs_path</strong> (<code>str</code>): Absolute path of the object. Root is <code>out_dir</code>
-.</li>
+<li><strong>abs_path</strong> (<code>str</code>): Absolute path of the object. Root is <code>out_dir</code> .</li>
 </ul>
 <p><strong>Args</strong></p>
 <ul>
@@ -774,10 +772,8 @@
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>cls</strong> (<code>type</code>): Class to make documents.</li>
-<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
-.</li>
-<li><strong>name_to_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
-.</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
+<li><strong>name_to_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
 </ul>
 <hr />
 <h4 id="ClsStruct-methods">Methods<a class="headerlink" href="#ClsStruct-methods" title="Permanent link">&para;</a></h4>
@@ -814,10 +810,8 @@
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>f</strong> (<code>Callable</code>): Target function.</li>
-<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
-.</li>
-<li><strong>name_to_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
-.</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
+<li><strong>name_to_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
 </ul>
 <hr />
 <h4 id="FuncStruct-methods">Methods<a class="headerlink" href="#FuncStruct-methods" title="Permanent link">&para;</a></h4>
@@ -856,8 +850,7 @@
 <li><strong>funcs</strong> (<code>List[FuncStruct]</code>): List of public functions, wrapped by
     <a href="./#FuncStruct"><code>FuncStruct</code></a> .</li>
 <li><strong>out_dir</strong> (<code>pathlib.Path</code>): Output directly.</li>
-<li><strong>filename</strong> (<code>str</code>): Output filename, like <code>index.md</code> , <code>submodule.md</code>
-.</li>
+<li><strong>filename</strong> (<code>str</code>): Output filename, like <code>index.md</code> , <code>submodule.md</code> .</li>
 <li><strong>relpaths</strong> (<code>dict</code>): Store relational paths. See
     <a href="./#ModStruct.make_relpaths"><code>make_relpaths</code></a> .</li>
 </ul>
@@ -865,8 +858,7 @@
 <ul>
 <li><strong>mod</strong> (<code>ModuleType</code>): Module to make documents.</li>
 <li><strong>out_dir</strong> (<code>Union[str,Path]</code>): Output directoly.</li>
-<li><strong>name_to_path</strong> (<code>dict</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
-.</li>
+<li><strong>name_to_path</strong> (<code>dict</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
 <li><strong>out_name</strong> (<code>str</code>): If given, name of output file/directoly will be orverridden.</li>
 </ul>
 <hr />
@@ -941,14 +933,10 @@
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>var</strong> : Target object.</li>
-<li><strong>name_to_path</strong> (<code>dict</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
-.</li>
-<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a>
-.</li>
-<li><strong>name</strong> (<code>str</code>): Fallback of <code>var.__name__</code>
-.</li>
-<li><strong>doc</strong> (<code>str</code>): Fallback of <code>inspect.getdoc(var)</code>
-.</li>
+<li><strong>name_to_path</strong> (<code>dict</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
+<li><strong>name</strong> (<code>str</code>): Fallback of <code>var.__name__</code> .</li>
+<li><strong>doc</strong> (<code>str</code>): Fallback of <code>inspect.getdoc(var)</code> .</li>
 </ul>
 <hr />
 <h4 id="VarStruct-methods">Methods<a class="headerlink" href="#VarStruct-methods" title="Permanent link">&para;</a></h4>

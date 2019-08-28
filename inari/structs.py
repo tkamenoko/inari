@@ -9,6 +9,11 @@ from typing import Any, Callable, List, Union
 
 from ._format import cleanup, modify_attrs
 
+try:
+    import mkdocs
+except ImportError:
+    mkdocs = None
+
 
 def is_var(obj) -> bool:
     """Utility for filtering unexpected objects."""
@@ -164,7 +169,7 @@ class ModStruct(BaseStruct):
             src = ""
         var_docs = {
             x[0].split("=")[0].strip(): inspect.cleandoc(x[1])
-            for x in re.findall(r'(.*)\n"""((?s:.+))"""\n', src)
+            for x in re.findall(r'(.*)\n"""(.*(?!""")(?<!""").*)"""\n', src)
         }
 
         mod_vars = [
@@ -316,6 +321,7 @@ class VarStruct(BaseStruct):
     var: Any
 
     name: str
+    hash_: str
 
     def __init__(
         self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None
@@ -336,20 +342,25 @@ class VarStruct(BaseStruct):
         name = name or var.__name__
         self.name = name.rsplit(".")[-1]
         full_name = ".".join([n for n in abs_path.split("/") if n])
+
         if "#" in abs_path:
-            long_name = full_name + "." + self.name
             abs_path = f"{abs_path}.{self.name}"
+            long_name = full_name.replace("#", ".") + "." + self.name
         else:
-            long_name = full_name + "#" + self.name
-            abs_path = f"{abs_path}.{self.name}"
+            abs_path = f"{abs_path}#{self.name}"
+            long_name = full_name + "." + self.name
         self.name_to_path[long_name] = abs_path
+        self.hash_ = "#" + abs_path.rsplit("#", 1)[-1]
 
     def doc_str(self) -> str:
+        h = ""
+        if mkdocs:
+            h = f"{{: {self.hash_} }}"
         if self.doc:
             doc = f"* {self.name} {self.doc}"
         else:
             doc = f"* {self.name}"
-        return modify_attrs(doc)
+        return modify_attrs(doc, h)
 
 
 class ClsStruct(BaseStruct):
@@ -431,7 +442,10 @@ class ClsStruct(BaseStruct):
     def doc_str(self) -> str:
         # class {classname}{signature}
         name = self.cls.__name__.rsplit(".")[-1]
-        head = f"### {name} {{: {self.hash_} }}"
+        h = ""
+        if mkdocs:
+            h = f"{{: {self.hash_} }}"
+        head = f"### {name} {h}"
         try:
             pos = inspect.getsource(self.cls).find("def __init__(")
             def_args = (
@@ -455,16 +469,20 @@ class ClsStruct(BaseStruct):
         init_doc = modify_attrs(init_doc)
         cls_doc = "\n\n".join([defs, self.doc, init_doc])
         # class vars
-        vars_head = (
-            f"\n\n------\n\n#### Instance attributes {{: {self.hash_}-attrs }}\n"
-        )
+        h = ""
+        if mkdocs:
+            h = f"{{: {self.hash_}-attrs }}"
+        vars_head = f"\n\n------\n\n#### Instance attributes {h}\n"
         vars_ = [x.doc_str() for x in self.vars]
         vars_list = "\n\n".join(vars_)
         if not vars_:
             vars_head = ""
         vars_doc = vars_head + "\n" + vars_list
         # methods
-        methods_head = f"\n\n------\n\n#### Methods {{: {self.hash_}-methods }}\n"
+        h = ""
+        if mkdocs:
+            h = f"{{: {self.hash_}-methods }}"
+        methods_head = f"\n\n------\n\n#### Methods {h}\n"
         methods = [x.doc_str() for x in self.methods]
         methods_list = "\n\n------\n\n".join(methods)
         if not methods:
@@ -515,10 +533,13 @@ class FuncStruct(BaseStruct):
 
     def doc_str(self) -> str:
         # is method?
+        h = ""
+        if mkdocs:
+            h = f"{{: {self.hash_} }}"
         if self.hash_ != "#" + self.func.__name__:
-            head = f"[**{self.func.__name__}**]({self.hash_}){{: {self.hash_} }}"
+            head = f"[**{self.func.__name__}**]({self.hash_}){h}"
         else:
-            head = f"### {self.func.__name__} {{: {self.hash_} }}"
+            head = f"### {self.func.__name__} {h}"
         full_source = inspect.getsource(self.func)
         no_decolators = re.sub(r"^\s*@.+$", "", full_source, flags=re.MULTILINE)
         sig = no_decolators.split(":\n", 1)[0]

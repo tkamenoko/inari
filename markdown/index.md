@@ -6,6 +6,7 @@ Write docstrings in Markdown!
 ```shell
 # create `inari` documents!
 git clone https://github.com/tkamenoko/inari.git
+cd inari
 poetry install
 poetry run mkdocs build
 ```
@@ -85,6 +86,7 @@ inari sample docs
 ## Features
 
 * Minimum configuration.
+* No dependencies by default.
 * [CLI](./getting-started#use-cli) and [MkDocs Plugin](./getting-started#use-mkdocs-plugin) .
 * Cross reference in API documents.
 

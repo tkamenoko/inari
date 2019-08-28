@@ -13,11 +13,9 @@ Base class for collecting objects with docstrings.
 
 **Attributes**
 
-* **name_to_path** (`dict`): Mapping of `{"module.name.class": "module/name#class"}`
-.
+* **name_to_path** (`dict`): Mapping of `{"module.name.class": "module/name#class"}` .
 * **doc** (`str`): Docstrings of the object.
-* **abs_path** (`str`): Absolute path of the object. Root is `out_dir`
-.
+* **abs_path** (`str`): Absolute path of the object. Root is `out_dir` .
 
 **Args**
 
@@ -55,14 +53,11 @@ Class with methods and properties. Attribute docs should be written in class
 * **methods** (`List[FuncStruct]`): Methods of the class.
 * **hash_** (`str`): Used for HTML id.
 
-
 **Args**
 
 * **cls** (`type`): Class to make documents.
-* **abs_path** (`str`): See [`BaseStruct `](./#BaseStruct)
-.
-* **name_to_path** (`str`): See [`BaseStruct `](./#BaseStruct)
-.
+* **abs_path** (`str`): See [`BaseStruct `](./#BaseStruct) .
+* **name_to_path** (`str`): See [`BaseStruct `](./#BaseStruct) .
 
 
 ------
@@ -110,14 +105,11 @@ Functions and methods.
 * **func** (`Callable`): Target function.
 * **hash_** (`str`): Used for HTML id.
 
-
 **Args**
 
 * **f** (`Callable`): Target function.
-* **abs_path** (`str`): See [`BaseStruct `](./#BaseStruct)
-.
-* **name_to_path** (`str`): See [`BaseStruct `](./#BaseStruct)
-.
+* **abs_path** (`str`): See [`BaseStruct `](./#BaseStruct) .
+* **name_to_path** (`str`): See [`BaseStruct `](./#BaseStruct) .
 
 
 ------
@@ -159,8 +151,7 @@ Module docs, submodules, classes, funcs, and variables.
 * **funcs** (`List[FuncStruct]`): List of public functions, wrapped by
     [`FuncStruct `](./#FuncStruct) .
 * **out_dir** (`pathlib.Path`): Output directly.
-* **filename** (`str`): Output filename, like `index.md` , `submodule.md`
-.
+* **filename** (`str`): Output filename, like `index.md` , `submodule.md` .
 * **relpaths** (`dict`): Store relational paths. See
     [`make_relpaths `](./#ModStruct.make_relpaths) .
 
@@ -168,8 +159,7 @@ Module docs, submodules, classes, funcs, and variables.
 
 * **mod** (`ModuleType`): Module to make documents.
 * **out_dir** (`Union[str,Path]`): Output directoly.
-* **name_to_path** (`dict`): See [`BaseStruct `](./#BaseStruct)
-.
+* **name_to_path** (`dict`): See [`BaseStruct `](./#BaseStruct) .
 * **out_name** (`str`): If given, name of output file/directoly will be orverridden.
 
 
@@ -269,18 +259,13 @@ Module variables and class properties.
 * **var** : Module-level object or class property, not module/class/function.
 * **name** (`str`): Name of the object.
 
-
 **Args**
 
 * **var** : Target object.
-* **name_to_path** (`dict`): See [`BaseStruct `](./#BaseStruct)
-.
-* **abs_path** (`str`): See [`BaseStruct `](./#BaseStruct)
-.
-* **name** (`str`): Fallback of `var.__name__`
-.
-* **doc** (`str`): Fallback of `inspect.getdoc(var)`
-.
+* **name_to_path** (`dict`): See [`BaseStruct `](./#BaseStruct) .
+* **abs_path** (`str`): See [`BaseStruct `](./#BaseStruct) .
+* **name** (`str`): Fallback of `var.__name__` .
+* **doc** (`str`): Fallback of `inspect.getdoc(var)` .
 
 
 ------

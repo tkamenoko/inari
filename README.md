@@ -82,5 +82,6 @@ inari sample docs
 MIT
 
 # TODO
+- [] Cleanup out-dir?
 - [] Print superclass
 - [] Better document structure

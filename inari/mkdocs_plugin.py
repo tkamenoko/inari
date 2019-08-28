@@ -26,7 +26,6 @@ class Plugin(BasePlugin):
         module_path = self.config["module"].replace(".", "/")
         if module_path not in server.watcher._tasks:
             server.watch(module_path, lambda: self._build(config), delay="forever")
-            print("WATCH!")
         return server
 
     def on_config(self, config):
@@ -45,7 +44,6 @@ class Plugin(BasePlugin):
         return
 
     def _build(self, config):
-        print("BUILD!")
         sys.path.append(os.getcwd())
         out_dir = config["docs_dir"]
         root_name = self.config["module"]
@@ -53,4 +51,3 @@ class Plugin(BasePlugin):
         root_mod = importlib.import_module(root_name)
         mod = ModStruct(root_mod, out_dir, out_name=out_name)
         mod.write()
-
