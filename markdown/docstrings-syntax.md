@@ -1,6 +1,6 @@
 # Docstrings Syntax
 
-You can use any Markdown syntax supported by `MkDocs` , and `inari` provides some additional features.
+You can use any Markdown syntax supported by [MkDocs](https://www.mkdocs.org/) , and `inari` provides some additional features.
 
 ## List Arguments/Attributes
 
