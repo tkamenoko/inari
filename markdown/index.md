@@ -1,17 +1,93 @@
-# Welcome to MkDocs
+# inari
+Write docstrings in Markdown!
 
-For full documentation visit [mkdocs.org](https://mkdocs.org).
+[This API documents](./API) is created by `inari` itself.
 
-## Commands
+```shell
+git clone https://github.com/tkamenoko/inari.git
+pipenv install --dev
+pipenv run mkdocs build
+```
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs help` - Print this help message.
 
-## Project layout
+## Example
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+```python
+# sample.py
+"""This is sample module."""
+
+variable = 42
+"""(`int`):  Docstrings for module-level variables."""
+
+def func(foo: str, bar: int) -> str:
+    """
+    Docstrings for functions.
+
+    **Args**
+
+    * foo (`str`): First argument.
+    * bar (`int`): Second argument.
+
+    **Returns**
+
+    * `str`: Type of return value.
+
+    """
+    return foo * bar
+
+class SampleClass:
+    """
+    Class docstrings.
+
+    **Attributes**
+
+    * baz (`str`): Docstrings for attributes.
+
+    """
+    baz: str
+
+    def __init__(self, b: str):
+        """
+        **Args**
+
+        * b (`str`): Arguments for initializing.
+
+        """
+
+        self.baz = b
+
+    def method(self, bar: int) -> str:
+        """
+        Method docstrings.
+
+        Cross reference available. `sample.func`
+
+        **Args**
+
+        * bar(`int`)
+
+        **Returns**
+
+        * `str`
+
+        """
+        return func(self.baz, bar)
+
+```
+
+```shell
+pip install inari
+inari sample docs
+# Generate `docs/sample.md` .
+```
+ 
+## Features
+
+* Minimum configuration.
+* CLI and [MkDocs](https://www.mkdocs.org/) Plugin.
+* Cross reference in API documents.
+
+
+## License
+
+MIT

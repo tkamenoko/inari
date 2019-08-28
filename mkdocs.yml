@@ -1,9 +1,43 @@
-site_name: My Docs
+site_name: Inari
 
 docs_dir: "markdown"
 site_dir: "docs"
+repo_url: "https://github.com/tkamenoko/inari/"
+edit_uri: null
+
+nav:
+    - Home: index.md
+    - Getting Started: getting-started.md
+    - Docstrings Syntax: docstrings-syntax.md
+    - API:
+      - inari: api/index.md
+      - submodules:
+        - structs: api/structs.md
+        - mkdocs_plugin: api/mkdocs_plugin.md
+
+theme:
+  name: 'material'
+  palette:
+    primary: 'orange'
+    accent: 'red'
+  feature:
+    tabs: true
+
+markdown_extensions:
+    - toc:
+        toc_depth: 4
+        permalink: True
+    - smarty
+    - codehilite:
+        linenums: true
+    - admonition
+    - pymdownx.details
+    - pymdownx.superfences
+    - pymdownx.magiclink
+
 
 plugins:
+    - search
     - inari:
         module: inari
-        out-name: API
+        out-name: api

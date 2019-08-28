@@ -135,4 +135,4 @@ dmypy.json
 
 # ignore lockfile.
 
-Pipfile.lock
+poetry.lock

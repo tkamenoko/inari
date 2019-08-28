@@ -3,12 +3,13 @@ import os
 import pathlib
 import re
 from types import ModuleType
-from typing import Any, Callable, List
+from typing import Any, Callable, List, Union
 
-from .format import cleanup, modify_attrs
+from ._format import cleanup, modify_attrs
 
 
 def is_var(obj) -> bool:
+    """Utility for filtering unexpected objects."""
 
     return not any(
         [
@@ -21,13 +22,29 @@ def is_var(obj) -> bool:
 
 
 class BaseStruct:
-    """Base class for collecting docstrings."""
+    """
+    Base class for collecting objects with docstrings.
+
+    **Attributes**
+
+    * name_to_path (`dict`): Mapping of `{"module.name.class": "module/name#class"}` .
+    * doc (`str`): Docstrings of the object.
+    * abs_path (`str`): Absolute path of the object. Root is `out_dir` .
+
+    """
 
     name_to_path: dict
     doc: str
     abs_path: str
 
     def __init__(self, abs_path="", name_to_path: dict = None):
+        """
+        **Args**
+
+        * abs_path (`str`): Absolute path of the object.
+        * name_to_path (`dict`): Mapping of name and path.
+
+        """
         if name_to_path is None:
             name_to_path = {}
         self.name_to_path = name_to_path
@@ -39,7 +56,26 @@ class BaseStruct:
 
 
 class ModStruct(BaseStruct):
-    """Module docs, submodules, classes, funcs, and variables.."""
+    """
+    Module docs, submodules, classes, funcs, and variables.
+
+    **Attributes**
+
+    * mod (`ModuleType`): Module to make documents.
+    * submods (`List[ModStruct]`): List of submodules, wrapped by
+        `inari.structs.ModStruct` .
+    * vars (`List[VarStruct]`): List of module-level variables, wrapped by
+        `inari.structs.VarStruct` .
+    * classes (`List[ClsStruct]`): List of public classes, wrapped by
+        `inari.structs.ClsStruct` .
+    * funcs (`List[FuncStruct]`): List of public functions, wrapped by
+        `inari.structs.FuncStruct` .
+    * out_dir (`pathlib.Path`): Output directly.
+    * filename (`str`): Output filename, like `index.md` , `submodule.md` .
+    * relpaths (`dict`): Store relational paths. See
+        `inari.structs.ModStruct.make_relpaths` .
+
+    """
 
     mod: ModuleType
 
@@ -53,8 +89,21 @@ class ModStruct(BaseStruct):
     relpaths: dict
 
     def __init__(
-        self, mod: ModuleType, out_dir, name_to_path=None, out_name: str = None
+        self,
+        mod: ModuleType,
+        out_dir: Union[str, pathlib.Path],
+        name_to_path: dict = None,
+        out_name: str = None,
     ):
+        """
+        **Args**
+
+        * mod (`ModuleType`): Module to make documents.
+        * out_dir (`Union[str,Path]`): Output directoly.
+        * name_to_path (`dict`): See `inari.structs.BaseStruct` .
+        * out_name (`str`): If given, name of output file/directoly will be orverridden.
+
+        """
         self.mod = mod
         abs_path = "/" + mod.__name__.replace(".", "/")
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
@@ -91,6 +140,7 @@ class ModStruct(BaseStruct):
                     )
 
         else:
+            # TODO: what if getting `index.py`?
             self.out_dir = pathlib.Path(out_dir)
             name = out_name or mod.__name__.rsplit(".", 1)[-1]
             self.filename = f"{name}.md"
@@ -212,7 +262,7 @@ class ModStruct(BaseStruct):
 
         ~~~markdown
 
-        `ful.path.to.mod.cls` -> [`cls`](../../mod/cls)
+        `ful.path.to.mod.cls` -> [`cls`](../../mod#cls)
 
         ~~~
         
@@ -231,6 +281,9 @@ class ModStruct(BaseStruct):
     def make_links(self, doc: str) -> str:
         """
         Create internal link on back-quoted name.
+
+        To ignore this, append a space like `"foo.bar "` .
+
         """
         for q_name, rel_hash in self.relpaths.items():
             short_name = q_name.rsplit(".", 1)[-1]
@@ -240,6 +293,7 @@ class ModStruct(BaseStruct):
 
     def write(self):
         """Write documents to files. Directories are created automatically."""
+        # TODO: clear output directoly?
         # create dir.
         os.makedirs(self.out_dir, exist_ok=True)
         # write self.
@@ -253,7 +307,15 @@ class ModStruct(BaseStruct):
 
 
 class VarStruct(BaseStruct):
-    """Module variables and class properties."""
+    """
+    Module variables and class properties.
+    
+    **Attributes**
+
+    * var: Module-level object or class property, not module/class/function.
+    * name (`str`): Name of the object.
+
+    """
 
     var: Any
 
@@ -262,6 +324,16 @@ class VarStruct(BaseStruct):
     def __init__(
         self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None
     ):
+        """
+        **Args**
+
+        * var: Target object.
+        * name_to_path (`dict`): See `inari.structs.BaseStruct` .
+        * abs_path (`str`): See `inari.structs.BaseStruct` .
+        * name (`str`): Fallback of `var.__name__` .
+        * doc (`str`): Fallback of `inspect.getdoc(var)` .
+
+        """
         super().__init__(name_to_path=name_to_path)
         self.var = var
         self.doc = doc or inspect.getdoc(var) or ""
@@ -291,10 +363,10 @@ class ClsStruct(BaseStruct):
 
     **Attributes**
 
-    * cls (`type`): object class.
-    * vars
-    * methods
-    * hash_
+    * cls (`type`): Target class.
+    * vars (`List[VarStruct]`): Class properties.
+    * methods (`List[FuncStruct]`): Methods of the class.
+    * hash_ (`str`): Used for HTML id.
 
     """
 
@@ -306,7 +378,15 @@ class ClsStruct(BaseStruct):
 
     hash_: str
 
-    def __init__(self, cls, abs_path: str, name_to_path: dict):
+    def __init__(self, cls: type, abs_path: str, name_to_path: dict):
+        """
+        **Args**
+
+        * cls (`type`): Class to make documents.
+        * abs_path (`str`): See `inari.structs.BaseStruct` .
+        * name_to_path (`str`): See `inari.structs.BaseStruct` .
+
+        """
         self.cls = cls
         self.doc = inspect.getdoc(cls) or ""
         self.doc = modify_attrs(self.doc)
@@ -399,12 +479,28 @@ class ClsStruct(BaseStruct):
 
 
 class FuncStruct(BaseStruct):
-    """Functions and methods."""
+    """
+    Functions and methods.
+    
+    **Attributes**
+
+    * func (`Callable`): Target function.
+    * hash_ (`str`): Used for HTML id.
+
+    """
 
     func: Callable
     hash_: str
 
     def __init__(self, f: Callable, name_to_path: dict, abs_path: str):
+        """
+        **Args**
+
+        * f (`Callable`): Target function.
+        * abs_path (`str`): See `inari.structs.BaseStruct` .
+        * name_to_path (`str`): See `inari.structs.BaseStruct` .
+
+        """
         self.func = f
         self.doc = inspect.getdoc(f) or ""
         self.doc = modify_attrs(self.doc)

@@ -1,0 +1,18 @@
+"""String formatters for internal use. It will be ignored by `mkdocs` ."""
+
+import re
+
+
+def cleanup(doc: str) -> str:
+    return re.sub(r"\n\n\n\n+", "\n\n\n", doc).strip() + "\n"
+
+
+def modify_attrs(doc: str) -> str:
+    # more readable args, attrs and returns.
+    result = re.sub(
+        r"^\*\s+([^\s():`[\]]+)\s*(\()?(`.+`)?(\))?\s*(:.+)?\n?",
+        r"* **\1** \2\3\4\5\n",
+        doc,
+        flags=re.MULTILINE,
+    )
+    return result

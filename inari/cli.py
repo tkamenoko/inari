@@ -1,7 +1,7 @@
-import sys
-import os
-import importlib
 import argparse
+import importlib
+import os
+import sys
 
 from .structs import ModStruct
 
@@ -11,12 +11,12 @@ parser.add_argument("out_dir", help="directory to write documents.", metavar="ou
 parser.add_argument(
     "-n",
     "--name",
-    help="name of root directry, like `{out-dir}/{name}/{submods}` ."
-    + " Default: module name.",
+    help="root directry name like `{out-dir}/{name}/{submods}` . Default: module name.",
 )
 
 
 def run():
+    """CLI entry point."""
     sys.path.append(os.getcwd())
     args = parser.parse_args()
     root_name = args.module
@@ -26,6 +26,3 @@ def run():
     mod = ModStruct(root_mod, out_dir, out_name=out_name)
     mod.write()
 
-
-if __name__ == "__main__":
-    run()
