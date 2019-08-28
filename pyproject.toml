@@ -7,6 +7,21 @@ license = "MIT"
 authors = ["T.Kameyama <tkamenoko@vivaldi.net>"]
 readme = "README.md"
 
+homepage = "https://tkamenoko.github.io/inari"
+repository = "https://github.com/tkamenoko/inari"
+documentation = "https://tkamenoko.github.io/inari"
+
+keywords = ["mkdocs", "documentation", "docstrings"]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Operating System :: OS Independent",
+    "Environment :: Plugins",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Documentation",
+]
+
 [tool.poetry.scripts]
 inari = 'inari.cli:run'
 
@@ -17,15 +32,15 @@ inari = "inari.mkdocs_plugin:Plugin"
 [tool.poetry.dependencies]
 python = ">=3.7"
 mkdocs = {optional = true, version = "*"}
-mkdocs-material = {optional = true, version = "*"}
 [tool.poetry.dev-dependencies]
 flake8 = "*"
 mypy = "*"
 rope = "*"
 black = {version = "*", allows-prereleases = true}
+mkdocs = "*"
+mkdocs-material ="*"
 [tool.poetry.extras]
 mkdocs = ["mkdocs"]
-docs = ["mkdocs","mkdocs-material"]
 
 [build-system]
 requires = ["poetry>=0.12"]

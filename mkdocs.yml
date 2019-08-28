@@ -10,11 +10,11 @@ nav:
     - Getting Started: getting-started.md
     - Docstrings Syntax: docstrings-syntax.md
     - API:
-      - inari: API/index.md
+      - inari: api/index.md
       - submodules:
-        - structs: API/structs.md
-        - format: API/format.md
-        - mkdocs_plugin: API/mkdocs_plugin.md
+        - structs: api/structs.md
+        - format: api/format.md
+        - mkdocs_plugin: api/mkdocs_plugin.md
 
 theme:
   name: 'material'
@@ -41,4 +41,4 @@ plugins:
     - search
     - inari:
         module: inari
-        out-name: API
+        out-name: api
