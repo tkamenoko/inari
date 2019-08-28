@@ -16,6 +16,7 @@ parser.add_argument(
 
 
 def run():
+    """CLI entry point."""
     sys.path.append(os.getcwd())
     args = parser.parse_args()
     root_name = args.module
@@ -25,6 +26,3 @@ def run():
     mod = ModStruct(root_mod, out_dir, out_name=out_name)
     mod.write()
 
-
-if __name__ == "__main__":
-    run()

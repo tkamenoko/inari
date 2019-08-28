@@ -5,7 +5,7 @@ import re
 from types import ModuleType
 from typing import Any, Callable, List, Union
 
-from .format import cleanup, modify_attrs
+from ._format import cleanup, modify_attrs
 
 
 def is_var(obj) -> bool:

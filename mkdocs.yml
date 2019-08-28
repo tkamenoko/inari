@@ -13,7 +13,6 @@ nav:
       - inari: api/index.md
       - submodules:
         - structs: api/structs.md
-        - format: api/format.md
         - mkdocs_plugin: api/mkdocs_plugin.md
 
 theme:

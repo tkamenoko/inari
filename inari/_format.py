@@ -1,3 +1,5 @@
+"""String formatters for internal use. It will be ignored by `mkdocs` ."""
+
 import re
 
 
