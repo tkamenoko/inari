@@ -415,6 +415,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="api/cli/" title="cli" class="md-nav__link">
+      cli
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -487,12 +499,14 @@
                 
                 <h1 id="inari">inari<a class="headerlink" href="#inari" title="Permanent link">&para;</a></h1>
 <p>Write docstrings in Markdown!</p>
-<p><a href="./API">This API documents</a> is created by <code>inari</code> itself.</p>
+<p><a href="./api">This API documents</a> is created by <code>inari</code> itself.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
 2
-3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>git clone https://github.com/tkamenoko/inari.git
-pipenv install --dev
-pipenv run mkdocs build
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># create `inari` documents!</span>
+git clone https://github.com/tkamenoko/inari.git
+poetry install
+poetry run mkdocs build
 </pre></div>
 </td></tr></table>
 
@@ -628,7 +642,7 @@ inari sample docs
 <h2 id="features">Features<a class="headerlink" href="#features" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Minimum configuration.</li>
-<li>CLI and <a href="https://www.mkdocs.org/">MkDocs</a> Plugin.</li>
+<li><a href="./getting-started#use-cli">CLI</a> and <a href="./getting-started#use-mkdocs-plugin">MkDocs Plugin</a> .</li>
 <li>Cross reference in API documents.</li>
 </ul>
 <h2 id="license">License<a class="headerlink" href="#license" title="Permanent link">&para;</a></h2>

@@ -1,12 +1,13 @@
 # inari
 Write docstrings in Markdown!
 
-[This API documents](./API) is created by `inari` itself.
+[This API documents](./api) is created by `inari` itself.
 
 ```shell
+# create `inari` documents!
 git clone https://github.com/tkamenoko/inari.git
-pipenv install --dev
-pipenv run mkdocs build
+poetry install
+poetry run mkdocs build
 ```
 
 
@@ -84,7 +85,7 @@ inari sample docs
 ## Features
 
 * Minimum configuration.
-* CLI and [MkDocs](https://www.mkdocs.org/) Plugin.
+* [CLI](./getting-started#use-cli) and [MkDocs Plugin](./getting-started#use-mkdocs-plugin) .
 * Cross reference in API documents.
 
 

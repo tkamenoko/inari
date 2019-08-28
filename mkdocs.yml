@@ -14,6 +14,7 @@ nav:
       - submodules:
         - structs: api/structs.md
         - mkdocs_plugin: api/mkdocs_plugin.md
+        - cli: api/cli.md
 
 theme:
   name: 'material'

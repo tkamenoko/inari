@@ -1,4 +1,6 @@
-"""String formatters for internal use. It will be ignored by `mkdocs` ."""
+"""
+String formatters for internal use. It will be ignored by the module finder of `inari` .
+"""
 
 import re
 

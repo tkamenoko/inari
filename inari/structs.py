@@ -2,6 +2,8 @@ import inspect
 import os
 import pathlib
 import re
+from importlib import import_module
+from pkgutil import walk_packages
 from types import ModuleType
 from typing import Any, Callable, List, Union
 
@@ -117,27 +119,15 @@ class ModStruct(BaseStruct):
                 out_name or (mod.__name__.rsplit(".", 1)[-1])
             )
             self.filename = "index.md"
-            # get submodules!
+            # get submodules.
             submods = [
-                x[1]
-                for x in inspect.getmembers(mod, inspect.ismodule)
-                if not x[0].startswith("_")
+                import_module(f"{mod.__name__}.{x.name}")
+                for x in walk_packages(mod.__path__)
+                if not x.name.startswith("_")
             ]
-            self.submods = []
-            parent = pathlib.Path(mod_path).parent
-            for submod in submods:
-                try:
-                    sub_path = inspect.getfile(submod)
-                except TypeError:
-                    sub_path = ""
-                if sub_path.endswith("__init__.py"):
-                    sub_parent = pathlib.Path(sub_path).parents[1]
-                else:
-                    sub_parent = pathlib.Path(sub_path).parent
-                if parent == sub_parent:
-                    self.submods.append(
-                        ModStruct(submod, self.out_dir, self.name_to_path)
-                    )
+            self.submods = [
+                ModStruct(submod, self.out_dir, self.name_to_path) for submod in submods
+            ]
 
         else:
             # TODO: what if getting `index.py`?
@@ -167,7 +157,11 @@ class ModStruct(BaseStruct):
 
     def init_vars(self):
         """Find variables having docstrings."""
-        src = inspect.getsource(self.mod)
+        try:
+            src = inspect.getsource(self.mod)
+        except OSError:
+            # `__init__.py` is empty.
+            src = ""
         var_docs = {
             x[0].split("=")[0].strip(): inspect.cleandoc(x[1])
             for x in re.findall(r'(.*)\n"""((?s:.+))"""\n', src)
@@ -285,10 +279,12 @@ class ModStruct(BaseStruct):
         To ignore this, append a space like `"foo.bar "` .
 
         """
-        for q_name, rel_hash in self.relpaths.items():
-            short_name = q_name.rsplit(".", 1)[-1]
+        for long_name, rel_hash in self.relpaths.items():
+            short_name = long_name.rsplit(".", 1)[-1]
             # append a space after short_name because of avoiding unexpected replacing.
-            doc = doc.replace(f"`{q_name}`", f"[`{short_name} `]({''.join(rel_hash)})")
+            doc = doc.replace(
+                f"`{long_name}`", f"[`{short_name} `]({''.join(rel_hash)})"
+            )
         return doc
 
     def write(self):
@@ -341,12 +337,12 @@ class VarStruct(BaseStruct):
         self.name = name.rsplit(".")[-1]
         full_name = ".".join([n for n in abs_path.split("/") if n])
         if "#" in abs_path:
-            q_name = full_name + "." + self.name
+            long_name = full_name + "." + self.name
             abs_path = f"{abs_path}.{self.name}"
         else:
-            q_name = full_name + "#" + self.name
+            long_name = full_name + "#" + self.name
             abs_path = f"{abs_path}.{self.name}"
-        self.name_to_path[q_name] = abs_path
+        self.name_to_path[long_name] = abs_path
 
     def doc_str(self) -> str:
         if self.doc:
@@ -392,11 +388,11 @@ class ClsStruct(BaseStruct):
         self.doc = modify_attrs(self.doc)
 
         full_name = ".".join([n for n in abs_path.split("/") if n])
-        q_name = full_name + "." + self.cls.__qualname__
-        self.hash_ = "#" + q_name.rsplit(".", 1)[-1]
+        long_name = full_name + "." + self.cls.__qualname__
+        self.hash_ = "#" + long_name.rsplit(".", 1)[-1]
         abs_path = abs_path + self.hash_
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
-        self.name_to_path[q_name] = self.abs_path
+        self.name_to_path[long_name] = self.abs_path
 
         self.init_vars()
         self.init_methods()
@@ -507,15 +503,15 @@ class FuncStruct(BaseStruct):
         full_name = ".".join([n for n in abs_path.split("/") if n])
         if "#" in abs_path:
             abs_path = f"{abs_path}.{f.__name__}"
-            q_name = full_name.replace("#", ".") + "." + f.__name__
+            long_name = full_name.replace("#", ".") + "." + f.__name__
         else:
             abs_path = f"{abs_path}#{f.__name__}"
-            q_name = full_name + "." + f.__name__
+            long_name = full_name + "." + f.__name__
 
         self.hash_ = "#" + abs_path.split("#")[-1]
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
 
-        self.name_to_path[q_name] = self.abs_path
+        self.name_to_path[long_name] = self.abs_path
 
     def doc_str(self) -> str:
         # is method?
@@ -532,4 +528,3 @@ class FuncStruct(BaseStruct):
         defs = f"```python\n{source}\n```"
         docs = "\n\n".join([head, defs, self.doc])
         return docs
-
