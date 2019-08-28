@@ -30,3 +30,12 @@ def on_config(self, config)
 ```python
 def on_files(self, files, config)
 ```
+
+
+------
+
+[**on_serve**](#Plugin.on_serve){: #Plugin.on_serve }
+
+```python
+def on_serve(self, server, config)
+```
