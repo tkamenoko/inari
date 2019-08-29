@@ -129,8 +129,7 @@ Create documents from its contents.
 ### ModStruct {: #ModStruct }
 
 ```python
-class ModStruct(
-        self,
+class ModStruct(self,
         mod: ModuleType,
         out_dir: Union[str, pathlib.Path],
         name_to_path: dict = None,
@@ -248,8 +247,7 @@ Write documents to files. Directories are created automatically.
 ### VarStruct {: #VarStruct }
 
 ```python
-class VarStruct(
-        self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None)
+class VarStruct(self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None)
 ```
 
 Module variables and class properties.
