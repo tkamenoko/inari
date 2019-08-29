@@ -6,6 +6,7 @@ from importlib import import_module
 from pkgutil import walk_packages
 from types import ModuleType
 from typing import Any, Callable, List, Union
+from functools import reduce
 
 from ._format import cleanup, modify_attrs
 
@@ -430,6 +431,7 @@ class ClsStruct(BaseStruct):
                     inspect.isroutine(f)
                     and (f.__class__ is not property)
                     and f.__qualname__.startswith(self.cls.__qualname__)
+                    and not inspect.isbuiltin(f)
                 ),
             )
             if (not x[0].startswith("_"))
@@ -463,7 +465,10 @@ class ClsStruct(BaseStruct):
             source = f"class {name}({args})"
             defs = f"```python\n{source}\n```"
         except (OSError, ValueError):
-            args_ = inspect.signature(self.cls)
+            try:
+                args_ = inspect.signature(self.cls)
+            except ValueError:
+                args_ = "(self, *args, **kwargs)"
             defs = f"```python\nclass {name}{args_}\n```".replace(" -> None", "")
         init = self.cls.__init__
         if init.__qualname__.startswith(self.cls.__qualname__):
@@ -472,6 +477,28 @@ class ClsStruct(BaseStruct):
             init_doc = ""
         init_doc = modify_attrs(init_doc)
         cls_doc = "\n\n".join([defs, self.doc, init_doc])
+        # base classes
+        bases_doc = ""
+        bases = [set(c.mro()) for c in self.cls.mro() if c is not self.cls]
+        if len(bases) > 1:
+            h = ""
+            if markdown:
+                h = f"{{: {self.hash_}-bases }}"
+            bases_head = f"\n\n------\n\n#### Base classes {h}\n\n"
+            # get direct bases
+            base_set = reduce(lambda x, y: x | y, bases)
+            base_list = reduce(lambda x, y: x + y, [list(s) for s in bases])
+            parents = [x for x in base_set if base_list.count(x) == 1]
+            base_names = []
+            root = inspect.getmodule(self.cls).__name__.split(".", 1)[0]
+            for p in parents:
+                mod_name = inspect.getmodule(p).__name__
+                if mod_name.split(".", 1)[0] == root:
+                    base_name = f"* `{mod_name}.{p.__name__}`"
+                else:
+                    base_name = f"* `{p.__name__}`"
+                base_names.append(base_name)
+            bases_doc = bases_head + "\n".join(base_names)
         # class vars
         h = ""
         if markdown:
@@ -493,7 +520,7 @@ class ClsStruct(BaseStruct):
             methods_head = ""
         methods_doc = methods_head + "\n" + methods_list
 
-        return "\n\n".join([head, cls_doc, vars_doc, methods_doc])
+        return "\n\n".join([head, cls_doc, bases_doc, vars_doc, methods_doc])
 
 
 class FuncStruct(BaseStruct):
