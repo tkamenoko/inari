@@ -264,7 +264,7 @@ class ModStruct(BaseStruct):
         `ful.path.to.mod.cls` -> [`cls`](../../mod#cls)
 
         ~~~
-        
+
         """
         for name, path in self.name_to_path.items():
             if "#" in path:
@@ -310,7 +310,7 @@ class ModStruct(BaseStruct):
 class VarStruct(BaseStruct):
     """
     Module variables and class properties.
-    
+
     **Attributes**
 
     * var: Module-level object or class property, not module/class/function.
@@ -495,7 +495,7 @@ class ClsStruct(BaseStruct):
 class FuncStruct(BaseStruct):
     """
     Functions and methods.
-    
+
     **Attributes**
 
     * func (`Callable`): Target function.
