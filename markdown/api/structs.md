@@ -130,11 +130,11 @@ Create documents from its contents.
 
 ```python
 class ModStruct(
-        self,
-        mod: ModuleType,
-        out_dir: Union[str, pathlib.Path],
-        name_to_path: dict = None,
-        out_name: str = None,)
+    self,
+    mod: ModuleType,
+    out_dir: Union[str, pathlib.Path],
+    name_to_path: dict = None,
+    out_name: str = None,)
 ```
 
 Module docs, submodules, classes, funcs, and variables.
@@ -248,8 +248,7 @@ Write documents to files. Directories are created automatically.
 ### VarStruct {: #VarStruct }
 
 ```python
-class VarStruct(
-        self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None)
+class VarStruct(self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None)
 ```
 
 Module variables and class properties.
