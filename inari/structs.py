@@ -457,6 +457,9 @@ class ClsStruct(BaseStruct):
             args = (def_args.replace("def", "", 1).replace("__init__(", "", 1)).strip()
             if not args:
                 raise ValueError
+            if "\n    " in args:
+                args = "\n    " + args
+                args = re.sub(r"\n(    )+", "\n    ", args)
             source = f"class {name}({args})"
             defs = f"```python\n{source}\n```"
         except (OSError, ValueError):
@@ -546,8 +549,9 @@ class FuncStruct(BaseStruct):
         no_comments = re.sub(r"\) *(-> *.+)? *: *(#.*)?\n", r") \1 :\n", no_decolators)
         sig = no_comments.split(":\n", 1)[0]
         args, returns = sig.rsplit(")", 1)
+        if "\n    " in args:
+            args = re.sub(r"\n(    )+", "\n    ", args)
         source = f"{args}){returns}".strip()
-        # TODO: remove newline?
         defs = f"```python\n{source}\n```"
         docs = "\n\n".join([head, defs, self.doc])
         return docs

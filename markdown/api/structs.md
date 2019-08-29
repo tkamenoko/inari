@@ -129,11 +129,12 @@ Create documents from its contents.
 ### ModStruct {: #ModStruct }
 
 ```python
-class ModStruct(self,
-        mod: ModuleType,
-        out_dir: Union[str, pathlib.Path],
-        name_to_path: dict = None,
-        out_name: str = None,)
+class ModStruct(
+    self,
+    mod: ModuleType,
+    out_dir: Union[str, pathlib.Path],
+    name_to_path: dict = None,
+    out_name: str = None,)
 ```
 
 Module docs, submodules, classes, funcs, and variables.
