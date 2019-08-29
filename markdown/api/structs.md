@@ -62,6 +62,13 @@ Class with methods and properties. Attribute docs should be written in class
 
 ------
 
+#### Base classes {: #ClsStruct-bases }
+
+* [`BaseStruct `](./#BaseStruct)
+
+
+------
+
 #### Methods {: #ClsStruct-methods }
 
 [**doc_str**](#ClsStruct.doc_str){: #ClsStruct.doc_str }
@@ -114,6 +121,13 @@ Functions and methods.
 
 ------
 
+#### Base classes {: #FuncStruct-bases }
+
+* [`BaseStruct `](./#BaseStruct)
+
+
+------
+
 #### Methods {: #FuncStruct-methods }
 
 [**doc_str**](#FuncStruct.doc_str){: #FuncStruct.doc_str }
@@ -161,6 +175,13 @@ Module docs, submodules, classes, funcs, and variables.
 * **out_dir** (`Union[str,Path]`): Output directoly.
 * **name_to_path** (`dict`): See [`BaseStruct `](./#BaseStruct) .
 * **out_name** (`str`): If given, name of output file/directoly will be orverridden.
+
+
+------
+
+#### Base classes {: #ModStruct-bases }
+
+* [`BaseStruct `](./#BaseStruct)
 
 
 ------
@@ -265,6 +286,13 @@ Module variables and class properties.
 * **abs_path** (`str`): See [`BaseStruct `](./#BaseStruct) .
 * **name** (`str`): Fallback of `var.__name__` .
 * **doc** (`str`): Fallback of `inspect.getdoc(var)` .
+
+
+------
+
+#### Base classes {: #VarStruct-bases }
+
+* [`BaseStruct `](./#BaseStruct)
 
 
 ------

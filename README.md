@@ -3,7 +3,7 @@ Write docstrings in Markdown!
 
 ```python
 # sample.py
-"""This is sample module."""
+"""This is a sample module."""
 
 variable = 42
 """(`int`):  Docstrings for module-level variables."""
@@ -73,6 +73,7 @@ inari sample docs
 # Features
 
 * Minimum configuration.
+* No dependencies by default.
 * CLI and [MkDocs](https://www.mkdocs.org/) Plugin.
 * Cross reference in API documents.
 

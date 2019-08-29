@@ -1,7 +1,7 @@
 # inari
 Write docstrings in Markdown!
 
-[This API documents](./api) is created by `inari` itself.
+[This API documents](./api) are created by `inari` itself.
 
 ```shell
 # create `inari` documents!
@@ -12,11 +12,11 @@ poetry run mkdocs build
 ```
 
 
-## Example
+## Docstrings Example
 
 ```python
 # sample.py
-"""This is sample module."""
+"""This is a sample module."""
 
 variable = 42
 """(`int`):  Docstrings for module-level variables."""

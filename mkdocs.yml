@@ -3,7 +3,7 @@ site_name: Inari
 docs_dir: "markdown"
 site_dir: "docs"
 repo_url: "https://github.com/tkamenoko/inari/"
-edit_uri: null
+edit_uri: ""
 
 nav:
     - Home: index.md

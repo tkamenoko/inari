@@ -14,6 +14,13 @@ MkDocs Plugin class.
 
 ------
 
+#### Base classes {: #Plugin-bases }
+
+* `BasePlugin`
+
+
+------
+
 #### Methods {: #Plugin-methods }
 
 [**on_config**](#Plugin.on_config){: #Plugin.on_config }
