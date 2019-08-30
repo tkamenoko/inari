@@ -496,10 +496,11 @@ class ClsStruct(BaseStruct):
             root = inspect.getmodule(self.cls).__name__.split(".", 1)[0]
             for p in parents:
                 mod_name = inspect.getmodule(p).__name__
-                if mod_name.split(".", 1)[0] == root:
+                mod_root = mod_name.split(".", 1)[0]
+                if mod_root == root:
                     base_name = f"* `{mod_name}.{p.__name__}`"
                 else:
-                    base_name = f"* `{p.__name__}`"
+                    base_name = f"* `{mod_root}.{p.__name__}`"
                 base_names.append(base_name)
             bases_doc = bases_head + "\n".join(base_names)
         # class vars

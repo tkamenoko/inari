@@ -16,7 +16,7 @@ MkDocs Plugin class.
 
 #### Base classes {: #Plugin-bases }
 
-* `BasePlugin`
+* `mkdocs.BasePlugin`
 
 
 ------

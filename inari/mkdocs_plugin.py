@@ -44,10 +44,13 @@ class Plugin(BasePlugin):
         return
 
     def _build(self, config):
-        sys.path.append(os.getcwd())
+        cwd = os.getcwd()
+        if cwd not in sys.path:
+            sys.path.append(cwd)
         out_dir = config["docs_dir"]
         root_name = self.config["module"]
         out_name = self.config["out-name"]
         root_mod = importlib.import_module(root_name)
+        root_mod = importlib.reload(root_mod)
         mod = ModStruct(root_mod, out_dir, out_name=out_name)
         mod.write()
