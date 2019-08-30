@@ -286,7 +286,10 @@ class ModStruct(BaseStruct):
 
         """
         for long_name, rel_hash in self.relpaths.items():
-            short_name = long_name.rsplit(".", 1)[-1]
+            if rel_hash[1]:
+                short_name = rel_hash[1][1:]
+            else:
+                short_name = long_name.rsplit(".", 1)[-1]
             # append a space after short_name because of avoiding unexpected replacing.
             doc = doc.replace(
                 f"`{long_name}`", f"[`{short_name} `]({''.join(rel_hash)})"

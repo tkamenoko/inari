@@ -167,7 +167,7 @@ Module docs, submodules, classes, funcs, and variables.
 * **out_dir** (`pathlib.Path`): Output directly.
 * **filename** (`str`): Output filename, like `index.md` , `submodule.md` .
 * **relpaths** (`dict`): Store relational paths. See
-    [`make_relpaths `](./#ModStruct.make_relpaths) .
+    [`ModStruct.make_relpaths `](./#ModStruct.make_relpaths) .
 
 **Args**
 
