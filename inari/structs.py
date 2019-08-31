@@ -143,6 +143,7 @@ class ModStruct(BaseStruct):
                 name = out_name
                 self.name_to_path[mod.__name__] = self.abs_path
             else:
+                # workaround for "index.py" .
                 name = mod.__name__.rsplit(".", 1)[-1] + "-py"
                 self.abs_path += "-py"
                 self.name_to_path[mod.__name__] = self.abs_path
