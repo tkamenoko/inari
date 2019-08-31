@@ -32,10 +32,10 @@ def on_config(self, config)
 
 ------
 
-[**on_files**](#Plugin.on_files){: #Plugin.on_files }
+[**on_pre_build**](#Plugin.on_pre_build){: #Plugin.on_pre_build }
 
 ```python
-def on_files(self, files, config)
+def on_pre_build(self, config)
 ```
 
 
