@@ -1,3 +1,7 @@
+"""
+Store module structures, members, and docstrings.
+"""
+
 import inspect
 import os
 import pathlib

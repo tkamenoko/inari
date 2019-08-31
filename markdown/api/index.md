@@ -8,4 +8,4 @@ inari --- Write docstrings in Markdown!
 
 [inari.mkdocs_plugin](mkdocs_plugin-py)
 
-[inari.structs](structs-py)
+[inari.structures](structures-py)

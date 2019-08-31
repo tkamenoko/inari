@@ -1,4 +1,6 @@
-# Module inari.structs
+# Module inari.structures
+
+Store module structures, members, and docstrings.
 
 
 ## Classes
@@ -56,8 +58,8 @@ Class with methods and properties. Attribute docs should be written in class
 **Args**
 
 * **cls** (`type`): Class to make documents.
-* **abs_path** (`str`): See [`BaseStruct `](./#BaseStruct) .
-* **name_to_path** (`str`): See [`BaseStruct `](./#BaseStruct) .
+* **abs_path** (`str`): See `inari.structs.BaseStruct` .
+* **name_to_path** (`str`): See `inari.structs.BaseStruct` .
 
 
 ------
@@ -115,8 +117,8 @@ Functions and methods.
 **Args**
 
 * **f** (`Callable`): Target function.
-* **abs_path** (`str`): See [`BaseStruct `](./#BaseStruct) .
-* **name_to_path** (`str`): See [`BaseStruct `](./#BaseStruct) .
+* **abs_path** (`str`): See `inari.structs.BaseStruct` .
+* **name_to_path** (`str`): See `inari.structs.BaseStruct` .
 
 
 ------
@@ -159,23 +161,23 @@ test: [`run `](../cli-py#run)
 
 * **mod** (`ModuleType`): Module to make documents.
 * **submods** (`List[ModStruct]`): List of submodules, wrapped by
-    [`ModStruct `](./#ModStruct) .
+    `inari.structs.ModStruct` .
 * **vars** (`List[VarStruct]`): List of module-level variables, wrapped by
-    [`VarStruct `](./#VarStruct) .
+    `inari.structs.VarStruct` .
 * **classes** (`List[ClsStruct]`): List of public classes, wrapped by
-    [`ClsStruct `](./#ClsStruct) .
+    `inari.structs.ClsStruct` .
 * **funcs** (`List[FuncStruct]`): List of public functions, wrapped by
-    [`FuncStruct `](./#FuncStruct) .
+    `inari.structs.FuncStruct` .
 * **out_dir** (`pathlib.Path`): Output directly.
 * **filename** (`str`): Output filename, like `index.md` , `submodule.md` .
 * **relpaths** (`dict`): Store relational paths. See
-    [`ModStruct.make_relpaths `](./#ModStruct.make_relpaths) .
+    `inari.structs.ModStruct.make_relpaths` .
 
 **Args**
 
 * **mod** (`ModuleType`): Module to make documents.
 * **out_dir** (`Union[str,Path]`): Output directoly.
-* **name_to_path** (`dict`): See [`BaseStruct `](./#BaseStruct) .
+* **name_to_path** (`dict`): See `inari.structs.BaseStruct` .
 * **out_name** (`str`): If given, name of output file/directoly will be orverridden.
 
 
@@ -284,8 +286,8 @@ Module variables and class properties.
 **Args**
 
 * **var** : Target object.
-* **name_to_path** (`dict`): See [`BaseStruct `](./#BaseStruct) .
-* **abs_path** (`str`): See [`BaseStruct `](./#BaseStruct) .
+* **name_to_path** (`dict`): See `inari.structs.BaseStruct` .
+* **abs_path** (`str`): See `inari.structs.BaseStruct` .
 * **name** (`str`): Fallback of `var.__name__` .
 * **doc** (`str`): Fallback of `inspect.getdoc(var)` .
 

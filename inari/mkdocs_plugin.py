@@ -5,7 +5,7 @@ import sys
 from mkdocs.config import config_options
 from mkdocs.plugins import BasePlugin
 
-from .structs import ModStruct
+from .structures import ModStruct
 
 
 class Plugin(BasePlugin):

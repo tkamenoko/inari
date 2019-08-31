@@ -3,7 +3,7 @@ import importlib
 import os
 import sys
 
-from .structs import ModStruct
+from .structures import ModStruct
 
 parser = argparse.ArgumentParser()
 parser.add_argument("module", help="root of your module.")
