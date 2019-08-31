@@ -11,7 +11,8 @@ parser.add_argument("out_dir", help="directory to write documents.", metavar="ou
 parser.add_argument(
     "-n",
     "--name",
-    help="root directry name like `{out-dir}/{name}/{submods}` . Default: module name.",
+    help="root directry/file name like `{out-dir}/{name}/{submods}` ."
+    + " Default: module name.",
 )
 
 

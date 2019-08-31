@@ -25,6 +25,7 @@ pip install inari[mkdocs]
 ```
 
 Initialize project.
+
 ```shell
 mkdocs new my-project
 cd my-project
@@ -41,9 +42,9 @@ plugins:
     - search # MkDocs default plugin
     - inari:
         module: <module-name> # required
-        out-name: API # optional. Default: <module-name>
+        out-name: api # optional. Default: <module-name>
         # no `out-dir` option because `inari` uses `docs_dir` in the config.
 
 ```
 
-After that, running `mkdocs build` will generate your API documents in `docs/API` .
+After that, running `mkdocs build` will generate your API documents in `docs/api` .

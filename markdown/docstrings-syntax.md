@@ -1,6 +1,6 @@
 # Docstrings Syntax
 
-You can use any Markdown syntax supported by [MkDocs](https://www.mkdocs.org/) , and `inari` provides some additional features.
+You can use any Markdown syntax, and `inari` provides some additional features.
 
 ## List Arguments/Attributes
 
@@ -9,14 +9,14 @@ To list arguments or attributes, use `*`. `inari` emphasises these name automati
 Example:
 ```python
 
-def func(alpha: str, bata: str) -> str:
+def func(alpha: str, beta: str) -> str:
     """
     Sample function.
 
     **Args**
 
     * alpha (`str`): Explain `alpha` .
-    * bata (`str`): Explain `bata` .
+    * beta (`str`): Explain `beta` .
 
     **Returns**
 
@@ -24,7 +24,7 @@ def func(alpha: str, bata: str) -> str:
 
     """
 
-    return alpha + bata
+    return alpha + beta
 
 ```
 
@@ -33,9 +33,9 @@ That will be converted to this:
 ~~~markdown
 ## Functions
 
-### func {: #func }
+### func
 ```python
-def func(alpha: str, bata: str) -> str:
+def func(alpha: str, beta: str) -> str
 ```
 
 Sample function.
@@ -43,7 +43,7 @@ Sample function.
 **Args**
 
 * **alpha** (`str`): Explain `alpha` .
-* **bata** (`str`): Explain `bata` .
+* **beta** (`str`): Explain `beta` .
 
 **Returns**
 
@@ -53,7 +53,10 @@ Sample function.
 
 ## Cross Reference
 
-`inari` generates cross reference in API documents. `module.submodule.function` will be converted to appropriate relative link like ``[`function`](../submodule#function)`` .
+`inari` generates cross reference in API documents. `module.submodule.function` will be converted to appropriate relative link like ``[`function `](../submodule#function)`` . 
+
+!!! note
+    If you installed `inari` without `MkDocs` , you have to install [`Python-Markdown`](https://python-markdown.github.io/) and enable [Attribute Lists](https://python-markdown.github.io/extensions/attr_list/) extention to create hash anchors. 
 
 Example:
 ```python
@@ -76,11 +79,46 @@ class SampleClass:
 ```
 
 `inari` make hyperlink like this:
-```markdown
-<!-- module/submodule.md -->
-Link to some method like [`some_method`](../anothermodule#SampleClass.some_method)
 
-<!-- module/anothermodule.md -->
-Make reference like [`func`](../submodule#func)
+~~~markdown
+<!-- docs/module/submodule-py.md -->
+# Module module.submodule
 
+
+## Functions
+
+### func {: #func }
+
+```python
+def func(alpha: str, bata: str) -> str
 ```
+
+Link to some method like [`SampleClass.some_method `](../anothermodule-py#SampleClass.some_method)
+
+
+<!-- docs/module/anothermodule-py.md -->
+# Module module.anothermodule
+
+
+## Classes
+
+### SampleClass {: #SampleClass }
+
+```python
+class SampleClass()
+```
+
+Make reference like [`func `](../submodule-py#func)
+
+
+------
+
+#### Methods {: #SampleClass-methods }
+
+[**some_method**](#SampleClass.some_method){: #SampleClass.some_method }
+
+```python
+def some_method(self)
+```
+
+~~~
