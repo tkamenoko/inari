@@ -67,6 +67,8 @@ class ModStruct(BaseStruct):
     """
     Module docs, submodules, classes, funcs, and variables.
 
+    test: `inari.cli.run`
+
     **Attributes**
 
     * mod (`ModuleType`): Module to make documents.
@@ -115,11 +117,11 @@ class ModStruct(BaseStruct):
         self.mod = mod
         abs_path = "/" + mod.__name__.replace(".", "/")
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
-        self.name_to_path[mod.__name__] = self.abs_path
         self.relpaths = {}
 
         mod_path = inspect.getfile(mod)
         if mod_path.endswith("__init__.py"):
+            self.name_to_path[mod.__name__] = self.abs_path
             # output names.
             self.out_dir = pathlib.Path(out_dir) / (
                 out_name or (mod.__name__.rsplit(".", 1)[-1])
@@ -136,9 +138,14 @@ class ModStruct(BaseStruct):
             ]
 
         else:
-            # TODO: what if getting `index.py`?
             self.out_dir = pathlib.Path(out_dir)
-            name = out_name or mod.__name__.rsplit(".", 1)[-1]
+            if out_name:
+                name = out_name
+                self.name_to_path[mod.__name__] = self.abs_path
+            else:
+                name = mod.__name__.rsplit(".", 1)[-1] + "-py"
+                self.abs_path += "-py"
+                self.name_to_path[mod.__name__] = self.abs_path
             self.filename = f"{name}.md"
             # no submodules.
             self.submods = []
@@ -345,14 +352,14 @@ class VarStruct(BaseStruct):
         self.doc = doc or inspect.getdoc(var) or ""
         name = name or var.__name__
         self.name = name.rsplit(".")[-1]
-        full_name = ".".join([n for n in abs_path.split("/") if n])
+        module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py", "")
 
         if "#" in abs_path:
             abs_path = f"{abs_path}.{self.name}"
-            long_name = full_name.replace("#", ".") + "." + self.name
+            long_name = module_name.replace("#", ".") + "." + self.name
         else:
             abs_path = f"{abs_path}#{self.name}"
-            long_name = full_name + "." + self.name
+            long_name = module_name + "." + self.name
         self.name_to_path[long_name] = abs_path
         self.hash_ = "#" + abs_path.rsplit("#", 1)[-1]
 
@@ -402,9 +409,9 @@ class ClsStruct(BaseStruct):
         self.doc = inspect.getdoc(cls) or ""
         self.doc = modify_attrs(self.doc)
 
-        full_name = ".".join([n for n in abs_path.split("/") if n])
-        long_name = full_name + "." + self.cls.__qualname__
-        self.hash_ = "#" + long_name.rsplit(".", 1)[-1]
+        module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py", "")
+        long_name = module_name + "." + self.cls.__qualname__
+        self.hash_ = "#" + self.cls.__qualname__
         abs_path = abs_path + self.hash_
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
         self.name_to_path[long_name] = self.abs_path
@@ -469,7 +476,7 @@ class ClsStruct(BaseStruct):
             defs = f"```python\n{source}\n```"
         except (OSError, ValueError):
             try:
-                args_ = inspect.signature(self.cls)
+                args_ = str(inspect.signature(self.cls))
             except ValueError:
                 args_ = "(self, *args, **kwargs)"
             defs = f"```python\nclass {name}{args_}\n```".replace(" -> None", "")
@@ -553,13 +560,13 @@ class FuncStruct(BaseStruct):
         self.func = f
         self.doc = inspect.getdoc(f) or ""
         self.doc = modify_attrs(self.doc)
-        full_name = ".".join([n for n in abs_path.split("/") if n])
+        module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py","")
         if "#" in abs_path:
             abs_path = f"{abs_path}.{f.__name__}"
-            long_name = full_name.replace("#", ".") + "." + f.__name__
+            long_name = module_name.replace("#", ".") + "." + f.__name__
         else:
             abs_path = f"{abs_path}#{f.__name__}"
-            long_name = full_name + "." + f.__name__
+            long_name = module_name + "." + f.__name__
 
         self.hash_ = "#" + abs_path.split("#")[-1]
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)

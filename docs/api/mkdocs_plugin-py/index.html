@@ -36,7 +36,7 @@
     
     
       
-        <title>cli - Inari</title>
+        <title>mkdocs_plugin - Inari</title>
       
     
     
@@ -85,7 +85,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#module-inaricli" tabindex="1" class="md-skip">
+      <a href="#module-inarimkdocs_plugin" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -111,7 +111,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                cli
+                mkdocs_plugin
               
             </span>
           
@@ -351,20 +351,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../structs/" title="structs" class="md-nav__link">
+    <a href="../structs-py/" title="structs" class="md-nav__link">
       structs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../mkdocs_plugin/" title="mkdocs_plugin" class="md-nav__link">
-      mkdocs_plugin
     </a>
   </li>
 
@@ -384,11 +372,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        cli
+        mkdocs_plugin
       </label>
     
-    <a href="./" title="cli" class="md-nav__link md-nav__link--active">
-      cli
+    <a href="./" title="mkdocs_plugin" class="md-nav__link md-nav__link--active">
+      mkdocs_plugin
     </a>
     
       
@@ -402,17 +390,37 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#functions" class="md-nav__link">
-    Functions
+  <a href="#classes" class="md-nav__link">
+    Classes
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#run" class="md-nav__link">
-    run
+  <a href="#Plugin" class="md-nav__link">
+    Plugin
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#Plugin-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#Plugin-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -429,6 +437,18 @@
   
 </nav>
     
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../cli-py/" title="cli" class="md-nav__link">
+      cli
+    </a>
   </li>
 
         
@@ -463,17 +483,37 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#functions" class="md-nav__link">
-    Functions
+  <a href="#classes" class="md-nav__link">
+    Classes
   </a>
   
     <nav class="md-nav">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#run" class="md-nav__link">
-    run
+  <a href="#Plugin" class="md-nav__link">
+    Plugin
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#Plugin-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#Plugin-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -499,14 +539,37 @@
               
                 
                 
-                <h1 id="module-inaricli">Module inari.cli<a class="headerlink" href="#module-inaricli" title="Permanent link">&para;</a></h1>
-<h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
-<h3 id="run">run<a class="headerlink" href="#run" title="Permanent link">&para;</a></h3>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">()</span>
+                <h1 id="module-inarimkdocs_plugin">Module inari.mkdocs_plugin<a class="headerlink" href="#module-inarimkdocs_plugin" title="Permanent link">&para;</a></h1>
+<h2 id="classes">Classes<a class="headerlink" href="#classes" title="Permanent link">&para;</a></h2>
+<h3 id="Plugin">Plugin<a class="headerlink" href="#Plugin" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">Plugin</span><span class="p">()</span>
 </pre></div>
 </td></tr></table>
 
-<p>CLI entry point.</p>
+<p>MkDocs Plugin class.</p>
+<hr />
+<h4 id="Plugin-bases">Base classes<a class="headerlink" href="#Plugin-bases" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>mkdocs.BasePlugin</code></li>
+</ul>
+<hr />
+<h4 id="Plugin-methods">Methods<a class="headerlink" href="#Plugin-methods" title="Permanent link">&para;</a></h4>
+<p><a href="#Plugin.on_config" id="Plugin.on_config"><strong>on_config</strong></a></p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">on_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<hr />
+<p><a href="#Plugin.on_files" id="Plugin.on_files"><strong>on_files</strong></a></p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">on_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<hr />
+<p><a href="#Plugin.on_serve" id="Plugin.on_serve"><strong>on_serve</strong></a></p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">on_serve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">server</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
                 
                   
                 
@@ -527,7 +590,7 @@
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../mkdocs_plugin/" title="mkdocs_plugin" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../structs-py/" title="structs" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -536,11 +599,25 @@
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                mkdocs_plugin
+                structs
               </span>
             </div>
           </a>
         
+        
+          <a href="../cli-py/" title="cli" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                cli
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
         
       </nav>
     </div>

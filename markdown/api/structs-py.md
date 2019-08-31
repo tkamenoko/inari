@@ -153,6 +153,8 @@ class ModStruct(
 
 Module docs, submodules, classes, funcs, and variables.
 
+test: [`run `](../cli-py#run)
+
 **Attributes**
 
 * **mod** (`ModuleType`): Module to make documents.
