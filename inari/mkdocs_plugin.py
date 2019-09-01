@@ -1,6 +1,5 @@
 import importlib
 import os
-import shutil
 import sys
 
 from mkdocs.config import config_options
@@ -21,16 +20,12 @@ class Plugin(BasePlugin):
     )
 
     def on_serve(self, server, config):
-        def hook():
-            self._clean(config)
-            self._build(config)
-
         # build docs once.
-        hook()
+        self._build(config)
         # add watcher.
         module_path = self.config["module"].replace(".", "/")
         if module_path not in server.watcher._tasks:
-            server.watch(module_path, hook, delay="forever")
+            server.watch(module_path, lambda: self._build(config), delay="forever")
         return server
 
     def on_config(self, config):
@@ -45,20 +40,7 @@ class Plugin(BasePlugin):
         args = [x for x in sys.argv if not x.startswith("-")]
         command = args[1]
         if command == "build":
-            self._clean(config)
             self._build(config)
-
-    def _clean(self, config):
-        # clean old docs.
-        out_dir = config["docs_dir"]
-        root_name = self.config["module"]
-        out_name = self.config["out-name"]
-        old_file = os.path.join(out_dir, (out_name or root_name + "-py") + ".md")
-        if os.path.exists(old_file):
-            os.remove(old_file)
-        old_dir = os.path.join(out_dir, (out_name or root_name))
-        if os.path.exists(old_dir):
-            shutil.rmtree(old_dir)
 
     def _build(self, config):
         cwd = os.getcwd()

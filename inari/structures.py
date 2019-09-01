@@ -6,11 +6,12 @@ import inspect
 import os
 import pathlib
 import re
+import shutil
+from functools import reduce
 from importlib import import_module
 from pkgutil import walk_packages
 from types import ModuleType
 from typing import Any, Callable, List, Union
-from functools import reduce
 
 from ._format import cleanup, modify_attrs
 
@@ -154,6 +155,10 @@ class ModStruct(BaseStruct):
             self.filename = f"{name}.md"
             # no submodules.
             self.submods = []
+
+        # clean old docs.
+        if os.path.exists(self.out_dir):
+            shutil.rmtree(self.out_dir)
 
         self.doc = inspect.getdoc(self.mod) or ""
 
@@ -565,7 +570,7 @@ class FuncStruct(BaseStruct):
         self.func = f
         self.doc = inspect.getdoc(f) or ""
         self.doc = modify_attrs(self.doc)
-        module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py","")
+        module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py", "")
         if "#" in abs_path:
             abs_path = f"{abs_path}.{f.__name__}"
             long_name = module_name.replace("#", ".") + "." + f.__name__
