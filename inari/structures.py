@@ -132,6 +132,9 @@ class ModStruct(BaseStruct):
                 out_name or (mod.__name__.rsplit(".", 1)[-1])
             )
             self.filename = "index.md"
+            # clean old docs.
+            if os.path.exists(self.out_dir):
+                shutil.rmtree(self.out_dir)
             # get submodules.
             submods = [
                 import_module(f"{mod.__name__}.{x.name}")
@@ -155,10 +158,6 @@ class ModStruct(BaseStruct):
             self.filename = f"{name}.md"
             # no submodules.
             self.submods = []
-
-        # clean old docs.
-        if os.path.exists(self.out_dir):
-            shutil.rmtree(self.out_dir)
 
         self.doc = inspect.getdoc(self.mod) or ""
 
@@ -315,7 +314,6 @@ class ModStruct(BaseStruct):
 
     def write(self):
         """Write documents to files. Directories are created automatically."""
-        # TODO: clear output directoly?
         # create dir.
         os.makedirs(self.out_dir, exist_ok=True)
         # write self.
