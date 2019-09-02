@@ -1,21 +1,29 @@
 # inari
-
 Write docstrings in Markdown!
 
-# Features
+[This API documents](./api) are created by `inari` itself.
+
+```shell
+# create `inari` documents!
+git clone https://github.com/tkamenoko/inari.git
+cd inari
+poetry install
+poetry run mkdocs build
+```
+
+## Features
 
 * Minimum configuration.
 * No dependencies by default(but [MkDocs](https://www.mkdocs.org/) is recommended!).
-* CLI and MkDocs Plugin.
+* [CLI](./getting-started#use-cli) and [MkDocs Plugin](./getting-started#use-mkdocs-plugin) .
 * Cross reference in API documents.
 
-# Install
-
+## Install
 ```shell
 pip install inari[mkdocs]
 ```
 
-# Example
+## Example
 
 ```python
 # sample.py
@@ -158,6 +166,7 @@ Docstrings for functions.
 
 ~~~
 
-# License
+
+## License
 
 MIT
