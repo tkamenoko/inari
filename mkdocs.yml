@@ -3,7 +3,7 @@ site_name: Inari
 docs_dir: "markdown"
 site_dir: "docs"
 repo_url: "https://github.com/tkamenoko/inari/"
-edit_uri: null
+edit_uri: ""
 
 nav:
     - Home: index.md
@@ -12,9 +12,9 @@ nav:
     - API:
       - inari: api/index.md
       - submodules:
-        - structs: api/structs.md
-        - mkdocs_plugin: api/mkdocs_plugin.md
-        - cli: api/cli.md
+        - structures: api/structures-py.md
+        - mkdocs_plugin: api/mkdocs_plugin-py.md
+        - cli: api/cli-py.md
 
 theme:
   name: 'material'

@@ -1,7 +1,7 @@
 [tool]
 [tool.poetry]
 name = "inari"
-version = "0.0.1"
+version = "0.1.0"
 description = "Write docstrings in Markdown!"
 license = "MIT"
 authors = ["T.Kameyama <tkamenoko@vivaldi.net>"]

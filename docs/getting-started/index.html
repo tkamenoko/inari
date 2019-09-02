@@ -397,8 +397,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../api/structs/" title="structs" class="md-nav__link">
-      structs
+    <a href="../api/structures-py/" title="structures" class="md-nav__link">
+      structures
     </a>
   </li>
 
@@ -409,7 +409,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../api/mkdocs_plugin/" title="mkdocs_plugin" class="md-nav__link">
+    <a href="../api/mkdocs_plugin-py/" title="mkdocs_plugin" class="md-nav__link">
       mkdocs_plugin
     </a>
   </li>
@@ -421,7 +421,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../api/cli/" title="cli" class="md-nav__link">
+    <a href="../api/cli-py/" title="cli" class="md-nav__link">
       cli
     </a>
   </li>
@@ -494,8 +494,6 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/tkamenoko/inari/edit/master/docs/getting-started.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
-                
                 
                 <h1 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
@@ -519,12 +517,13 @@
 </pre></div>
 </td></tr></table>
 
-<p>Initialize project.
+<p>Initialize project.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>mkdocs new my-project
 <span class="nb">cd</span> my-project
 </pre></div>
-</td></tr></table></p>
+</td></tr></table>
+
 <p>Then, fix <code>mkdocs.yml</code> .</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
  2
@@ -543,12 +542,12 @@
     <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">search</span> <span class="c1"># MkDocs default plugin</span>
     <span class="p p-Indicator">-</span> <span class="nt">inari</span><span class="p">:</span>
         <span class="nt">module</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;module-name&gt;</span> <span class="c1"># required</span>
-        <span class="nt">out-name</span><span class="p">:</span> <span class="nt">API # optional. Default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;module-name&gt;</span>
+        <span class="nt">out-name</span><span class="p">:</span> <span class="nt">api # optional. Default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;module-name&gt;</span>
         <span class="c1"># no `out-dir` option because `inari` uses `docs_dir` in the config.</span>
 </pre></div>
 </td></tr></table>
 
-<p>After that, running <code>mkdocs build</code> will generate your API documents in <code>docs/API</code> .</p>
+<p>After that, running <code>mkdocs build</code> will generate your API documents in <code>docs/api</code> .</p>
                 
                   
                 

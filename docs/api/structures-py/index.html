@@ -36,7 +36,7 @@
     
     
       
-        <title>structs - Inari</title>
+        <title>structures - Inari</title>
       
     
     
@@ -85,7 +85,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#module-inaristructs" tabindex="1" class="md-skip">
+      <a href="#module-inaristructures" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -111,7 +111,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                structs
+                structures
               
             </span>
           
@@ -360,11 +360,11 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        structs
+        structures
       </label>
     
-    <a href="./" title="structs" class="md-nav__link md-nav__link--active">
-      structs
+    <a href="./" title="structures" class="md-nav__link md-nav__link--active">
+      structures
     </a>
     
       
@@ -414,6 +414,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#ClsStruct-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ClsStruct-methods" class="md-nav__link">
     Methods
   </a>
@@ -432,6 +439,13 @@
   
     <nav class="md-nav">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#FuncStruct-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#FuncStruct-methods" class="md-nav__link">
@@ -454,6 +468,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#ModStruct-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ModStruct-methods" class="md-nav__link">
     Methods
   </a>
@@ -472,6 +493,13 @@
   
     <nav class="md-nav">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#VarStruct-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#VarStruct-methods" class="md-nav__link">
@@ -527,7 +555,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../mkdocs_plugin/" title="mkdocs_plugin" class="md-nav__link">
+    <a href="../mkdocs_plugin-py/" title="mkdocs_plugin" class="md-nav__link">
       mkdocs_plugin
     </a>
   </li>
@@ -539,7 +567,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../cli/" title="cli" class="md-nav__link">
+    <a href="../cli-py/" title="cli" class="md-nav__link">
       cli
     </a>
   </li>
@@ -612,6 +640,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#ClsStruct-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ClsStruct-methods" class="md-nav__link">
     Methods
   </a>
@@ -630,6 +665,13 @@
   
     <nav class="md-nav">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#FuncStruct-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#FuncStruct-methods" class="md-nav__link">
@@ -652,6 +694,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#ModStruct-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ModStruct-methods" class="md-nav__link">
     Methods
   </a>
@@ -670,6 +719,13 @@
   
     <nav class="md-nav">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#VarStruct-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#VarStruct-methods" class="md-nav__link">
@@ -724,10 +780,9 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/tkamenoko/inari/edit/master/docs/api/structs.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
-                
-                <h1 id="module-inaristructs">Module inari.structs<a class="headerlink" href="#module-inaristructs" title="Permanent link">&para;</a></h1>
+                <h1 id="module-inaristructures">Module inari.structures<a class="headerlink" href="#module-inaristructures" title="Permanent link">&para;</a></h1>
+<p>Store module structures, members, and docstrings.</p>
 <h2 id="classes">Classes<a class="headerlink" href="#classes" title="Permanent link">&para;</a></h2>
 <h3 id="BaseStruct">BaseStruct<a class="headerlink" href="#BaseStruct" title="Permanent link">&para;</a></h3>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">BaseStruct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abs_path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">name_to_path</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span>
@@ -772,8 +827,13 @@
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>cls</strong> (<code>type</code>): Class to make documents.</li>
-<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
-<li><strong>name_to_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <code>inari.structs.BaseStruct</code> .</li>
+<li><strong>name_to_path</strong> (<code>str</code>): See <code>inari.structs.BaseStruct</code> .</li>
+</ul>
+<hr />
+<h4 id="ClsStruct-bases">Base classes<a class="headerlink" href="#ClsStruct-bases" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="./#BaseStruct"><code>BaseStruct</code></a></li>
 </ul>
 <hr />
 <h4 id="ClsStruct-methods">Methods<a class="headerlink" href="#ClsStruct-methods" title="Permanent link">&para;</a></h4>
@@ -810,8 +870,13 @@
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>f</strong> (<code>Callable</code>): Target function.</li>
-<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
-<li><strong>name_to_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <code>inari.structs.BaseStruct</code> .</li>
+<li><strong>name_to_path</strong> (<code>str</code>): See <code>inari.structs.BaseStruct</code> .</li>
+</ul>
+<hr />
+<h4 id="FuncStruct-bases">Base classes<a class="headerlink" href="#FuncStruct-bases" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="./#BaseStruct"><code>BaseStruct</code></a></li>
 </ul>
 <hr />
 <h4 id="FuncStruct-methods">Methods<a class="headerlink" href="#FuncStruct-methods" title="Permanent link">&para;</a></h4>
@@ -838,28 +903,34 @@
 </td></tr></table>
 
 <p>Module docs, submodules, classes, funcs, and variables.</p>
+<p>test: <a href="../cli-py#run"><code>run</code></a></p>
 <p><strong>Attributes</strong></p>
 <ul>
 <li><strong>mod</strong> (<code>ModuleType</code>): Module to make documents.</li>
 <li><strong>submods</strong> (<code>List[ModStruct]</code>): List of submodules, wrapped by
-    <a href="./#ModStruct"><code>ModStruct</code></a> .</li>
+    <code>inari.structs.ModStruct</code> .</li>
 <li><strong>vars</strong> (<code>List[VarStruct]</code>): List of module-level variables, wrapped by
-    <a href="./#VarStruct"><code>VarStruct</code></a> .</li>
+    <code>inari.structs.VarStruct</code> .</li>
 <li><strong>classes</strong> (<code>List[ClsStruct]</code>): List of public classes, wrapped by
-    <a href="./#ClsStruct"><code>ClsStruct</code></a> .</li>
+    <code>inari.structs.ClsStruct</code> .</li>
 <li><strong>funcs</strong> (<code>List[FuncStruct]</code>): List of public functions, wrapped by
-    <a href="./#FuncStruct"><code>FuncStruct</code></a> .</li>
+    <code>inari.structs.FuncStruct</code> .</li>
 <li><strong>out_dir</strong> (<code>pathlib.Path</code>): Output directly.</li>
 <li><strong>filename</strong> (<code>str</code>): Output filename, like <code>index.md</code> , <code>submodule.md</code> .</li>
 <li><strong>relpaths</strong> (<code>dict</code>): Store relational paths. See
-    <a href="./#ModStruct.make_relpaths"><code>make_relpaths</code></a> .</li>
+    <code>inari.structs.ModStruct.make_relpaths</code> .</li>
 </ul>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>mod</strong> (<code>ModuleType</code>): Module to make documents.</li>
 <li><strong>out_dir</strong> (<code>Union[str,Path]</code>): Output directoly.</li>
-<li><strong>name_to_path</strong> (<code>dict</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
+<li><strong>name_to_path</strong> (<code>dict</code>): See <code>inari.structs.BaseStruct</code> .</li>
 <li><strong>out_name</strong> (<code>str</code>): If given, name of output file/directoly will be orverridden.</li>
+</ul>
+<hr />
+<h4 id="ModStruct-bases">Base classes<a class="headerlink" href="#ModStruct-bases" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="./#BaseStruct"><code>BaseStruct</code></a></li>
 </ul>
 <hr />
 <h4 id="ModStruct-methods">Methods<a class="headerlink" href="#ModStruct-methods" title="Permanent link">&para;</a></h4>
@@ -931,10 +1002,15 @@
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>var</strong> : Target object.</li>
-<li><strong>name_to_path</strong> (<code>dict</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
-<li><strong>abs_path</strong> (<code>str</code>): See <a href="./#BaseStruct"><code>BaseStruct</code></a> .</li>
+<li><strong>name_to_path</strong> (<code>dict</code>): See <code>inari.structs.BaseStruct</code> .</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <code>inari.structs.BaseStruct</code> .</li>
 <li><strong>name</strong> (<code>str</code>): Fallback of <code>var.__name__</code> .</li>
 <li><strong>doc</strong> (<code>str</code>): Fallback of <code>inspect.getdoc(var)</code> .</li>
+</ul>
+<hr />
+<h4 id="VarStruct-bases">Base classes<a class="headerlink" href="#VarStruct-bases" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="./#BaseStruct"><code>BaseStruct</code></a></li>
 </ul>
 <hr />
 <h4 id="VarStruct-methods">Methods<a class="headerlink" href="#VarStruct-methods" title="Permanent link">&para;</a></h4>
@@ -986,7 +1062,7 @@
           </a>
         
         
-          <a href="../mkdocs_plugin/" title="mkdocs_plugin" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../mkdocs_plugin-py/" title="mkdocs_plugin" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
               <span class="md-flex__ellipsis">
                 <span class="md-footer-nav__direction">

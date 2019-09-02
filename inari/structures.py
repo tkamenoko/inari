@@ -1,7 +1,13 @@
+"""
+Store module structures, members, and docstrings.
+"""
+
 import inspect
 import os
 import pathlib
 import re
+import shutil
+from functools import reduce
 from importlib import import_module
 from pkgutil import walk_packages
 from types import ModuleType
@@ -66,6 +72,8 @@ class ModStruct(BaseStruct):
     """
     Module docs, submodules, classes, funcs, and variables.
 
+    test: `inari.cli.run`
+
     **Attributes**
 
     * mod (`ModuleType`): Module to make documents.
@@ -114,16 +122,19 @@ class ModStruct(BaseStruct):
         self.mod = mod
         abs_path = "/" + mod.__name__.replace(".", "/")
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
-        self.name_to_path[mod.__name__] = self.abs_path
         self.relpaths = {}
 
         mod_path = inspect.getfile(mod)
         if mod_path.endswith("__init__.py"):
+            self.name_to_path[mod.__name__] = self.abs_path
             # output names.
             self.out_dir = pathlib.Path(out_dir) / (
                 out_name or (mod.__name__.rsplit(".", 1)[-1])
             )
             self.filename = "index.md"
+            # clean old docs.
+            if os.path.exists(self.out_dir):
+                shutil.rmtree(self.out_dir)
             # get submodules.
             submods = [
                 import_module(f"{mod.__name__}.{x.name}")
@@ -135,9 +146,15 @@ class ModStruct(BaseStruct):
             ]
 
         else:
-            # TODO: what if getting `index.py`?
             self.out_dir = pathlib.Path(out_dir)
-            name = out_name or mod.__name__.rsplit(".", 1)[-1]
+            if out_name:
+                name = out_name
+                self.name_to_path[mod.__name__] = self.abs_path
+            else:
+                # workaround for "index.py" .
+                name = mod.__name__.rsplit(".", 1)[-1] + "-py"
+                self.abs_path += "-py"
+                self.name_to_path[mod.__name__] = self.abs_path
             self.filename = f"{name}.md"
             # no submodules.
             self.submods = []
@@ -285,7 +302,10 @@ class ModStruct(BaseStruct):
 
         """
         for long_name, rel_hash in self.relpaths.items():
-            short_name = long_name.rsplit(".", 1)[-1]
+            if rel_hash[1]:
+                short_name = rel_hash[1][1:]
+            else:
+                short_name = long_name.rsplit(".", 1)[-1]
             # append a space after short_name because of avoiding unexpected replacing.
             doc = doc.replace(
                 f"`{long_name}`", f"[`{short_name} `]({''.join(rel_hash)})"
@@ -294,7 +314,6 @@ class ModStruct(BaseStruct):
 
     def write(self):
         """Write documents to files. Directories are created automatically."""
-        # TODO: clear output directoly?
         # create dir.
         os.makedirs(self.out_dir, exist_ok=True)
         # write self.
@@ -341,14 +360,14 @@ class VarStruct(BaseStruct):
         self.doc = doc or inspect.getdoc(var) or ""
         name = name or var.__name__
         self.name = name.rsplit(".")[-1]
-        full_name = ".".join([n for n in abs_path.split("/") if n])
+        module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py", "")
 
         if "#" in abs_path:
             abs_path = f"{abs_path}.{self.name}"
-            long_name = full_name.replace("#", ".") + "." + self.name
+            long_name = module_name.replace("#", ".") + "." + self.name
         else:
             abs_path = f"{abs_path}#{self.name}"
-            long_name = full_name + "." + self.name
+            long_name = module_name + "." + self.name
         self.name_to_path[long_name] = abs_path
         self.hash_ = "#" + abs_path.rsplit("#", 1)[-1]
 
@@ -398,9 +417,9 @@ class ClsStruct(BaseStruct):
         self.doc = inspect.getdoc(cls) or ""
         self.doc = modify_attrs(self.doc)
 
-        full_name = ".".join([n for n in abs_path.split("/") if n])
-        long_name = full_name + "." + self.cls.__qualname__
-        self.hash_ = "#" + long_name.rsplit(".", 1)[-1]
+        module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py", "")
+        long_name = module_name + "." + self.cls.__qualname__
+        self.hash_ = "#" + self.cls.__qualname__
         abs_path = abs_path + self.hash_
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
         self.name_to_path[long_name] = self.abs_path
@@ -430,6 +449,7 @@ class ClsStruct(BaseStruct):
                     inspect.isroutine(f)
                     and (f.__class__ is not property)
                     and f.__qualname__.startswith(self.cls.__qualname__)
+                    and not inspect.isbuiltin(f)
                 ),
             )
             if (not x[0].startswith("_"))
@@ -463,7 +483,10 @@ class ClsStruct(BaseStruct):
             source = f"class {name}({args})"
             defs = f"```python\n{source}\n```"
         except (OSError, ValueError):
-            args_ = inspect.signature(self.cls)
+            try:
+                args_ = str(inspect.signature(self.cls))
+            except ValueError:
+                args_ = "(self, *args, **kwargs)"
             defs = f"```python\nclass {name}{args_}\n```".replace(" -> None", "")
         init = self.cls.__init__
         if init.__qualname__.startswith(self.cls.__qualname__):
@@ -472,6 +495,29 @@ class ClsStruct(BaseStruct):
             init_doc = ""
         init_doc = modify_attrs(init_doc)
         cls_doc = "\n\n".join([defs, self.doc, init_doc])
+        # base classes
+        bases_doc = ""
+        bases = [set(c.mro()) for c in self.cls.mro() if c is not self.cls]
+        if len(bases) > 1:
+            h = ""
+            if markdown:
+                h = f"{{: {self.hash_}-bases }}"
+            bases_head = f"\n\n------\n\n#### Base classes {h}\n\n"
+            # get direct bases
+            base_set = reduce(lambda x, y: x | y, bases)
+            base_list = reduce(lambda x, y: x + y, [list(s) for s in bases])
+            parents = [x for x in base_set if base_list.count(x) == 1]
+            base_names = []
+            root = inspect.getmodule(self.cls).__name__.split(".", 1)[0]
+            for p in parents:
+                mod_name = inspect.getmodule(p).__name__
+                mod_root = mod_name.split(".", 1)[0]
+                if mod_root == root:
+                    base_name = f"* `{mod_name}.{p.__name__}`"
+                else:
+                    base_name = f"* `{mod_root}.{p.__name__}`"
+                base_names.append(base_name)
+            bases_doc = bases_head + "\n".join(base_names)
         # class vars
         h = ""
         if markdown:
@@ -493,7 +539,7 @@ class ClsStruct(BaseStruct):
             methods_head = ""
         methods_doc = methods_head + "\n" + methods_list
 
-        return "\n\n".join([head, cls_doc, vars_doc, methods_doc])
+        return "\n\n".join([head, cls_doc, bases_doc, vars_doc, methods_doc])
 
 
 class FuncStruct(BaseStruct):
@@ -522,13 +568,13 @@ class FuncStruct(BaseStruct):
         self.func = f
         self.doc = inspect.getdoc(f) or ""
         self.doc = modify_attrs(self.doc)
-        full_name = ".".join([n for n in abs_path.split("/") if n])
+        module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py", "")
         if "#" in abs_path:
             abs_path = f"{abs_path}.{f.__name__}"
-            long_name = full_name.replace("#", ".") + "." + f.__name__
+            long_name = module_name.replace("#", ".") + "." + f.__name__
         else:
             abs_path = f"{abs_path}#{f.__name__}"
-            long_name = full_name + "." + f.__name__
+            long_name = module_name + "." + f.__name__
 
         self.hash_ = "#" + abs_path.split("#")[-1]
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
