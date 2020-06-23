@@ -6,15 +6,15 @@ repo_url: "https://github.com/tkamenoko/inari/"
 edit_uri: ""
 
 nav:
-    - Home: index.md
-    - Getting Started: getting-started.md
-    - Docstrings Syntax: docstrings-syntax.md
-    - API:
-      - inari: api/index.md
-      - submodules:
-        - structures: api/structures-py.md
-        - mkdocs_plugin: api/mkdocs_plugin-py.md
-        - cli: api/cli-py.md
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Docstrings Syntax: docstrings-syntax.md
+  - API:
+    - inari: api/index.md
+    - submodules:
+      - structures: api/structures-py.md
+      - mkdocs_plugin: api/mkdocs_plugin-py.md
+      - cli: api/cli-py.md
 
 theme:
   name: 'material'
@@ -25,20 +25,20 @@ theme:
     tabs: true
 
 markdown_extensions:
-    - toc:
-        toc_depth: 4
-        permalink: True
-    - smarty
-    - codehilite:
-        linenums: true
-    - admonition
-    - pymdownx.details
-    - pymdownx.superfences
-    - pymdownx.magiclink
+  - toc:
+      toc_depth: 4
+      permalink: True
+  - smarty
+  - codehilite:
+      linenums: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.magiclink
 
 
 plugins:
-    - search
-    - inari:
-        module: inari
-        out-name: api
+  - search
+  - inari:
+      module: inari
+      out-name: api
