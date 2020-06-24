@@ -19,7 +19,7 @@ class Plugin(BasePlugin):
         ("out-name", config_options.Type(str, default=None)),
     )
 
-    def on_serve(self, server, config):
+    def on_serve(self, server, config, builder, **kw):
         # build docs once.
         self._build(config)
         # add watcher.
@@ -28,13 +28,13 @@ class Plugin(BasePlugin):
             server.watch(module_path, lambda: self._build(config), delay="forever")
         return server
 
-    def on_config(self, config):
+    def on_config(self, config, **kw):
         md_ext = config["markdown_extensions"]
         if "attr_list" not in md_ext:
             md_ext.append("attr_list")
         return config
 
-    def on_pre_build(self, config):
+    def on_pre_build(self, config, **kw):
         # run only on `mkdocs build`
         # TODO: this is workaround.
         args = [x for x in sys.argv if not x.startswith("-")]
