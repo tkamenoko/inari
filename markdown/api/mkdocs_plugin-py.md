@@ -26,7 +26,7 @@ MkDocs Plugin class.
 [**on_config**](#Plugin.on_config){: #Plugin.on_config }
 
 ```python
-def on_config(self, config)
+def on_config(self, config, **kw)
 ```
 
 
@@ -35,7 +35,7 @@ def on_config(self, config)
 [**on_pre_build**](#Plugin.on_pre_build){: #Plugin.on_pre_build }
 
 ```python
-def on_pre_build(self, config)
+def on_pre_build(self, config, **kw)
 ```
 
 
@@ -44,5 +44,5 @@ def on_pre_build(self, config)
 [**on_serve**](#Plugin.on_serve){: #Plugin.on_serve }
 
 ```python
-def on_serve(self, server, config)
+def on_serve(self, server, config, builder, **kw)
 ```

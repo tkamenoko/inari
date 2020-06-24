@@ -36,9 +36,9 @@ mkdocs = {optional = true, version = "*"}
 flake8 = "*"
 mypy = "*"
 rope = "*"
-black = {version = "*", allows-prereleases = true}
 mkdocs = "*"
 mkdocs-material ="*"
+black = "^19.10b0"
 [tool.poetry.extras]
 mkdocs = ["mkdocs"]
 
