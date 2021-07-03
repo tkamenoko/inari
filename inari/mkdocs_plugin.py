@@ -1,8 +1,10 @@
 import importlib
 import os
 import sys
+from typing import Any, Callable
 
-from mkdocs.config import config_options
+from mkdocs.config import Config, config_options
+from mkdocs.livereload import LiveReloadServer
 from mkdocs.plugins import BasePlugin
 
 from .structures import ModStruct
@@ -19,30 +21,29 @@ class Plugin(BasePlugin):
         ("out-name", config_options.Type(str, default=None)),
     )
 
-    def on_serve(self, server, config, builder, **kw):
-        # build docs once.
+    def on_serve(
+        self,
+        server: LiveReloadServer,
+        config: Config,
+        builder: Callable[[], None],
+        **kw: Any
+    ) -> LiveReloadServer:
         self._build(config)
-        # add watcher.
+        # add watching path.
         module_path = self.config["module"].replace(".", "/")
-        if module_path not in server.watcher._tasks:
-            server.watch(module_path, lambda: self._build(config), delay="forever")
+        server.watch(module_path)
         return server
 
-    def on_config(self, config, **kw):
+    def on_config(self, config: Config, **kw: Any) -> Config:
         md_ext = config["markdown_extensions"]
         if "attr_list" not in md_ext:
             md_ext.append("attr_list")
         return config
 
-    def on_pre_build(self, config, **kw):
-        # run only on `mkdocs build`
-        # TODO: this is workaround.
-        args = [x for x in sys.argv if not x.startswith("-")]
-        command = args[1]
-        if command == "build":
-            self._build(config)
+    def on_pre_build(self, config: Config) -> None:
+        self._build(config)
 
-    def _build(self, config):
+    def _build(self, config: Config) -> None:
         cwd = os.getcwd()
         if cwd not in sys.path:
             sys.path.append(cwd)
