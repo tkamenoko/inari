@@ -16,7 +16,7 @@ parser.add_argument(
 )
 
 
-def run():
+def run() -> None:
     """CLI entry point."""
     sys.path.append(os.getcwd())
     args = parser.parse_args()

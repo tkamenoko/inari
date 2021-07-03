@@ -11,7 +11,7 @@ from functools import reduce
 from importlib import import_module
 from pkgutil import walk_packages
 from types import ModuleType
-from typing import Any, Callable, List, Union
+from typing import Any, Callable, Optional
 
 from ._format import cleanup, modify_attrs
 
@@ -21,7 +21,7 @@ except ImportError:
     markdown = None
 
 
-def is_var(obj) -> bool:
+def is_var(obj: object) -> bool:
     """Utility for filtering unexpected objects."""
 
     return not any(
@@ -46,11 +46,13 @@ class BaseStruct:
 
     """
 
-    name_to_path: dict
+    name_to_path: dict[str, str]
     doc: str
     abs_path: str
 
-    def __init__(self, abs_path="", name_to_path: dict = None):
+    def __init__(
+        self, abs_path: str = "", name_to_path: Optional[dict[str, str]] = None
+    ):
         """
         **Args**
 
@@ -77,13 +79,13 @@ class ModStruct(BaseStruct):
     **Attributes**
 
     * mod (`ModuleType`): Module to make documents.
-    * submods (`List[ModStruct]`): List of submodules, wrapped by
+    * submods (`list[ModStruct]`): list of submodules, wrapped by
         `inari.structs.ModStruct` .
-    * vars (`List[VarStruct]`): List of module-level variables, wrapped by
+    * vars (`list[VarStruct]`): list of module-level variables, wrapped by
         `inari.structs.VarStruct` .
-    * classes (`List[ClsStruct]`): List of public classes, wrapped by
+    * classes (`list[ClsStruct]`): list of public classes, wrapped by
         `inari.structs.ClsStruct` .
-    * funcs (`List[FuncStruct]`): List of public functions, wrapped by
+    * funcs (`list[FuncStruct]`): list of public functions, wrapped by
         `inari.structs.FuncStruct` .
     * out_dir (`pathlib.Path`): Output directly.
     * filename (`str`): Output filename, like `index.md` , `submodule.md` .
@@ -94,21 +96,21 @@ class ModStruct(BaseStruct):
 
     mod: ModuleType
 
-    submods: List["ModStruct"]
-    vars: List["VarStruct"]
-    classes: List["ClsStruct"]
-    funcs: List["FuncStruct"]
+    submods: list["ModStruct"]
+    vars: list["VarStruct"]
+    classes: list["ClsStruct"]
+    funcs: list["FuncStruct"]
 
     out_dir: pathlib.Path
     filename: str
-    relpaths: dict
+    relpaths: dict[str, tuple[str, str]]
 
     def __init__(
         self,
         mod: ModuleType,
-        out_dir: Union[str, pathlib.Path],
-        name_to_path: dict = None,
-        out_name: str = None,
+        out_dir: os.PathLike[str],
+        name_to_path: Optional[dict[str, str]] = None,
+        out_name: Optional[str] = None,
     ):
         """
         **Args**
@@ -165,7 +167,7 @@ class ModStruct(BaseStruct):
         self.init_classes()
         self.init_funcs()
 
-    def init_classes(self):
+    def init_classes(self) -> None:
         """Find public classes defined in the module."""
         mod_classes = [
             x[1]
@@ -177,7 +179,7 @@ class ModStruct(BaseStruct):
             for c in mod_classes
         ]
 
-    def init_vars(self):
+    def init_vars(self) -> None:
         """Find variables having docstrings."""
         try:
             src = inspect.getsource(self.mod)
@@ -206,7 +208,7 @@ class ModStruct(BaseStruct):
             for v in mod_vars
         ]
 
-    def init_funcs(self):
+    def init_funcs(self) -> None:
         """Find public functions in the module."""
         mod_funcs = [
             x[1]
@@ -272,7 +274,7 @@ class ModStruct(BaseStruct):
         doc = self.make_links(doc)
         return cleanup(doc)
 
-    def make_relpaths(self):
+    def make_relpaths(self) -> None:
         """
         Create mapping between object name to relative path.
 
@@ -312,7 +314,7 @@ class ModStruct(BaseStruct):
             )
         return doc
 
-    def write(self):
+    def write(self) -> None:
         """Write documents to files. Directories are created automatically."""
         # create dir.
         os.makedirs(self.out_dir, exist_ok=True)
@@ -343,8 +345,13 @@ class VarStruct(BaseStruct):
     hash_: str
 
     def __init__(
-        self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None
-    ):
+        self,
+        var: object,
+        name_to_path: dict[str, str],
+        abs_path: str,
+        name: Optional[str] = None,
+        doc: Optional[str] = None,
+    ) -> None:
         """
         **Args**
 
@@ -390,8 +397,8 @@ class ClsStruct(BaseStruct):
     **Attributes**
 
     * cls (`type`): Target class.
-    * vars (`List[VarStruct]`): Class properties.
-    * methods (`List[FuncStruct]`): Methods of the class.
+    * vars (`list[VarStruct]`): Class properties.
+    * methods (`list[FuncStruct]`): Methods of the class.
     * hash_ (`str`): Used for HTML id.
 
     """
@@ -399,18 +406,18 @@ class ClsStruct(BaseStruct):
     # TODO: get ancestor
     cls: type
 
-    vars: List[VarStruct]
-    methods: List["FuncStruct"]
+    vars: list[VarStruct]
+    methods: list["FuncStruct"]
 
     hash_: str
 
-    def __init__(self, cls: type, abs_path: str, name_to_path: dict):
+    def __init__(self, cls: type, abs_path: str, name_to_path: dict[str, str]):
         """
         **Args**
 
         * cls (`type`): Class to make documents.
         * abs_path (`str`): See `inari.structs.BaseStruct` .
-        * name_to_path (`str`): See `inari.structs.BaseStruct` .
+        * name_to_path (`dict[str, str]`): See `inari.structs.BaseStruct` .
 
         """
         self.cls = cls
@@ -427,7 +434,7 @@ class ClsStruct(BaseStruct):
         self.init_vars()
         self.init_methods()
 
-    def init_vars(self):
+    def init_vars(self) -> None:
         cls_vars = [
             x
             for x in inspect.getmembers(self.cls, lambda v: v.__class__ is property)
@@ -440,7 +447,7 @@ class ClsStruct(BaseStruct):
             for v in cls_vars
         ]
 
-    def init_methods(self):
+    def init_methods(self) -> None:
         methods = [
             x[1]
             for x in inspect.getmembers(
@@ -490,7 +497,7 @@ class ClsStruct(BaseStruct):
             defs = f"```python\nclass {name}{args_}\n```".replace(" -> None", "")
         init = self.cls.__init__
         if init.__qualname__.startswith(self.cls.__qualname__):
-            init_doc = inspect.getdoc(init)
+            init_doc = inspect.getdoc(init) or ""
         else:
             init_doc = ""
         init_doc = modify_attrs(init_doc)
@@ -553,16 +560,18 @@ class FuncStruct(BaseStruct):
 
     """
 
-    func: Callable
+    func: Callable[..., Any]
     hash_: str
 
-    def __init__(self, f: Callable, name_to_path: dict, abs_path: str):
+    def __init__(
+        self, f: Callable[..., Any], name_to_path: dict[str, str], abs_path: str
+    ):
         """
         **Args**
 
         * f (`Callable`): Target function.
         * abs_path (`str`): See `inari.structs.BaseStruct` .
-        * name_to_path (`str`): See `inari.structs.BaseStruct` .
+        * name_to_path (`dict[str, str]`): See `inari.structs.BaseStruct` .
 
         """
         self.func = f

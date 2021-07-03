@@ -47,6 +47,10 @@ mkdocs = ["mkdocs"]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
+[tool.mypy]
+ignore_missing_imports = true
+strict = true
+
 [tool.poe.tasks]
 build = "mkdocs build"
 serve = "mkdocs serve"
