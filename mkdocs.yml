@@ -1,4 +1,5 @@
 site_name: Inari
+site_url: "https://tkamenoko.github.io/inari/"
 
 docs_dir: "markdown"
 site_dir: "docs"
