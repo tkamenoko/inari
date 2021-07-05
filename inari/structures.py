@@ -2,11 +2,12 @@
 Store module structures, members, and docstrings.
 """
 
+import hashlib
+import importlib
 import inspect
 import os
 import pathlib
 import re
-import shutil
 from functools import reduce
 from importlib import import_module
 from pkgutil import walk_packages
@@ -79,8 +80,8 @@ class ModStruct(BaseStruct):
     **Attributes**
 
     * mod (`ModuleType`): Module to make documents.
-    * submods (`list[ModStruct]`): list of submodules, wrapped by
-        `inari.structs.ModStruct` .
+    * submods (`dict[str, ModStruct]`): key-value pair of paths and submodules, wrapped
+        by `inari.structs.ModStruct` .
     * vars (`list[VarStruct]`): list of module-level variables, wrapped by
         `inari.structs.VarStruct` .
     * classes (`list[ClsStruct]`): list of public classes, wrapped by
@@ -89,14 +90,14 @@ class ModStruct(BaseStruct):
         `inari.structs.FuncStruct` .
     * out_dir (`pathlib.Path`): Output directly.
     * filename (`str`): Output filename, like `index.md` , `submodule.md` .
-    * relpaths (`dict`): Store relational paths. See
+    * relpaths (`dict[str, tuple[str, str]]`): Store relational paths. See
         `inari.structs.ModStruct.make_relpaths` .
 
     """
 
     mod: ModuleType
 
-    submods: list["ModStruct"]
+    submods: dict[str, "ModStruct"]
     vars: list["VarStruct"]
     classes: list["ClsStruct"]
     funcs: list["FuncStruct"]
@@ -104,6 +105,9 @@ class ModStruct(BaseStruct):
     out_dir: pathlib.Path
     filename: str
     relpaths: dict[str, tuple[str, str]]
+
+    _has_submodules: bool
+    _module_digest: str
 
     def __init__(
         self,
@@ -116,15 +120,17 @@ class ModStruct(BaseStruct):
         **Args**
 
         * mod (`ModuleType`): Module to make documents.
-        * out_dir (`Union[str,Path]`): Output directoly.
+        * out_dir (`Union[str,Path]`): Output directory.
         * name_to_path (`dict`): See `inari.structs.BaseStruct` .
-        * out_name (`str`): If given, name of output file/directoly will be orverridden.
+        * out_name (`str`): Output file name.
 
         """
         self.mod = mod
+        self.submods = {}
         abs_path = "/" + mod.__name__.replace(".", "/")
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
         self.relpaths = {}
+        self._previous_hash = b""
 
         mod_path = inspect.getfile(mod)
         if mod_path.endswith("__init__.py"):
@@ -134,21 +140,11 @@ class ModStruct(BaseStruct):
                 out_name or (mod.__name__.rsplit(".", 1)[-1])
             )
             self.filename = "index.md"
-            # clean old docs.
-            if os.path.exists(self.out_dir):
-                shutil.rmtree(self.out_dir)
-            # get submodules.
-            submods = [
-                import_module(f"{mod.__name__}.{x.name}")
-                for x in walk_packages(mod.__path__)
-                if not x.name.startswith("_")
-            ]
-            self.submods = [
-                ModStruct(submod, self.out_dir, self.name_to_path) for submod in submods
-            ]
+            self._has_submodules = True
 
         else:
             self.out_dir = pathlib.Path(out_dir)
+            self._has_submodules = False
             if out_name:
                 name = out_name
                 self.name_to_path[mod.__name__] = self.abs_path
@@ -158,14 +154,32 @@ class ModStruct(BaseStruct):
                 self.abs_path += "-py"
                 self.name_to_path[mod.__name__] = self.abs_path
             self.filename = f"{name}.md"
-            # no submodules.
-            self.submods = []
 
         self.doc = inspect.getdoc(self.mod) or ""
 
-        self.init_vars()
-        self.init_classes()
-        self.init_funcs()
+    def init_submodules(self) -> None:
+        """
+        Find submodules.
+        """
+
+        if self._has_submodules:
+            # get submodules.
+            module_path = getattr(self.mod, "__path__", [])
+            submods = [
+                import_module(f"{self.mod.__name__}.{x.name}")
+                for x in walk_packages(module_path)
+                if not x.name.startswith("_")
+            ]
+            self.submods = {
+                inspect.getfile(submod): ModStruct(
+                    submod, self.out_dir, self.name_to_path
+                )
+                for submod in submods
+                if inspect.getfile(submod) not in self.submods
+            }
+        else:
+            # no submodules.
+            self.submods = {}
 
     def init_classes(self) -> None:
         """Find public classes defined in the module."""
@@ -224,7 +238,13 @@ class ModStruct(BaseStruct):
         ]
 
     def doc_str(self) -> str:
+        self.init_vars()
+        self.init_classes()
+        self.init_funcs()
         self.make_relpaths()
+
+        yaml_header = self.make_yaml_header(digest=self._module_digest)
+
         mod_head = f"# Module {self.mod.__name__}"
         mod_ds = self.doc
 
@@ -233,7 +253,7 @@ class ModStruct(BaseStruct):
             return f"[{sub_name}]({rel_path})"
 
         submodules_head = "## Submodules"
-        submodules = [submod_to_link(x.mod.__name__) for x in self.submods]
+        submodules = [submod_to_link(x.mod.__name__) for x in self.submods.values()]
         submodules_list = "\n\n".join(submodules)
         if not submodules:
             submodules_head = ""
@@ -258,6 +278,7 @@ class ModStruct(BaseStruct):
 
         doc = "\n\n".join(
             [
+                yaml_header,
                 mod_head,
                 mod_ds,
                 submodules_head,
@@ -303,6 +324,7 @@ class ModStruct(BaseStruct):
         To ignore this, append a space like `"foo.bar "` .
 
         """
+
         for long_name, rel_hash in self.relpaths.items():
             if rel_hash[1]:
                 short_name = rel_hash[1][1:]
@@ -314,17 +336,50 @@ class ModStruct(BaseStruct):
             )
         return doc
 
+    def make_yaml_header(self, *, digest: str) -> str:
+        header = f"""
+        ---
+        module_digest: {digest}
+        ---
+        """
+        return inspect.cleandoc(header)
+
+    def clean_old_docs(self) -> None:
+        # clean old docs.
+        new_modules: dict[str, ModStruct] = {}
+        for path, submodule in self.submods.items():
+            if os.path.isfile(path):
+                new_modules[path] = submodule
+            else:
+                os.remove(submodule.out_dir / submodule.filename)
+        self.submods = new_modules
+
     def write(self) -> None:
         """Write documents to files. Directories are created automatically."""
-        # create dir.
-        os.makedirs(self.out_dir, exist_ok=True)
-        # write self.
+        self.init_submodules()
+        self.clean_old_docs()
+        importlib.reload(self.mod)
+        current_digest = hashlib.md5(
+            inspect.getsource(self.mod).encode("utf-8")
+        ).hexdigest()
         with open(
-            self.out_dir / self.filename, mode="w", newline="\n", encoding="utf-8"
+            self.out_dir / self.filename, mode="r", newline="\n", encoding="utf-8"
         ) as index:
-            index.write(self.doc_str())
+            content = index.read()
+            matched = re.match(r"^---\n(.+)\n---\n", content, re.MULTILINE)
+            headers = matched.group(0) if matched else ""
+
+        if current_digest not in headers:
+            self._module_digest = current_digest
+            # create dir.
+            os.makedirs(self.out_dir, exist_ok=True)
+            # write self.
+            with open(
+                self.out_dir / self.filename, mode="w", newline="\n", encoding="utf-8"
+            ) as index:
+                index.write(self.doc_str())
         # write submodules.
-        for submod in self.submods:
+        for submod in self.submods.values():
             submod.write()
 
 
@@ -343,6 +398,8 @@ class VarStruct(BaseStruct):
 
     name: str
     hash_: str
+
+    _should_skip = False
 
     def __init__(
         self,
@@ -365,7 +422,10 @@ class VarStruct(BaseStruct):
         super().__init__(name_to_path=name_to_path)
         self.var = var
         self.doc = doc or inspect.getdoc(var) or ""
-        name = name or var.__name__
+        name = name or getattr(var, "__name__", None)
+        if not name:
+            self._should_skip = True
+            return
         self.name = name.rsplit(".")[-1]
         module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py", "")
 
@@ -379,6 +439,8 @@ class VarStruct(BaseStruct):
         self.hash_ = "#" + abs_path.rsplit("#", 1)[-1]
 
     def doc_str(self) -> str:
+        if self._should_skip:
+            return ""
         h = ""
         if markdown:
             h = f"{{: {self.hash_} }}"
