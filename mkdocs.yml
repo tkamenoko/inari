@@ -13,7 +13,7 @@ nav:
   - API:
     - inari: api/index.md
     - submodules:
-      - structures: api/structures-py.md
+      - collectors: api/collectors-py.md
       - mkdocs_plugin: api/mkdocs_plugin-py.md
       - cli: api/cli-py.md
 

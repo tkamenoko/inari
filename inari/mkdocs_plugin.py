@@ -7,7 +7,7 @@ from mkdocs.config import Config, config_options
 from mkdocs.livereload import LiveReloadServer
 from mkdocs.plugins import BasePlugin
 
-from .structures import ModStruct
+from .collectors import ModuleCollector
 
 
 class Plugin(BasePlugin):
@@ -15,7 +15,7 @@ class Plugin(BasePlugin):
     MkDocs Plugin class.
     """
 
-    _root_module: Optional[ModStruct] = None
+    _root_module: Optional[ModuleCollector] = None
 
     # out-dir is config["docs_dir"]
     config_scheme = (
@@ -23,13 +23,15 @@ class Plugin(BasePlugin):
         ("out-name", config_options.Type(str, default=None)),
     )
 
-    def root_module(self, config: Config) -> ModStruct:
+    def root_module(self, config: Config) -> ModuleCollector:
         if not self._root_module:
             out_dir = config["docs_dir"]
             out_name = self.config["out-name"]
             root_name = self.config["module"]
             _root_module = importlib.import_module(root_name)
-            self._root_module = ModStruct(_root_module, out_dir, out_name=out_name)
+            self._root_module = ModuleCollector(
+                _root_module, out_dir, out_name=out_name
+            )
 
         return self._root_module
 
