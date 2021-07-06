@@ -6,17 +6,6 @@ site_dir: "docs"
 repo_url: "https://github.com/tkamenoko/inari/"
 edit_uri: ""
 
-nav:
-  - Home: index.md
-  - Getting Started: getting-started.md
-  - Docstrings Syntax: docstrings-syntax.md
-  - API:
-    - inari: api/index.md
-    - submodules:
-      - collectors: api/collectors-py.md
-      - mkdocs_plugin: api/mkdocs_plugin-py.md
-      - cli: api/cli-py.md
-
 theme:
   name: 'material'
   palette:
@@ -40,6 +29,8 @@ markdown_extensions:
 
 plugins:
   - search
+  - literate-nav:
+      nav_file: SUMMARY.md
   - inari:
       module: inari
       out-name: api
