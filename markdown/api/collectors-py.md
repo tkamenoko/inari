@@ -1,5 +1,5 @@
 ---
-module_digest: 5c782faecea27e0790b136cf0a96f964
+module_digest: cb19ef378782b0630ec752e61431a6ed
 ---
 
 # Module inari.collectors
@@ -155,7 +155,8 @@ class ModuleCollector(
     mod: ModuleType,
     out_dir: os.PathLike[str],
     name_to_path: Optional[dict[str, str]] = None,
-    out_name: Optional[str] = None,)
+    out_name: Optional[str] = None,
+    enable_yaml_header: bool = False,)
 ```
 
 Module docs, submodules, classes, functions, and variables.
@@ -177,6 +178,7 @@ test: `inari.cli.run`
 * **filename** (`str`): Output filename, like `index.md` , `submodule.md` .
 * **relpaths** (`dict[str, tuple[str, str]]`): Store relational paths. See
     `inari.collectors.ModuleCollector.make_relpaths` .
+* **enable_yaml_header** (`bool`): a flag for deciding whether to include yaml header.
 
 **Args**
 
@@ -184,6 +186,8 @@ test: `inari.cli.run`
 * **out_dir** (`Union[str,Path]`): Output directory.
 * **name_to_path** (`dict`): See [`BaseCollector `](./#BaseCollector) .
 * **out_name** (`str`): Output file name.
+* **enable_yaml_header** (`bool`): a flag for deciding whether to include
+    yaml header.
 
 
 ------
@@ -281,6 +285,11 @@ Create mapping between object name to relative path.
 def make_yaml_header(self, *, module_digest: str) -> str
 ```
 
+Make yaml header from given values.
+
+**Args**
+
+* **module_digest** (`str`): md5 hash result in hex string.
 
 ------
 

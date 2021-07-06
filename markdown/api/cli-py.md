@@ -1,5 +1,5 @@
 ---
-module_digest: 38bd5623e24c817955a21c13e767ded2
+module_digest: 41fc8984343922517bdad7e98e843786
 ---
 
 # Module inari.cli
