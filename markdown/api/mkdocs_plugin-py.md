@@ -1,5 +1,5 @@
 ---
-module_digest: ddfd6e76ea6eb9ea15fd52f2b8a0154e
+module_digest: 6b726e50f73aa227388d65a8d794e4aa
 ---
 
 # Module inari.mkdocs_plugin

@@ -30,7 +30,7 @@ class Plugin(BasePlugin):
             root_name = self.config["module"]
             _root_module = importlib.import_module(root_name)
             self._root_module = ModuleCollector(
-                _root_module, out_dir, out_name=out_name
+                _root_module, out_dir, out_name=out_name, enable_yaml_header=True
             )
 
         return self._root_module
