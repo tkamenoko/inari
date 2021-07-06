@@ -9,8 +9,8 @@ inari - Write docstrings in Markdown!
 
 ## Submodules
 
-[inari.cli](cli-py)
+[inari.cli](cli-py.md)
 
-[inari.collectors](collectors-py)
+[inari.collectors](collectors-py.md)
 
-[inari.mkdocs_plugin](mkdocs_plugin-py)
+[inari.mkdocs_plugin](mkdocs_plugin-py.md)

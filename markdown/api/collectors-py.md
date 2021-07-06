@@ -1,6 +1,6 @@
 ---
 title: inari.collectors
-module_digest: 5adc7afbdc9f3eb243702a82b1584c51
+module_digest: e4dbc8e9a5bc77a90db63b71565ea940
 ---
 
 # Module inari.collectors
@@ -64,15 +64,15 @@ Class with methods and properties. Attribute docs should be written in class
 **Args**
 
 * **cls** (`type`): Class to make documents.
-* **abs_path** (`str`): See [`BaseCollector `](./#BaseCollector) .
-* **name_to_path** (`dict[str, str]`): See [`BaseCollector `](./#BaseCollector) .
+* **abs_path** (`str`): See [`BaseCollector `](#BaseCollector) .
+* **name_to_path** (`dict[str, str]`): See [`BaseCollector `](#BaseCollector) .
 
 
 ------
 
 #### Base classes {: #ClassCollector-bases }
 
-* [`BaseCollector `](./#BaseCollector)
+* [`BaseCollector `](#BaseCollector)
 
 
 ------
@@ -123,15 +123,15 @@ Functions and methods.
 **Args**
 
 * **f** (`Callable[..., Any]`): Target function.
-* **abs_path** (`str`): See [`BaseCollector `](./#BaseCollector) .
-* **name_to_path** (`dict[str, str]`): See [`BaseCollector `](./#BaseCollector) .
+* **abs_path** (`str`): See [`BaseCollector `](#BaseCollector) .
+* **name_to_path** (`dict[str, str]`): See [`BaseCollector `](#BaseCollector) .
 
 
 ------
 
 #### Base classes {: #FunctionCollector-bases }
 
-* [`BaseCollector `](./#BaseCollector)
+* [`BaseCollector `](#BaseCollector)
 
 
 ------
@@ -162,19 +162,17 @@ class ModuleCollector(
 
 Module docs, submodules, classes, functions, and variables.
 
-test: `inari.cli.run`
-
 **Attributes**
 
 * **mod** (`ModuleType`): Module to make documents.
 * **submodules** (`dict[str, ModuleCollector]`): key-value pair of paths and submodules,
-    wrapped by [`ModuleCollector `](./#ModuleCollector) .
+    wrapped by [`ModuleCollector `](#ModuleCollector) .
 * **variables** (`list[VariableCollector]`): list of module-level variables, wrapped by
-    [`VariableCollector `](./#VariableCollector) .
+    [`VariableCollector `](#VariableCollector) .
 * **classes** (`list[ClassCollector]`): list of public classes, wrapped by
-    [`ClassCollector `](./#ClassCollector) .
+    [`ClassCollector `](#ClassCollector) .
 * **functions** (`list[FunctionCollector]`): list of public functions, wrapped by
-    [`FunctionCollector `](./#FunctionCollector) .
+    [`FunctionCollector `](#FunctionCollector) .
 * **out_dir** (`pathlib.Path`): Output directly.
 * **filename** (`str`): Output filename, like `index.md` , `submodule.md` .
 * **relpaths** (`dict[str, tuple[str, str]]`): Store relational paths. See
@@ -185,7 +183,7 @@ test: `inari.cli.run`
 
 * **mod** (`ModuleType`): Module to make documents.
 * **out_dir** (`Union[str,Path]`): Output directory.
-* **name_to_path** (`dict`): See [`BaseCollector `](./#BaseCollector) .
+* **name_to_path** (`dict`): See [`BaseCollector `](#BaseCollector) .
 * **out_name** (`str`): Output file name.
 * **enable_yaml_header** (`bool`): a flag for deciding whether to include
     yaml header.
@@ -195,7 +193,7 @@ test: `inari.cli.run`
 
 #### Base classes {: #ModuleCollector-bases }
 
-* [`BaseCollector `](./#BaseCollector)
+* [`BaseCollector `](#BaseCollector)
 
 
 ------
@@ -274,7 +272,7 @@ Create mapping between object name to relative path.
 
 ~~~markdown
 
-`ful.path.to.mod.cls` -> [`cls`](../../mod#cls)
+`ful.path.to.mod.cls` -> [`cls`](../../mod.md#cls)
 
 ~~~
 
@@ -332,8 +330,8 @@ Module variables and class properties.
 **Args**
 
 * **var** (`object`): Target object.
-* **name_to_path** (`dict[str, str]`): See [`BaseCollector `](./#BaseCollector) .
-* **abs_path** (`str`): See [`BaseCollector `](./#BaseCollector) .
+* **name_to_path** (`dict[str, str]`): See [`BaseCollector `](#BaseCollector) .
+* **abs_path** (`str`): See [`BaseCollector `](#BaseCollector) .
 * **name** (`str`): Fallback of `var.__name__` .
 * **doc** (`str`): Fallback of `inspect.getdoc(var)` .
 
@@ -342,7 +340,7 @@ Module variables and class properties.
 
 #### Base classes {: #VariableCollector-bases }
 
-* [`BaseCollector `](./#BaseCollector)
+* [`BaseCollector `](#BaseCollector)
 
 
 ------
