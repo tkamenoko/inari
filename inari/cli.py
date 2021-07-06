@@ -14,6 +14,12 @@ parser.add_argument(
     help="root directory/file name like `{out-dir}/{name}/{submods}` ."
     + " Default: module name.",
 )
+parser.add_argument(
+    "-y",
+    "--enable-yaml-header",
+    help="deciding whether to include yaml header. Default: `False`.",
+    action="store_true",
+)
 
 
 def run() -> None:
@@ -23,7 +29,10 @@ def run() -> None:
     root_name = args.module
     out_dir = args.out_dir
     out_name = args.name
+    enable_yaml_header = args.enable_yaml_header
     root_mod = importlib.import_module(root_name)
     # create docs.
-    mod = ModuleCollector(root_mod, out_dir, out_name=out_name)
+    mod = ModuleCollector(
+        root_mod, out_dir, out_name=out_name, enable_yaml_header=enable_yaml_header
+    )
     mod.write()

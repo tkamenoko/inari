@@ -15,6 +15,7 @@ from types import ModuleType
 from typing import Any, Callable, Optional
 
 from ._format import cleanup, modify_attrs
+from ._templates import build_yaml_header
 
 try:
     import markdown
@@ -91,6 +92,7 @@ class ModuleCollector(BaseCollector):
     * filename (`str`): Output filename, like `index.md` , `submodule.md` .
     * relpaths (`dict[str, tuple[str, str]]`): Store relational paths. See
         `inari.collectors.ModuleCollector.make_relpaths` .
+    * enable_yaml_header (`bool`): a flag for deciding whether to include yaml header.
 
     """
 
@@ -104,6 +106,7 @@ class ModuleCollector(BaseCollector):
     out_dir: pathlib.Path
     filename: str
     relpaths: dict[str, tuple[str, str]]
+    enable_yaml_header: bool
 
     _has_submodules: bool
     _module_digest: str
@@ -114,6 +117,7 @@ class ModuleCollector(BaseCollector):
         out_dir: os.PathLike[str],
         name_to_path: Optional[dict[str, str]] = None,
         out_name: Optional[str] = None,
+        enable_yaml_header: bool = False,
     ):
         """
         **Args**
@@ -122,6 +126,8 @@ class ModuleCollector(BaseCollector):
         * out_dir (`Union[str,Path]`): Output directory.
         * name_to_path (`dict`): See `inari.collectors.BaseCollector` .
         * out_name (`str`): Output file name.
+        * enable_yaml_header (`bool`): a flag for deciding whether to include
+            yaml header.
 
         """
         self.mod = mod
@@ -129,7 +135,7 @@ class ModuleCollector(BaseCollector):
         abs_path = "/" + mod.__name__.replace(".", "/")
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
         self.relpaths = {}
-        self._previous_hash = b""
+        self.enable_yaml_header = enable_yaml_header
 
         mod_path = inspect.getfile(mod)
         if mod_path.endswith("__init__.py"):
@@ -171,7 +177,10 @@ class ModuleCollector(BaseCollector):
             ]
             self.submodules = {
                 inspect.getfile(submod): ModuleCollector(
-                    submod, self.out_dir, self.name_to_path
+                    submod,
+                    self.out_dir,
+                    self.name_to_path,
+                    enable_yaml_header=self.enable_yaml_header,
                 )
                 for submod in submods
                 if inspect.getfile(submod) not in self.submodules
@@ -336,12 +345,19 @@ class ModuleCollector(BaseCollector):
         return doc
 
     def make_yaml_header(self, *, module_digest: str) -> str:
-        header = f"""
-        ---
-        module_digest: {module_digest}
-        ---
         """
-        return inspect.cleandoc(header)
+        Make yaml header from given values.
+
+        **Args**
+
+        * module_digest (`str`): md5 hash result in hex string.
+
+        """
+        if not self.enable_yaml_header:
+            return ""
+        header = build_yaml_header(module_digest=module_digest)
+
+        return header
 
     def remove_old_submodules(self) -> None:
         """
