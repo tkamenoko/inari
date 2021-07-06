@@ -351,7 +351,9 @@ class ModuleCollector(BaseCollector):
         if not self.enable_yaml_header:
             return ""
 
-        header = build_yaml_header(module_digest=self._module_digest)
+        header = build_yaml_header(
+            title=self.mod.__name__, module_digest=self._module_digest
+        )
         return header
 
     def remove_old_submodules(self) -> None:
