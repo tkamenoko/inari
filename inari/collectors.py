@@ -175,16 +175,20 @@ class ModuleCollector(BaseCollector):
                 for x in walk_packages(module_path)
                 if not x.name.startswith("_")
             ]
-            self.submodules = {
-                inspect.getfile(submod): ModuleCollector(
-                    submod,
-                    self.out_dir,
-                    self.name_to_path,
-                    enable_yaml_header=self.enable_yaml_header,
-                )
-                for submod in submods
-                if inspect.getfile(submod) not in self.submodules
-            }
+            new_submodules = {}
+            for submod in submods:
+                key = inspect.getfile(submod)
+                if key not in self.submodules.keys():
+                    new_submodules[key] = ModuleCollector(
+                        submod,
+                        self.out_dir,
+                        self.name_to_path,
+                        enable_yaml_header=self.enable_yaml_header,
+                    )
+                else:
+                    new_submodules[key] = self.submodules[key]
+
+            self.submodules = new_submodules
         else:
             # no submodules.
             self.submodules = {}
@@ -390,9 +394,9 @@ class ModuleCollector(BaseCollector):
 
     def write(self) -> None:
         """Write documents to files. Directories are created automatically."""
+        importlib.reload(self.mod)
         self.init_submodules()
         self.remove_old_submodules()
-        importlib.reload(self.mod)
         current_digest = hashlib.md5(
             inspect.getsource(self.mod).encode("utf-8")
         ).hexdigest()
@@ -402,7 +406,9 @@ class ModuleCollector(BaseCollector):
                 self.out_dir / self.filename, mode="r", newline="\n", encoding="utf-8"
             ) as index:
                 content = index.read()
-                matched = re.match(r"^---\n(.+)\n---\n", content, re.MULTILINE)
+                matched = re.match(
+                    r"^---\n(.+)\n---\n", content, re.MULTILINE | re.DOTALL
+                )
                 headers = matched.group(0) if matched else ""
         else:
             headers = ""

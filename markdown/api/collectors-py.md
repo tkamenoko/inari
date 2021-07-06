@@ -1,6 +1,6 @@
 ---
 title: inari.collectors
-module_digest: 73df73e7bf5a18a6c64ef868af15ba0e
+module_digest: 5adc7afbdc9f3eb243702a82b1584c51
 ---
 
 # Module inari.collectors
@@ -162,7 +162,7 @@ class ModuleCollector(
 
 Module docs, submodules, classes, functions, and variables.
 
-test: [`run `](../cli-py#run)
+test: `inari.cli.run`
 
 **Attributes**
 
