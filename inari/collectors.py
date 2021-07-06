@@ -251,7 +251,7 @@ class ModuleCollector(BaseCollector):
         self.init_functions()
         self.make_relpaths()
 
-        yaml_header = self.make_yaml_header(module_digest=self._module_digest)
+        yaml_header = self.make_yaml_header()
 
         mod_head = f"# Module {self.mod.__name__}"
         mod_ds = self.doc
@@ -344,19 +344,14 @@ class ModuleCollector(BaseCollector):
             )
         return doc
 
-    def make_yaml_header(self, *, module_digest: str) -> str:
+    def make_yaml_header(self) -> str:
         """
         Make yaml header from given values.
-
-        **Args**
-
-        * module_digest (`str`): md5 hash result in hex string.
-
         """
         if not self.enable_yaml_header:
             return ""
-        header = build_yaml_header(module_digest=module_digest)
 
+        header = build_yaml_header(module_digest=self._module_digest)
         return header
 
     def remove_old_submodules(self) -> None:
