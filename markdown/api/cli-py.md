@@ -1,4 +1,5 @@
 ---
+title: inari.cli
 module_digest: 41fc8984343922517bdad7e98e843786
 ---
 

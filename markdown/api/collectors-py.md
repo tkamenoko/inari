@@ -1,5 +1,6 @@
 ---
-module_digest: 98b0e2f9aa6aefc59ebd8687cb9c046b
+title: inari.collectors
+module_digest: 73df73e7bf5a18a6c64ef868af15ba0e
 ---
 
 # Module inari.collectors

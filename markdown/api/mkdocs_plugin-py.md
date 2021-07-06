@@ -1,4 +1,5 @@
 ---
+title: inari.mkdocs_plugin
 module_digest: 6b726e50f73aa227388d65a8d794e4aa
 ---
 
