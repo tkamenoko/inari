@@ -1,4 +1,5 @@
 ---
+title: inari
 module_digest: 482d77437f33ac221ea466619a77ff6d
 ---
 

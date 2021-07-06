@@ -1,5 +1,6 @@
 ---
-module_digest: cb19ef378782b0630ec752e61431a6ed
+title: inari.collectors
+module_digest: 5adc7afbdc9f3eb243702a82b1584c51
 ---
 
 # Module inari.collectors
@@ -282,14 +283,10 @@ Create mapping between object name to relative path.
 [**make_yaml_header**](#ModuleCollector.make_yaml_header){: #ModuleCollector.make_yaml_header }
 
 ```python
-def make_yaml_header(self, *, module_digest: str) -> str
+def make_yaml_header(self) -> str
 ```
 
 Make yaml header from given values.
-
-**Args**
-
-* **module_digest** (`str`): md5 hash result in hex string.
 
 ------
 

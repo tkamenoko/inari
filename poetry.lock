@@ -163,6 +163,17 @@ watchdog = ">=2.0"
 i18n = ["babel (>=2.9.0)"]
 
 [[package]]
+name = "mkdocs-literate-nav"
+version = "0.4.0"
+description = "MkDocs plugin to specify the navigation in Markdown instead of YAML"
+category = "dev"
+optional = false
+python-versions = ">=3.6,<4.0"
+
+[package.dependencies]
+mkdocs = ">=1.0.3,<2.0.0"
+
+[[package]]
 name = "mkdocs-material"
 version = "7.1.9"
 description = "A Material Design theme for MkDocs"
@@ -405,7 +416,7 @@ mkdocs = ["mkdocs"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "1683ae268ae85b34911532ad8c7bc8f166bee8cb0f5df61844195a090db72b74"
+content-hash = "752613d5d59b309b5402650313ecb72ab6b011f787fd45b37af58c81352fd8ca"
 
 [metadata.files]
 appdirs = [
@@ -490,6 +501,10 @@ mergedeep = [
 mkdocs = [
     {file = "mkdocs-1.2.1-py3-none-any.whl", hash = "sha256:11141126e5896dd9d279b3e4814eb488e409a0990fb638856255020406a8e2e7"},
     {file = "mkdocs-1.2.1.tar.gz", hash = "sha256:6e0ea175366e3a50d334597b0bc042b8cebd512398cdd3f6f34842d0ef524905"},
+]
+mkdocs-literate-nav = [
+    {file = "mkdocs-literate-nav-0.4.0.tar.gz", hash = "sha256:29bf383170b80200d16f0d8528f4925ae96982677c8a98f84af70343a3b38bcf"},
+    {file = "mkdocs_literate_nav-0.4.0-py3-none-any.whl", hash = "sha256:2012ac97bc2316890ac35deabd653fd3c6a7434923d572de965c5b6c80f09537"},
 ]
 mkdocs-material = [
     {file = "mkdocs-material-7.1.9.tar.gz", hash = "sha256:5a2fd487f769f382a7c979e869e4eab1372af58d7dec44c4365dd97ef5268cb5"},
