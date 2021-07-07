@@ -75,8 +75,6 @@ class ModuleCollector(BaseCollector):
     """
     Module docs, submodules, classes, functions, and variables.
 
-    test: `inari.cli.run`
-
     **Attributes**
 
     * mod (`ModuleType`): Module to make documents.
@@ -313,7 +311,7 @@ class ModuleCollector(BaseCollector):
 
         ~~~markdown
 
-        `ful.path.to.mod.cls` -> [`cls`](../../mod#cls)
+        `ful.path.to.mod.cls` -> [`cls`](../../mod.md#cls)
 
         ~~~
 
@@ -324,9 +322,18 @@ class ModuleCollector(BaseCollector):
                 hash_ = "#" + hash_
             else:
                 relpath, hash_ = path, ""
-            relpath = os.path.relpath(relpath, self.abs_path)
-            if relpath.endswith("."):
-                relpath = relpath + "/"
+            if not relpath.endswith("-py"):
+                relpath = f"{relpath}/index".replace("//", "/")
+
+            relpath = (
+                os.path.relpath(relpath, self.abs_path)
+                .removeprefix("./")
+                .removeprefix(".")
+            )
+
+            if relpath:
+                relpath = relpath + ".md"
+
             self.relpaths[name] = (relpath, hash_)
 
     def make_links(self, doc: str) -> str:
@@ -338,8 +345,9 @@ class ModuleCollector(BaseCollector):
         """
 
         for long_name, rel_hash in self.relpaths.items():
-            if rel_hash[1]:
-                short_name = rel_hash[1][1:]
+            _, hash_id = rel_hash
+            if hash_id:
+                short_name = hash_id.removeprefix("#")
             else:
                 short_name = long_name.rsplit(".", 1)[-1]
             # append a space after short_name because of avoiding unexpected replacing.
@@ -396,6 +404,7 @@ class ModuleCollector(BaseCollector):
         """Write documents to files. Directories are created automatically."""
         importlib.reload(self.mod)
         self.init_submodules()
+        os.makedirs(self.out_dir, exist_ok=True)
         self.remove_old_submodules()
         current_digest = hashlib.md5(
             inspect.getsource(self.mod).encode("utf-8")
@@ -417,8 +426,6 @@ class ModuleCollector(BaseCollector):
 
         if modified:
             self._module_digest = current_digest
-            # create dir.
-            os.makedirs(self.out_dir, exist_ok=True)
             # write self.
             with open(
                 self.out_dir / self.filename, mode="w", newline="\n", encoding="utf-8"

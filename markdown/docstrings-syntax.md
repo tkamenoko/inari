@@ -54,7 +54,7 @@ Sample function.
 
 ## Cross Reference
 
-`inari` generates cross reference in API documents. `module.submodule.function` will be converted to appropriate relative link like `` [`function `](../submodule#function) `` .
+`inari` generates cross reference in API documents. `module.submodule.function` will be converted to appropriate relative link like `` [`function `](submodule.md#function) `` .
 
 !!! note
 If you installed `inari` without `MkDocs` , you have to install [`Python-Markdown`](https://python-markdown.github.io/) and enable [Attribute Lists](https://python-markdown.github.io/extensions/attr_list/) extension to create hash anchors.
@@ -95,7 +95,7 @@ class SampleClass:
 def func(alpha: str, bata: str) -> str
 ```
 
-Link to some method like [`SampleClass.some_method `](../anothermodule-py#SampleClass.some_method)
+Link to some method like [`SampleClass.some_method `](anothermodule-py.md#SampleClass.some_method)
 
 <!-- docs/module/anothermodule-py.md -->
 
@@ -109,7 +109,7 @@ Link to some method like [`SampleClass.some_method `](../anothermodule-py#Sample
 class SampleClass()
 ```
 
-Make reference like [`func `](../submodule-py#func)
+Make reference like [`func `](submodule-py.md#func)
 
 ---
 
