@@ -127,12 +127,13 @@ def method(self, bar: int) -> str
 
 Method docstrings.
 
-Cross reference available. [`func `](./#func)
+Cross reference available. [`func `](#func)
 
 **Args**
 
 - **bar** (`int`)
-  **Returns**
+
+**Returns**
 
 - `str`
 
