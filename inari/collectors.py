@@ -16,7 +16,7 @@ from typing import Any, Callable, Optional
 
 from ._internal._format import cleanup, modify_attrs
 from ._internal._path import get_relative_path
-from ._templates import build_yaml_header
+from ._internal._templates import build_yaml_header
 
 try:
     import markdown
