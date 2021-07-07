@@ -16,6 +16,7 @@ from typing import Any, Callable, Optional
 
 from ._format import cleanup, modify_attrs
 from ._templates import build_yaml_header
+from ._internal._path import get_relative_path
 
 try:
     import markdown
@@ -173,20 +174,18 @@ class ModuleCollector(BaseCollector):
                 for x in walk_packages(module_path)
                 if not x.name.startswith("_")
             ]
-            new_submodules = {}
             for submod in submods:
                 key = inspect.getfile(submod)
-                if key not in self.submodules.keys():
-                    new_submodules[key] = ModuleCollector(
+                self.submodules.setdefault(
+                    key,
+                    ModuleCollector(
                         submod,
                         self.out_dir,
                         self.name_to_path,
                         enable_yaml_header=self.enable_yaml_header,
-                    )
-                else:
-                    new_submodules[key] = self.submodules[key]
+                    ),
+                )
 
-            self.submodules = new_submodules
         else:
             # no submodules.
             self.submodules = {}
@@ -325,11 +324,7 @@ class ModuleCollector(BaseCollector):
             if not relpath.endswith("-py"):
                 relpath = f"{relpath}/index".replace("//", "/")
 
-            relpath = (
-                os.path.relpath(relpath, self.abs_path)
-                .removeprefix("./")
-                .removeprefix(".")
-            )
+            relpath = get_relative_path(self.abs_path, relpath)
 
             if relpath:
                 relpath = relpath + ".md"
