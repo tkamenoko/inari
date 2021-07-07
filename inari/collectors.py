@@ -14,9 +14,9 @@ from pkgutil import walk_packages
 from types import ModuleType
 from typing import Any, Callable, Optional
 
-from ._format import cleanup, modify_attrs
-from ._templates import build_yaml_header
+from ._internal._format import cleanup, modify_attrs
 from ._internal._path import get_relative_path
+from ._templates import build_yaml_header
 
 try:
     import markdown
@@ -489,14 +489,14 @@ class VariableCollector(BaseCollector):
     def doc_str(self) -> str:
         if self._should_skip:
             return ""
-        h = ""
+        attributes = ""
         if markdown:
-            h = f"{{: {self.hash_} }}"
+            attributes = f"{{: {self.hash_} }}"
         if self.doc:
             doc = f"* {self.name} {self.doc}"
         else:
             doc = f"* {self.name}"
-        return modify_attrs(doc, h)
+        return modify_attrs(doc, attributes)
 
 
 class ClassCollector(BaseCollector):
