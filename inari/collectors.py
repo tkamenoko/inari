@@ -14,7 +14,7 @@ from pkgutil import walk_packages
 from types import ModuleType
 from typing import Any, Callable, Optional
 
-from ._internal._format import cleanup, modify_attrs
+from ._internal._format import cleanup, join_fragments, modify_attrs
 from ._internal._path import get_relative_path
 from ._internal._templates import build_yaml_header
 
@@ -615,7 +615,7 @@ class ClassCollector(BaseCollector):
         else:
             init_doc = ""
         init_doc = modify_attrs(init_doc)
-        cls_doc = "\n\n".join([defs, self.doc, init_doc])
+        cls_doc = join_fragments([defs, self.doc, init_doc])
         # base classes
         bases_doc = ""
         bases = [set(c.mro()) for c in self.cls.mro() if c is not self.cls]
@@ -643,9 +643,9 @@ class ClassCollector(BaseCollector):
         h = ""
         if markdown:
             h = f"{{: {self.hash_}-attrs }}"
-        vars_head = f"\n\n------\n\n#### Instance attributes {h}\n"
+        vars_head = f"------\n\n#### Instance attributes {h}\n"
         vars_ = [x.doc_str() for x in self.variables]
-        vars_list = "\n\n".join(vars_)
+        vars_list = join_fragments(vars_)
         if not vars_:
             vars_head = ""
         vars_doc = vars_head + "\n" + vars_list
@@ -653,14 +653,17 @@ class ClassCollector(BaseCollector):
         h = ""
         if markdown:
             h = f"{{: {self.hash_}-methods }}"
-        methods_head = f"\n\n------\n\n#### Methods {h}\n"
-        methods = [x.doc_str() for x in self.methods]
-        methods_list = "\n\n------\n\n".join(methods)
-        if not methods:
-            methods_head = ""
-        methods_doc = methods_head + "\n" + methods_list
+        methods_head = f"------\n\n#### Methods {h}\n"
+        methods = [x.doc_str().strip() for x in self.methods]
+        if methods:
+            methods_list = "\n\n------\n\n".join(methods)
+            methods_doc = methods_head + "\n" + methods_list
+        else:
+            methods_doc = ""
 
-        return "\n\n".join([head, cls_doc, bases_doc, vars_doc, methods_doc])
+        docs = join_fragments([head, cls_doc, bases_doc, vars_doc, methods_doc])
+
+        return docs
 
 
 class FunctionCollector(BaseCollector):
@@ -723,5 +726,5 @@ class FunctionCollector(BaseCollector):
             args = re.sub(r"\n(    )+", "\n    ", args)
         source = f"{args}){returns}".strip()
         defs = f"```python\n{source}\n```"
-        docs = "\n\n".join([head, defs, self.doc])
+        docs = join_fragments([head, defs, self.doc])
         return docs

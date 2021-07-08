@@ -3,10 +3,15 @@ String formatters for internal use.
 """
 
 import re
+from typing import Iterable
 
 
 def cleanup(doc: str) -> str:
     return re.sub(r"\n\n\n\n+", "\n\n\n", doc).strip() + "\n"
+
+
+def join_fragments(fragments: Iterable[str]) -> str:
+    return "\n\n".join([x.strip() for x in fragments if x.strip()])
 
 
 def modify_attrs(doc: str, attributes: str = "") -> str:

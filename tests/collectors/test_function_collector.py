@@ -1,9 +1,9 @@
 from inspect import cleandoc
-from tempfile import TemporaryDirectory
-from typing import Iterator
 
 from inari.collectors import FunctionCollector
 from ward import fixture, test, using
+
+from .fixtures import temp_dir
 
 
 def target_function(
@@ -58,13 +58,7 @@ def expected_doc() -> str:
     return cleandoc(doc)
 
 
-@fixture
-def temp_dir() -> Iterator[str]:
-    with TemporaryDirectory() as directory:
-        yield directory
-
-
-@test("should return correct document.")
+@test("`doc_str` should return correct document.")
 @using(out_dir=temp_dir, result=expected_doc)
 def _(out_dir: str, result: str) -> None:
     collector = FunctionCollector(target_function, {}, out_dir)
