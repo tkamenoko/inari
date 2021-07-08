@@ -68,7 +68,14 @@ class BaseCollector:
         self.abs_path = abs_path
 
     def doc_str(self) -> str:
-        """Create documents from its contents."""
+        """
+        Create documents from its contents.
+
+        **Returns**
+
+        * `str`: Created from docstrings and annotations.
+
+        """
         raise NotImplementedError
 
 
@@ -684,6 +691,7 @@ class FunctionCollector(BaseCollector):
         self.function = f
         self.doc = inspect.getdoc(f) or ""
         self.doc = modify_attrs(self.doc)
+
         module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py", "")
         if "#" in abs_path:
             abs_path = f"{abs_path}.{f.__name__}"
