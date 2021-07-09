@@ -12,9 +12,9 @@ from functools import reduce
 from importlib import import_module
 from pkgutil import walk_packages
 from types import ModuleType
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Union
 
-from ._internal._format import cleanup, join_fragments, modify_attrs
+from ._internal._format import join_fragments, modify_attrs
 from ._internal._path import get_relative_path
 from ._internal._templates import build_yaml_header
 
@@ -120,7 +120,7 @@ class ModuleCollector(BaseCollector):
     def __init__(
         self,
         mod: ModuleType,
-        out_dir: os.PathLike[str],
+        out_dir: Union[str, os.PathLike[str]],
         name_to_path: Optional[dict[str, str]] = None,
         out_name: Optional[str] = None,
         enable_yaml_header: bool = False,
@@ -270,13 +270,13 @@ class ModuleCollector(BaseCollector):
 
         submodules_head = "## Submodules"
         submodules = [submod_to_link(x.mod.__name__) for x in self.submodules.values()]
-        submodules_list = "\n\n".join(submodules)
+        submodules_list = join_fragments(submodules)
         if not submodules:
             submodules_head = ""
 
         vars_head = "## Variables"
         vars_ = [x.doc_str() for x in self.variables]
-        vars_list = "\n\n".join(vars_)
+        vars_list = join_fragments(vars_)
         if not vars_:
             vars_head = ""
 
@@ -292,7 +292,7 @@ class ModuleCollector(BaseCollector):
         if not functions:
             functions_head = ""
 
-        doc = "\n\n".join(
+        doc = join_fragments(
             [
                 yaml_header,
                 mod_head,
@@ -309,7 +309,7 @@ class ModuleCollector(BaseCollector):
         )
 
         doc = self.make_links(doc)
-        return cleanup(doc)
+        return doc
 
     def make_relpaths(self) -> None:
         """

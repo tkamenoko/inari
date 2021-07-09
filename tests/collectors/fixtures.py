@@ -1,3 +1,11 @@
+"""
+This module itself is also a test fixture.
+
+`tests.collectors.fixtures.TargetClass` should be internal link.
+
+"""
+
+
 from inspect import cleandoc
 from tempfile import TemporaryDirectory
 from typing import Iterator
@@ -160,10 +168,96 @@ class TargetClass(object):
         return
 
 
-"""(`str`): variable docs."""
 target_variable = "lorem"
+"""(`str`): variable docs."""
 
 _var_doc = """(`str`): variable docs."""
 _var_expected_docs = (
     "* **target_variable**{: #target_variable } (`str`): variable docs."
 )
+
+
+_mod_expected_docs = """
+    # Module tests.collectors.fixtures
+
+    This module itself is also a test fixture.
+
+    [`TargetClass `](#TargetClass) should be internal link.
+
+    ## Variables
+
+    * **target_variable**{: #target_variable } (`str`): variable docs.
+
+    ## Classes
+
+    ### TargetClass {: #TargetClass }
+
+    ```python
+    class TargetClass(self, num: int, foo: str)
+    ```
+
+    Document for this class.
+
+    **Attributes**
+
+    * **num** (`int`): number.
+    * **foo** (`str`): string.
+
+    **Args**
+
+    * **num** (`int`): number.
+    * **foo** (`str`): string.
+
+    ------
+
+    #### Instance attributes {: #TargetClass-attrs }
+
+    * **instance_attr**{: #TargetClass.instance_attr } (`str`): Should be documented.
+
+    ------
+
+    #### Methods {: #TargetClass-methods }
+
+    [**method1**](#TargetClass.method1){: #TargetClass.method1 }
+
+    ```python
+    def method1(self, *args: str) -> list[str]
+    ```
+
+    Method documents.
+
+    **Args**
+
+    * **args** (`str`): Variadic arguments.
+
+    **Returns**
+
+    * `list[str]`: Return given args.
+
+    ## Functions
+
+    ### target_function {: #target_function }
+
+    ```python
+    def target_function(
+        foo: str, bar: int, /, baz: bool, spam: str = "foobar", *, egg: bytes = b""
+    ) -> dict[str, str]
+    ```
+
+    This function is a test fixture.
+
+    **Args**
+
+    * **foo** (`str`): Lorem ipsum.
+    * **bar** (`int`): *italic*
+    * **baz** (`bool`): **emphasize**
+    * **spam** (`str`): Multiline description
+        should be indented.
+    * **egg** (`bytes`): `backtick`
+
+    **Returns**
+
+    * `dict[str, str]`: Return type.
+    """
+
+_mod_expected_docs = cleandoc(_mod_expected_docs)
