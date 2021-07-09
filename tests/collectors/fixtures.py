@@ -112,3 +112,10 @@ class TargetClass(object):
 @fixture
 def target_class() -> Type[TargetClass]:
     return TargetClass
+
+
+"""(`str`): variable docs."""
+target_variable = "lorem"
+
+_doc = """(`str`): variable docs."""
+_expected_docs = "* **target_variable**{: #target_variable } (`str`): variable docs."
