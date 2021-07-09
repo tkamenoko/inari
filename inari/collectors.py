@@ -12,10 +12,11 @@ from functools import reduce
 from importlib import import_module
 from pkgutil import walk_packages
 from types import ModuleType
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Union
 
-from ._format import cleanup, modify_attrs
-from ._templates import build_yaml_header
+from ._internal._format import join_fragments, modify_attrs
+from ._internal._path import get_relative_path
+from ._internal._templates import build_yaml_header
 
 try:
     import markdown
@@ -67,7 +68,14 @@ class BaseCollector:
         self.abs_path = abs_path
 
     def doc_str(self) -> str:
-        """Create documents from its contents."""
+        """
+        Create documents from its contents.
+
+        **Returns**
+
+        * `str`: Created from docstrings and annotations.
+
+        """
         raise NotImplementedError
 
 
@@ -112,7 +120,7 @@ class ModuleCollector(BaseCollector):
     def __init__(
         self,
         mod: ModuleType,
-        out_dir: os.PathLike[str],
+        out_dir: Union[str, os.PathLike[str]],
         name_to_path: Optional[dict[str, str]] = None,
         out_name: Optional[str] = None,
         enable_yaml_header: bool = False,
@@ -173,20 +181,18 @@ class ModuleCollector(BaseCollector):
                 for x in walk_packages(module_path)
                 if not x.name.startswith("_")
             ]
-            new_submodules = {}
             for submod in submods:
                 key = inspect.getfile(submod)
-                if key not in self.submodules.keys():
-                    new_submodules[key] = ModuleCollector(
+                self.submodules.setdefault(
+                    key,
+                    ModuleCollector(
                         submod,
                         self.out_dir,
                         self.name_to_path,
                         enable_yaml_header=self.enable_yaml_header,
-                    )
-                else:
-                    new_submodules[key] = self.submodules[key]
+                    ),
+                )
 
-            self.submodules = new_submodules
         else:
             # no submodules.
             self.submodules = {}
@@ -264,13 +270,13 @@ class ModuleCollector(BaseCollector):
 
         submodules_head = "## Submodules"
         submodules = [submod_to_link(x.mod.__name__) for x in self.submodules.values()]
-        submodules_list = "\n\n".join(submodules)
+        submodules_list = join_fragments(submodules)
         if not submodules:
             submodules_head = ""
 
         vars_head = "## Variables"
         vars_ = [x.doc_str() for x in self.variables]
-        vars_list = "\n\n".join(vars_)
+        vars_list = join_fragments(vars_)
         if not vars_:
             vars_head = ""
 
@@ -286,7 +292,7 @@ class ModuleCollector(BaseCollector):
         if not functions:
             functions_head = ""
 
-        doc = "\n\n".join(
+        doc = join_fragments(
             [
                 yaml_header,
                 mod_head,
@@ -303,7 +309,7 @@ class ModuleCollector(BaseCollector):
         )
 
         doc = self.make_links(doc)
-        return cleanup(doc)
+        return doc
 
     def make_relpaths(self) -> None:
         """
@@ -325,11 +331,7 @@ class ModuleCollector(BaseCollector):
             if not relpath.endswith("-py"):
                 relpath = f"{relpath}/index".replace("//", "/")
 
-            relpath = (
-                os.path.relpath(relpath, self.abs_path)
-                .removeprefix("./")
-                .removeprefix(".")
-            )
+            relpath = get_relative_path(self.abs_path, relpath)
 
             if relpath:
                 relpath = relpath + ".md"
@@ -494,14 +496,14 @@ class VariableCollector(BaseCollector):
     def doc_str(self) -> str:
         if self._should_skip:
             return ""
-        h = ""
+        attributes = ""
         if markdown:
-            h = f"{{: {self.hash_} }}"
+            attributes = f"{{: {self.hash_} }}"
         if self.doc:
             doc = f"* {self.name} {self.doc}"
         else:
             doc = f"* {self.name}"
-        return modify_attrs(doc, h)
+        return modify_attrs(doc, attributes)
 
 
 class ClassCollector(BaseCollector):
@@ -613,7 +615,7 @@ class ClassCollector(BaseCollector):
         else:
             init_doc = ""
         init_doc = modify_attrs(init_doc)
-        cls_doc = "\n\n".join([defs, self.doc, init_doc])
+        cls_doc = join_fragments([defs, self.doc, init_doc])
         # base classes
         bases_doc = ""
         bases = [set(c.mro()) for c in self.cls.mro() if c is not self.cls]
@@ -641,9 +643,9 @@ class ClassCollector(BaseCollector):
         h = ""
         if markdown:
             h = f"{{: {self.hash_}-attrs }}"
-        vars_head = f"\n\n------\n\n#### Instance attributes {h}\n"
+        vars_head = f"------\n\n#### Instance attributes {h}\n"
         vars_ = [x.doc_str() for x in self.variables]
-        vars_list = "\n\n".join(vars_)
+        vars_list = join_fragments(vars_)
         if not vars_:
             vars_head = ""
         vars_doc = vars_head + "\n" + vars_list
@@ -651,14 +653,17 @@ class ClassCollector(BaseCollector):
         h = ""
         if markdown:
             h = f"{{: {self.hash_}-methods }}"
-        methods_head = f"\n\n------\n\n#### Methods {h}\n"
-        methods = [x.doc_str() for x in self.methods]
-        methods_list = "\n\n------\n\n".join(methods)
-        if not methods:
-            methods_head = ""
-        methods_doc = methods_head + "\n" + methods_list
+        methods_head = f"------\n\n#### Methods {h}\n"
+        methods = [x.doc_str().strip() for x in self.methods]
+        if methods:
+            methods_list = "\n\n------\n\n".join(methods)
+            methods_doc = methods_head + "\n" + methods_list
+        else:
+            methods_doc = ""
 
-        return "\n\n".join([head, cls_doc, bases_doc, vars_doc, methods_doc])
+        docs = join_fragments([head, cls_doc, bases_doc, vars_doc, methods_doc])
+
+        return docs
 
 
 class FunctionCollector(BaseCollector):
@@ -689,6 +694,7 @@ class FunctionCollector(BaseCollector):
         self.function = f
         self.doc = inspect.getdoc(f) or ""
         self.doc = modify_attrs(self.doc)
+
         module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py", "")
         if "#" in abs_path:
             abs_path = f"{abs_path}.{f.__name__}"
@@ -720,5 +726,5 @@ class FunctionCollector(BaseCollector):
             args = re.sub(r"\n(    )+", "\n    ", args)
         source = f"{args}){returns}".strip()
         defs = f"```python\n{source}\n```"
-        docs = "\n\n".join([head, defs, self.doc])
+        docs = join_fragments([head, defs, self.doc])
         return docs

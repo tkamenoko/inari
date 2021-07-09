@@ -41,6 +41,7 @@ mkdocs-material = "^7.1.9"
 black = "^21.6b0"
 poethepoet = "^0.10.0"
 mkdocs-literate-nav = "^0.4.0"
+ward = "^0.62.1-beta.0"
 [tool.poetry.extras]
 mkdocs = ["mkdocs"]
 
@@ -52,9 +53,15 @@ build-backend = "poetry.masonry.api"
 ignore_missing_imports = true
 strict = true
 
+[tool.ward]
+path = ["tests"]
+order = "random"
+show-diff-symbols = true
+
 [tool.poe.tasks]
-build = "mkdocs build"
-serve = "mkdocs serve"
+"doc:build" = "mkdocs build"
+"doc:serve" = "mkdocs serve"
+test = "ward"
 types = "mypy ./inari/"
 lint = "flake8 --max-line-length 88 ./inari/"
 fmt = "black ./inari/"
