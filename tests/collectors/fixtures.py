@@ -49,6 +49,25 @@ class TargetClass(object):
 
     * **instance_attr**{: #TargetClass.instance_attr } (`str`): Should be documented.
 
+    ------
+
+    #### Methods {: #TargetClass-methods }
+
+    [**method1**](#TargetClass.method1){: #TargetClass.method1 }
+
+    ```python
+    def method1(self, *args: str) -> list[str]
+    ```
+
+    Method documents.
+
+    **Args**
+
+    * **args** (`str`): Variadic arguments.
+
+    **Returns**
+
+    * `list[str]`: Return given args.
     """.strip()
 
     def __init__(self, num: int, foo: str) -> None:
@@ -68,6 +87,26 @@ class TargetClass(object):
         (`str`): Should be documented.
         """
         return ""
+
+    def method1(self, *args: str) -> list[str]:
+        """
+        Method documents.
+
+        **Args**
+
+        * args (`str`): Variadic arguments.
+
+        **Returns**
+
+        * `list[str]`: Return given args.
+        """
+        return [*args]
+
+    def _should_be_ignored(self) -> None:
+        """
+        This document should be ignored.
+        """
+        return
 
 
 @fixture
