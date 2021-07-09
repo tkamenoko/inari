@@ -6,7 +6,7 @@ from ward import fixture
 
 
 @fixture
-def temp_dir() -> Iterator[str]:
+def _temp_dir() -> Iterator[str]:
     with TemporaryDirectory() as directory:
         yield directory
 
