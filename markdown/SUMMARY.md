@@ -1,0 +1,4 @@
+- [Home](index.md)
+- [Getting Started](getting-started.md)
+- [Docstrings Syntax](docstrings-syntax.md)
+- [API](api/)

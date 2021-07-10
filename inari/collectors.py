@@ -1,19 +1,22 @@
 """
-Store module structures, members, and docstrings.
+collectors -  Store module members, and build markdown documents from docstrings.
 """
 
+import hashlib
+import importlib
 import inspect
 import os
 import pathlib
 import re
-import shutil
 from functools import reduce
 from importlib import import_module
 from pkgutil import walk_packages
 from types import ModuleType
-from typing import Any, Callable, List, Union
+from typing import Any, Callable, Optional, Union
 
-from ._format import cleanup, modify_attrs
+from ._internal._format import join_fragments, modify_attrs
+from ._internal._path import get_relative_path
+from ._internal._templates import build_yaml_header
 
 try:
     import markdown
@@ -21,7 +24,7 @@ except ImportError:
     markdown = None
 
 
-def is_var(obj) -> bool:
+def is_var(obj: object) -> bool:
     """Utility for filtering unexpected objects."""
 
     return not any(
@@ -34,95 +37,111 @@ def is_var(obj) -> bool:
     )
 
 
-class BaseStruct:
+class BaseCollector:
     """
     Base class for collecting objects with docstrings.
 
     **Attributes**
 
-    * name_to_path (`dict`): Mapping of `{"module.name.class": "module/name#class"}` .
+    * name_to_path (`dict[str, str]`):
+        Mapping of `{"module.name.class": "module/name#class"}` .
     * doc (`str`): Docstrings of the object.
-    * abs_path (`str`): Absolute path of the object. Root is `out_dir` .
+    * abs_path (`str`): Absolute path of the object.
 
     """
 
-    name_to_path: dict
+    name_to_path: dict[str, str]
     doc: str
     abs_path: str
 
-    def __init__(self, abs_path="", name_to_path: dict = None):
+    def __init__(
+        self, abs_path: str = "", name_to_path: Optional[dict[str, str]] = None
+    ):
         """
         **Args**
 
         * abs_path (`str`): Absolute path of the object.
-        * name_to_path (`dict`): Mapping of name and path.
+        * name_to_path (`dict[str, str]`): Mapping of name and path.
 
         """
-        if name_to_path is None:
-            name_to_path = {}
-        self.name_to_path = name_to_path
+        self.name_to_path = name_to_path or {}
         self.abs_path = abs_path
 
     def doc_str(self) -> str:
-        """Create documents from its contents."""
+        """
+        Create documents from its contents.
+
+        **Returns**
+
+        * `str`: Created from docstrings and annotations.
+
+        """
         raise NotImplementedError
 
 
-class ModStruct(BaseStruct):
+class ModuleCollector(BaseCollector):
     """
-    Module docs, submodules, classes, funcs, and variables.
-
-    test: `inari.cli.run`
+    Module docs, submodules, classes, functions, and variables.
 
     **Attributes**
 
     * mod (`ModuleType`): Module to make documents.
-    * submods (`List[ModStruct]`): List of submodules, wrapped by
-        `inari.structs.ModStruct` .
-    * vars (`List[VarStruct]`): List of module-level variables, wrapped by
-        `inari.structs.VarStruct` .
-    * classes (`List[ClsStruct]`): List of public classes, wrapped by
-        `inari.structs.ClsStruct` .
-    * funcs (`List[FuncStruct]`): List of public functions, wrapped by
-        `inari.structs.FuncStruct` .
+    * submodules (`dict[str, ModuleCollector]`): key-value pair of paths and submodules,
+        wrapped by `inari.collectors.ModuleCollector` .
+    * variables (`list[VariableCollector]`): list of module-level variables, wrapped by
+        `inari.collectors.VariableCollector` .
+    * classes (`list[ClassCollector]`): list of public classes, wrapped by
+        `inari.collectors.ClassCollector` .
+    * functions (`list[FunctionCollector]`): list of public functions, wrapped by
+        `inari.collectors.FunctionCollector` .
     * out_dir (`pathlib.Path`): Output directly.
     * filename (`str`): Output filename, like `index.md` , `submodule.md` .
-    * relpaths (`dict`): Store relational paths. See
-        `inari.structs.ModStruct.make_relpaths` .
+    * relpaths (`dict[str, tuple[str, str]]`): Store relational paths. See
+        `inari.collectors.ModuleCollector.make_relpaths` .
+    * enable_yaml_header (`bool`): a flag for deciding whether to include yaml header.
 
     """
 
     mod: ModuleType
 
-    submods: List["ModStruct"]
-    vars: List["VarStruct"]
-    classes: List["ClsStruct"]
-    funcs: List["FuncStruct"]
+    submodules: dict[str, "ModuleCollector"]
+    variables: list["VariableCollector"]
+    classes: list["ClassCollector"]
+    functions: list["FunctionCollector"]
 
     out_dir: pathlib.Path
     filename: str
-    relpaths: dict
+    relpaths: dict[str, tuple[str, str]]
+    enable_yaml_header: bool
+
+    _has_submodules: bool
+    _module_digest: str
 
     def __init__(
         self,
         mod: ModuleType,
-        out_dir: Union[str, pathlib.Path],
-        name_to_path: dict = None,
-        out_name: str = None,
+        out_dir: Union[str, os.PathLike[str]],
+        name_to_path: Optional[dict[str, str]] = None,
+        out_name: Optional[str] = None,
+        enable_yaml_header: bool = False,
     ):
         """
         **Args**
 
         * mod (`ModuleType`): Module to make documents.
-        * out_dir (`Union[str,Path]`): Output directoly.
-        * name_to_path (`dict`): See `inari.structs.BaseStruct` .
-        * out_name (`str`): If given, name of output file/directoly will be orverridden.
+        * out_dir (`Union[str, Path]`): Output directory.
+        * name_to_path (`dict`): See `inari.collectors.BaseCollector` .
+        * out_name (`str`): Output file name.
+        * enable_yaml_header (`bool`): a flag for deciding whether to include
+            yaml header.
 
         """
         self.mod = mod
+        self.submodules = {}
         abs_path = "/" + mod.__name__.replace(".", "/")
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
         self.relpaths = {}
+        self.enable_yaml_header = enable_yaml_header
 
         mod_path = inspect.getfile(mod)
         if mod_path.endswith("__init__.py"):
@@ -132,21 +151,11 @@ class ModStruct(BaseStruct):
                 out_name or (mod.__name__.rsplit(".", 1)[-1])
             )
             self.filename = "index.md"
-            # clean old docs.
-            if os.path.exists(self.out_dir):
-                shutil.rmtree(self.out_dir)
-            # get submodules.
-            submods = [
-                import_module(f"{mod.__name__}.{x.name}")
-                for x in walk_packages(mod.__path__)
-                if not x.name.startswith("_")
-            ]
-            self.submods = [
-                ModStruct(submod, self.out_dir, self.name_to_path) for submod in submods
-            ]
+            self._has_submodules = True
 
         else:
             self.out_dir = pathlib.Path(out_dir)
+            self._has_submodules = False
             if out_name:
                 name = out_name
                 self.name_to_path[mod.__name__] = self.abs_path
@@ -156,16 +165,42 @@ class ModStruct(BaseStruct):
                 self.abs_path += "-py"
                 self.name_to_path[mod.__name__] = self.abs_path
             self.filename = f"{name}.md"
-            # no submodules.
-            self.submods = []
 
         self.doc = inspect.getdoc(self.mod) or ""
 
-        self.init_vars()
-        self.init_classes()
-        self.init_funcs()
+    def init_submodules(self) -> None:
+        """
+        Find submodules.
+        """
 
-    def init_classes(self):
+        if self._has_submodules:
+            # get submodules.
+            module_path = getattr(self.mod, "__path__", [])
+            submods = [
+                import_module(f"{self.mod.__name__}.{x.name}")
+                for x in walk_packages(module_path)
+                if not x.name.startswith("_")
+            ]
+            for submod in submods:
+                key = inspect.getfile(submod)
+                self.submodules.setdefault(
+                    key,
+                    ModuleCollector(
+                        submod,
+                        self.out_dir,
+                        self.name_to_path,
+                        enable_yaml_header=self.enable_yaml_header,
+                    ),
+                )
+
+        else:
+            # no submodules.
+            self.submodules = {}
+
+        for submodule in self.submodules.values():
+            submodule._prepare_docs()
+
+    def init_classes(self) -> None:
         """Find public classes defined in the module."""
         mod_classes = [
             x[1]
@@ -173,11 +208,11 @@ class ModStruct(BaseStruct):
             if (not x[0].startswith("_")) and (inspect.getmodule(x[1]) == self.mod)
         ]
         self.classes = [
-            ClsStruct(c, name_to_path=self.name_to_path, abs_path=self.abs_path)
+            ClassCollector(c, name_to_path=self.name_to_path, abs_path=self.abs_path)
             for c in mod_classes
         ]
 
-    def init_vars(self):
+    def init_vars(self) -> None:
         """Find variables having docstrings."""
         try:
             src = inspect.getsource(self.mod)
@@ -195,8 +230,8 @@ class ModStruct(BaseStruct):
             if (not x[0].startswith("_")) and (x[0] in var_docs)
         ]
 
-        self.vars = [
-            VarStruct(
+        self.variables = [
+            VariableCollector(
                 v["value"],
                 name_to_path=self.name_to_path,
                 abs_path=self.abs_path,
@@ -206,9 +241,9 @@ class ModStruct(BaseStruct):
             for v in mod_vars
         ]
 
-    def init_funcs(self):
+    def init_functions(self) -> None:
         """Find public functions in the module."""
-        mod_funcs = [
+        mod_functions = [
             x[1]
             for x in inspect.getmembers(
                 self.mod,
@@ -216,13 +251,18 @@ class ModStruct(BaseStruct):
             )
             if (not x[0].startswith("_"))
         ]
-        self.funcs = [
-            FuncStruct(m, name_to_path=self.name_to_path, abs_path=self.abs_path)
-            for m in mod_funcs
+        self.functions = [
+            FunctionCollector(m, name_to_path=self.name_to_path, abs_path=self.abs_path)
+            for m in mod_functions
         ]
 
     def doc_str(self) -> str:
-        self.make_relpaths()
+        self._prepare_docs()
+        return self._doc_str()
+
+    def _doc_str(self) -> str:
+        yaml_header = self.make_yaml_header()
+
         mod_head = f"# Module {self.mod.__name__}"
         mod_ds = self.doc
 
@@ -231,14 +271,14 @@ class ModStruct(BaseStruct):
             return f"[{sub_name}]({rel_path})"
 
         submodules_head = "## Submodules"
-        submodules = [submod_to_link(x.mod.__name__) for x in self.submods]
-        submodules_list = "\n\n".join(submodules)
+        submodules = [submod_to_link(x.mod.__name__) for x in self.submodules.values()]
+        submodules_list = join_fragments(submodules)
         if not submodules:
             submodules_head = ""
 
         vars_head = "## Variables"
-        vars_ = [x.doc_str() for x in self.vars]
-        vars_list = "\n\n".join(vars_)
+        vars_ = [x.doc_str() for x in self.variables]
+        vars_list = join_fragments(vars_)
         if not vars_:
             vars_head = ""
 
@@ -248,14 +288,15 @@ class ModStruct(BaseStruct):
         if not classes:
             classes_head = ""
 
-        funcs_head = "## Functions"
-        funcs = [x.doc_str() for x in self.funcs]
-        funcs_list = "\n\n------\n\n".join(funcs)
-        if not funcs:
-            funcs_head = ""
+        functions_head = "## Functions"
+        functions = [x.doc_str() for x in self.functions]
+        functions_list = "\n\n------\n\n".join(functions)
+        if not functions:
+            functions_head = ""
 
-        doc = "\n\n".join(
+        doc = join_fragments(
             [
+                yaml_header,
                 mod_head,
                 mod_ds,
                 submodules_head,
@@ -264,34 +305,42 @@ class ModStruct(BaseStruct):
                 vars_list,
                 classes_head,
                 classes_list,
-                funcs_head,
-                funcs_list,
+                functions_head,
+                functions_list,
             ]
         )
 
         doc = self.make_links(doc)
-        return cleanup(doc)
+        return doc
 
-    def make_relpaths(self):
+    def make_relpaths(self) -> None:
         """
         Create mapping between object name to relative path.
 
         ~~~markdown
 
-        `ful.path.to.mod.cls` -> [`cls`](../../mod#cls)
+        `ful.path.to.mod.cls` -> [`cls`](../../mod.md#cls)
 
         ~~~
 
         """
+        current_page = self.abs_path
+        if not current_page.endswith("-py"):
+            current_page = f"{current_page}/index".replace("//", "/")
         for name, path in self.name_to_path.items():
             if "#" in path:
                 relpath, hash_ = path.split("#")
                 hash_ = "#" + hash_
             else:
                 relpath, hash_ = path, ""
-            relpath = os.path.relpath(relpath, self.abs_path)
-            if relpath.endswith("."):
-                relpath = relpath + "/"
+            if not relpath.endswith("-py"):
+                relpath = f"{relpath}/index".replace("//", "/")
+
+            relpath = get_relative_path(current_page, relpath)
+
+            if relpath:
+                relpath = relpath + ".md"
+
             self.relpaths[name] = (relpath, hash_)
 
     def make_links(self, doc: str) -> str:
@@ -301,9 +350,11 @@ class ModStruct(BaseStruct):
         To ignore this, append a space like `"foo.bar "` .
 
         """
+
         for long_name, rel_hash in self.relpaths.items():
-            if rel_hash[1]:
-                short_name = rel_hash[1][1:]
+            _, hash_id = rel_hash
+            if hash_id:
+                short_name = hash_id.removeprefix("#")
             else:
                 short_name = long_name.rsplit(".", 1)[-1]
             # append a space after short_name because of avoiding unexpected replacing.
@@ -312,21 +363,99 @@ class ModStruct(BaseStruct):
             )
         return doc
 
-    def write(self):
+    def make_yaml_header(self) -> str:
+        """
+        Make yaml header from given values.
+        """
+        if not self.enable_yaml_header:
+            return ""
+
+        header = build_yaml_header(
+            title=self.mod.__name__, module_digest=self._module_digest
+        )
+        return header
+
+    def remove_old_submodules(self) -> None:
+        """
+        Remove documents and collectors of deleted modules.
+        """
+        if not self._has_submodules:
+            return
+
+        new_modules: dict[str, ModuleCollector] = {
+            path: submodule
+            for path, submodule in self.submodules.items()
+            if os.path.isfile(path)
+        }
+
+        filenames = [
+            f for f in os.listdir(self.out_dir) if os.path.isfile(self.out_dir / f)
+        ]
+
+        submodule_filenames = [x.filename for x in new_modules.values()]
+
+        def is_not_used(s: str) -> bool:
+            path = pathlib.PurePath(s)
+            filename = path.name
+            if filename == "index.md":
+                return False
+            return filename not in submodule_filenames
+
+        unused_filenames = filter(is_not_used, filenames)
+
+        for unused_filename in unused_filenames:
+            os.remove(self.out_dir / unused_filename)
+        self.submodules = new_modules
+
+    def _prepare_docs(self) -> None:
+        importlib.reload(self.mod)
+        self.init_submodules()
+        self.init_vars()
+        self.init_classes()
+        self.init_functions()
+        self.make_relpaths()
+
+    def write(self) -> None:
         """Write documents to files. Directories are created automatically."""
-        # create dir.
+
+        self._prepare_docs()
+        self._write()
+
+    def _write(self) -> None:
         os.makedirs(self.out_dir, exist_ok=True)
-        # write self.
-        with open(
-            self.out_dir / self.filename, mode="w", newline="\n", encoding="utf-8"
-        ) as index:
-            index.write(self.doc_str())
+        self.remove_old_submodules()
+        current_digest = hashlib.md5(
+            inspect.getsource(self.mod).encode("utf-8")
+        ).hexdigest()
+
+        if os.path.isfile(self.out_dir / self.filename):
+            with open(
+                self.out_dir / self.filename, mode="r", newline="\n", encoding="utf-8"
+            ) as index:
+                content = index.read()
+                matched = re.match(
+                    r"^---\n(.+)\n---\n", content, re.MULTILINE | re.DOTALL
+                )
+                headers = matched.group(0) if matched else ""
+        else:
+            headers = ""
+
+        modified = current_digest not in headers
+
+        if modified:
+            self._module_digest = current_digest
+            # write self.
+            with open(
+                self.out_dir / self.filename, mode="w", newline="\n", encoding="utf-8"
+            ) as index:
+                index.write(self._doc_str())
+
         # write submodules.
-        for submod in self.submods:
-            submod.write()
+        for submod in self.submodules.values():
+            submod._write()
 
 
-class VarStruct(BaseStruct):
+class VariableCollector(BaseCollector):
     """
     Module variables and class properties.
 
@@ -337,20 +466,27 @@ class VarStruct(BaseStruct):
 
     """
 
-    var: Any
+    var: object
 
     name: str
     hash_: str
 
+    _should_skip = False
+
     def __init__(
-        self, var, name_to_path: dict, abs_path: str, name: str = None, doc: str = None
-    ):
+        self,
+        var: object,
+        name_to_path: dict[str, str],
+        abs_path: str,
+        name: Optional[str] = None,
+        doc: Optional[str] = None,
+    ) -> None:
         """
         **Args**
 
-        * var: Target object.
-        * name_to_path (`dict`): See `inari.structs.BaseStruct` .
-        * abs_path (`str`): See `inari.structs.BaseStruct` .
+        * var (`object`): Target object.
+        * name_to_path (`dict[str, str]`): See `inari.collectors.BaseCollector` .
+        * abs_path (`str`): See `inari.collectors.BaseCollector` .
         * name (`str`): Fallback of `var.__name__` .
         * doc (`str`): Fallback of `inspect.getdoc(var)` .
 
@@ -358,7 +494,10 @@ class VarStruct(BaseStruct):
         super().__init__(name_to_path=name_to_path)
         self.var = var
         self.doc = doc or inspect.getdoc(var) or ""
-        name = name or var.__name__
+        name = name or getattr(var, "__name__", None)
+        if not name:
+            self._should_skip = True
+            return
         self.name = name.rsplit(".")[-1]
         module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py", "")
 
@@ -372,17 +511,19 @@ class VarStruct(BaseStruct):
         self.hash_ = "#" + abs_path.rsplit("#", 1)[-1]
 
     def doc_str(self) -> str:
-        h = ""
+        if self._should_skip:
+            return ""
+        attributes = ""
         if markdown:
-            h = f"{{: {self.hash_} }}"
+            attributes = f"{{: {self.hash_} }}"
         if self.doc:
             doc = f"* {self.name} {self.doc}"
         else:
             doc = f"* {self.name}"
-        return modify_attrs(doc, h)
+        return modify_attrs(doc, attributes)
 
 
-class ClsStruct(BaseStruct):
+class ClassCollector(BaseCollector):
     """
     Class with methods and properties. Attribute docs should be written in class
         docstring like this:
@@ -390,27 +531,26 @@ class ClsStruct(BaseStruct):
     **Attributes**
 
     * cls (`type`): Target class.
-    * vars (`List[VarStruct]`): Class properties.
-    * methods (`List[FuncStruct]`): Methods of the class.
+    * variables (`list[VariableCollector]`): Class properties.
+    * methods (`list[FunctionCollector]`): Methods of the class.
     * hash_ (`str`): Used for HTML id.
 
     """
 
-    # TODO: get ancestor
     cls: type
 
-    vars: List[VarStruct]
-    methods: List["FuncStruct"]
+    variables: list[VariableCollector]
+    methods: list["FunctionCollector"]
 
     hash_: str
 
-    def __init__(self, cls: type, abs_path: str, name_to_path: dict):
+    def __init__(self, cls: type, abs_path: str, name_to_path: dict[str, str]):
         """
         **Args**
 
         * cls (`type`): Class to make documents.
-        * abs_path (`str`): See `inari.structs.BaseStruct` .
-        * name_to_path (`str`): See `inari.structs.BaseStruct` .
+        * abs_path (`str`): See `inari.collectors.BaseCollector` .
+        * name_to_path (`dict[str, str]`): See `inari.collectors.BaseCollector` .
 
         """
         self.cls = cls
@@ -424,23 +564,20 @@ class ClsStruct(BaseStruct):
         super().__init__(abs_path=abs_path, name_to_path=name_to_path)
         self.name_to_path[long_name] = self.abs_path
 
-        self.init_vars()
-        self.init_methods()
-
-    def init_vars(self):
-        cls_vars = [
+    def init_variables(self) -> None:
+        cls_variables = [
             x
             for x in inspect.getmembers(self.cls, lambda v: v.__class__ is property)
             if (not x[0].startswith("_"))
         ]
-        self.vars = [
-            VarStruct(
+        self.variables = [
+            VariableCollector(
                 v[1], name=v[0], name_to_path=self.name_to_path, abs_path=self.abs_path
             )
-            for v in cls_vars
+            for v in cls_variables
         ]
 
-    def init_methods(self):
+    def init_methods(self) -> None:
         methods = [
             x[1]
             for x in inspect.getmembers(
@@ -455,12 +592,13 @@ class ClsStruct(BaseStruct):
             if (not x[0].startswith("_"))
         ]
         self.methods = [
-            FuncStruct(m, name_to_path=self.name_to_path, abs_path=self.abs_path)
+            FunctionCollector(m, name_to_path=self.name_to_path, abs_path=self.abs_path)
             for m in methods
         ]
 
     def doc_str(self) -> str:
-        # class {classname}{signature}
+        self.init_variables()
+        self.init_methods()
         name = self.cls.__name__.rsplit(".")[-1]
         h = ""
         if markdown:
@@ -490,11 +628,11 @@ class ClsStruct(BaseStruct):
             defs = f"```python\nclass {name}{args_}\n```".replace(" -> None", "")
         init = self.cls.__init__
         if init.__qualname__.startswith(self.cls.__qualname__):
-            init_doc = inspect.getdoc(init)
+            init_doc = inspect.getdoc(init) or ""
         else:
             init_doc = ""
         init_doc = modify_attrs(init_doc)
-        cls_doc = "\n\n".join([defs, self.doc, init_doc])
+        cls_doc = join_fragments([defs, self.doc, init_doc])
         # base classes
         bases_doc = ""
         bases = [set(c.mro()) for c in self.cls.mro() if c is not self.cls]
@@ -508,11 +646,17 @@ class ClsStruct(BaseStruct):
             base_list = reduce(lambda x, y: x + y, [list(s) for s in bases])
             parents = [x for x in base_set if base_list.count(x) == 1]
             base_names = []
-            root = inspect.getmodule(self.cls).__name__.split(".", 1)[0]
+            class_module = inspect.getmodule(self.cls)
+            if not class_module:
+                raise TypeError(f"A module of {self.cls.__name__} was not found.")
+            root_name = class_module.__name__.split(".", 1)[0]
             for p in parents:
-                mod_name = inspect.getmodule(p).__name__
+                parent_module = inspect.getmodule(p)
+                if not parent_module:
+                    raise TypeError(f"A module of {p.__name__} was not found.")
+                mod_name = parent_module.__name__
                 mod_root = mod_name.split(".", 1)[0]
-                if mod_root == root:
+                if mod_root == root_name:
                     base_name = f"* `{mod_name}.{p.__name__}`"
                 else:
                     base_name = f"* `{mod_root}.{p.__name__}`"
@@ -522,9 +666,9 @@ class ClsStruct(BaseStruct):
         h = ""
         if markdown:
             h = f"{{: {self.hash_}-attrs }}"
-        vars_head = f"\n\n------\n\n#### Instance attributes {h}\n"
-        vars_ = [x.doc_str() for x in self.vars]
-        vars_list = "\n\n".join(vars_)
+        vars_head = f"------\n\n#### Instance attributes {h}\n"
+        vars_ = [x.doc_str() for x in self.variables]
+        vars_list = join_fragments(vars_)
         if not vars_:
             vars_head = ""
         vars_doc = vars_head + "\n" + vars_list
@@ -532,42 +676,48 @@ class ClsStruct(BaseStruct):
         h = ""
         if markdown:
             h = f"{{: {self.hash_}-methods }}"
-        methods_head = f"\n\n------\n\n#### Methods {h}\n"
-        methods = [x.doc_str() for x in self.methods]
-        methods_list = "\n\n------\n\n".join(methods)
-        if not methods:
-            methods_head = ""
-        methods_doc = methods_head + "\n" + methods_list
+        methods_head = f"------\n\n#### Methods {h}\n"
+        methods = [x.doc_str().strip() for x in self.methods]
+        if methods:
+            methods_list = "\n\n------\n\n".join(methods)
+            methods_doc = methods_head + "\n" + methods_list
+        else:
+            methods_doc = ""
 
-        return "\n\n".join([head, cls_doc, bases_doc, vars_doc, methods_doc])
+        docs = join_fragments([head, cls_doc, bases_doc, vars_doc, methods_doc])
+
+        return docs
 
 
-class FuncStruct(BaseStruct):
+class FunctionCollector(BaseCollector):
     """
     Functions and methods.
 
     **Attributes**
 
-    * func (`Callable`): Target function.
+    * function (`Callable[..., Any]`): Target function.
     * hash_ (`str`): Used for HTML id.
 
     """
 
-    func: Callable
+    function: Callable[..., Any]
     hash_: str
 
-    def __init__(self, f: Callable, name_to_path: dict, abs_path: str):
+    def __init__(
+        self, f: Callable[..., Any], name_to_path: dict[str, str], abs_path: str
+    ):
         """
         **Args**
 
-        * f (`Callable`): Target function.
-        * abs_path (`str`): See `inari.structs.BaseStruct` .
-        * name_to_path (`str`): See `inari.structs.BaseStruct` .
+        * f (`Callable[..., Any]`): Target function.
+        * abs_path (`str`): See `inari.collectors.BaseCollector` .
+        * name_to_path (`dict[str, str]`): See `inari.collectors.BaseCollector` .
 
         """
-        self.func = f
+        self.function = f
         self.doc = inspect.getdoc(f) or ""
         self.doc = modify_attrs(self.doc)
+
         module_name = ".".join([n for n in abs_path.split("/") if n]).replace("-py", "")
         if "#" in abs_path:
             abs_path = f"{abs_path}.{f.__name__}"
@@ -586,11 +736,11 @@ class FuncStruct(BaseStruct):
         h = ""
         if markdown:
             h = f"{{: {self.hash_} }}"
-        if self.hash_ != "#" + self.func.__name__:
-            head = f"[**{self.func.__name__}**]({self.hash_}){h}"
+        if self.hash_ != "#" + self.function.__name__:
+            head = f"[**{self.function.__name__}**]({self.hash_}){h}"
         else:
-            head = f"### {self.func.__name__} {h}"
-        full_source = inspect.getsource(self.func)
+            head = f"### {self.function.__name__} {h}"
+        full_source = inspect.getsource(self.function)
         no_decolators = re.sub(r"^\s*@.+$", "", full_source, flags=re.MULTILINE)
         no_comments = re.sub(r"\) *(-> *.+)? *: *(#.*)?\n", r") \1 :\n", no_decolators)
         sig = no_comments.split(":\n", 1)[0]
@@ -599,5 +749,5 @@ class FuncStruct(BaseStruct):
             args = re.sub(r"\n(    )+", "\n    ", args)
         source = f"{args}){returns}".strip()
         defs = f"```python\n{source}\n```"
-        docs = "\n\n".join([head, defs, self.doc])
+        docs = join_fragments([head, defs, self.doc])
         return docs

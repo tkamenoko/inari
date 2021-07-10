@@ -1,0 +1,1040 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="canonical" href="https://tkamenoko.github.io/inari/api/collectors-py/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.1, mkdocs-material-7.1.9">
+    
+    
+      
+        <title>inari.collectors - Inari</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ca7ac06f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ffa724">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="orange" data-md-color-accent="red">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-inaricollectors" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Inari" class="md-header__button md-logo" aria-label="Inari" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Inari
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              inari.collectors
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/tkamenoko/inari/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Inari" class="md-nav__button md-logo" aria-label="Inari" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Inari
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/tkamenoko/inari/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../docstrings-syntax/" class="md-nav__link">
+        Docstrings Syntax
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        API
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        inari
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli-py/" class="md-nav__link">
+        inari.cli
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          inari.collectors
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        inari.collectors
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    Classes
+  </a>
+  
+    <nav class="md-nav" aria-label="Classes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#BaseCollector" class="md-nav__link">
+    BaseCollector
+  </a>
+  
+    <nav class="md-nav" aria-label="BaseCollector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#BaseCollector-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ClassCollector" class="md-nav__link">
+    ClassCollector
+  </a>
+  
+    <nav class="md-nav" aria-label="ClassCollector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ClassCollector-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ClassCollector-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#FunctionCollector" class="md-nav__link">
+    FunctionCollector
+  </a>
+  
+    <nav class="md-nav" aria-label="FunctionCollector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#FunctionCollector-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#FunctionCollector-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ModuleCollector" class="md-nav__link">
+    ModuleCollector
+  </a>
+  
+    <nav class="md-nav" aria-label="ModuleCollector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ModuleCollector-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ModuleCollector-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#VariableCollector" class="md-nav__link">
+    VariableCollector
+  </a>
+  
+    <nav class="md-nav" aria-label="VariableCollector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#VariableCollector-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#VariableCollector-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#is_var" class="md-nav__link">
+    is_var
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mkdocs_plugin-py/" class="md-nav__link">
+        inari.mkdocs_plugin
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    Classes
+  </a>
+  
+    <nav class="md-nav" aria-label="Classes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#BaseCollector" class="md-nav__link">
+    BaseCollector
+  </a>
+  
+    <nav class="md-nav" aria-label="BaseCollector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#BaseCollector-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ClassCollector" class="md-nav__link">
+    ClassCollector
+  </a>
+  
+    <nav class="md-nav" aria-label="ClassCollector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ClassCollector-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ClassCollector-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#FunctionCollector" class="md-nav__link">
+    FunctionCollector
+  </a>
+  
+    <nav class="md-nav" aria-label="FunctionCollector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#FunctionCollector-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#FunctionCollector-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ModuleCollector" class="md-nav__link">
+    ModuleCollector
+  </a>
+  
+    <nav class="md-nav" aria-label="ModuleCollector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ModuleCollector-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ModuleCollector-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#VariableCollector" class="md-nav__link">
+    VariableCollector
+  </a>
+  
+    <nav class="md-nav" aria-label="VariableCollector">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#VariableCollector-bases" class="md-nav__link">
+    Base classes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#VariableCollector-methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#is_var" class="md-nav__link">
+    is_var
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="module-inaricollectors">Module inari.collectors<a class="headerlink" href="#module-inaricollectors" title="Permanent link">&para;</a></h1>
+<p>collectors -  Store module members, and build markdown documents from docstrings.</p>
+<h2 id="classes">Classes<a class="headerlink" href="#classes" title="Permanent link">&para;</a></h2>
+<h3 id="BaseCollector">BaseCollector<a class="headerlink" href="#BaseCollector" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">BaseCollector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abs_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">name_to_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+<p>Base class for collecting objects with docstrings.</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li><strong>name_to_path</strong> (<code>dict[str, str]</code>): Mapping of <code>{"module.name.class": "module/name#class"}</code> .</li>
+<li><strong>doc</strong> (<code>str</code>): Docstrings of the object.</li>
+<li><strong>abs_path</strong> (<code>str</code>): Absolute path of the object.</li>
+</ul>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>abs_path</strong> (<code>str</code>): Absolute path of the object.</li>
+<li><strong>name_to_path</strong> (<code>dict[str, str]</code>): Mapping of name and path.</li>
+</ul>
+<hr />
+<h4 id="BaseCollector-methods">Methods<a class="headerlink" href="#BaseCollector-methods" title="Permanent link">&para;</a></h4>
+<p><a href="#BaseCollector.doc_str" id="BaseCollector.doc_str"><strong>doc_str</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">doc_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</code></pre></div>
+<p>Create documents from its contents.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><code>str</code>: Created from docstrings and annotations.</li>
+</ul>
+<hr />
+<h3 id="ClassCollector">ClassCollector<a class="headerlink" href="#ClassCollector" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ClassCollector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">abs_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">name_to_path</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span>
+</code></pre></div>
+<p>Class with methods and properties. Attribute docs should be written in class
+    docstring like this:</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li><strong>cls</strong> (<code>type</code>): Target class.</li>
+<li><strong>variables</strong> (<code>list[VariableCollector]</code>): Class properties.</li>
+<li><strong>methods</strong> (<code>list[FunctionCollector]</code>): Methods of the class.</li>
+<li><strong>hash_</strong> (<code>str</code>): Used for HTML id.</li>
+</ul>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>cls</strong> (<code>type</code>): Class to make documents.</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <a href="#BaseCollector"><code>BaseCollector</code></a> .</li>
+<li><strong>name_to_path</strong> (<code>dict[str, str]</code>): See <a href="#BaseCollector"><code>BaseCollector</code></a> .</li>
+</ul>
+<hr />
+<h4 id="ClassCollector-bases">Base classes<a class="headerlink" href="#ClassCollector-bases" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="#BaseCollector"><code>BaseCollector</code></a></li>
+</ul>
+<hr />
+<h4 id="ClassCollector-methods">Methods<a class="headerlink" href="#ClassCollector-methods" title="Permanent link">&para;</a></h4>
+<p><a href="#ClassCollector.doc_str" id="ClassCollector.doc_str"><strong>doc_str</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">doc_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</code></pre></div>
+<p>Create documents from its contents.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><code>str</code>: Created from docstrings and annotations.</li>
+</ul>
+<hr />
+<p><a href="#ClassCollector.init_methods" id="ClassCollector.init_methods"><strong>init_methods</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">init_methods</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+<hr />
+<p><a href="#ClassCollector.init_variables" id="ClassCollector.init_variables"><strong>init_variables</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">init_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+<hr />
+<h3 id="FunctionCollector">FunctionCollector<a class="headerlink" href="#FunctionCollector" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">FunctionCollector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">name_to_path</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">abs_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span>
+</code></pre></div>
+<p>Functions and methods.</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li><strong>function</strong> (<code>Callable[..., Any]</code>): Target function.</li>
+<li><strong>hash_</strong> (<code>str</code>): Used for HTML id.</li>
+</ul>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>f</strong> (<code>Callable[..., Any]</code>): Target function.</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <a href="#BaseCollector"><code>BaseCollector</code></a> .</li>
+<li><strong>name_to_path</strong> (<code>dict[str, str]</code>): See <a href="#BaseCollector"><code>BaseCollector</code></a> .</li>
+</ul>
+<hr />
+<h4 id="FunctionCollector-bases">Base classes<a class="headerlink" href="#FunctionCollector-bases" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="#BaseCollector"><code>BaseCollector</code></a></li>
+</ul>
+<hr />
+<h4 id="FunctionCollector-methods">Methods<a class="headerlink" href="#FunctionCollector-methods" title="Permanent link">&para;</a></h4>
+<p><a href="#FunctionCollector.doc_str" id="FunctionCollector.doc_str"><strong>doc_str</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">doc_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</code></pre></div>
+<p>Create documents from its contents.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><code>str</code>: Created from docstrings and annotations.</li>
+</ul>
+<hr />
+<h3 id="ModuleCollector">ModuleCollector<a class="headerlink" href="#ModuleCollector" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">ModuleCollector</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">mod</span><span class="p">:</span> <span class="n">ModuleType</span><span class="p">,</span>
+    <span class="n">out_dir</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+    <span class="n">name_to_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">out_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">enable_yaml_header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,)</span>
+</code></pre></div>
+<p>Module docs, submodules, classes, functions, and variables.</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li><strong>mod</strong> (<code>ModuleType</code>): Module to make documents.</li>
+<li><strong>submodules</strong> (<code>dict[str, ModuleCollector]</code>): key-value pair of paths and submodules,
+    wrapped by <a href="#ModuleCollector"><code>ModuleCollector</code></a> .</li>
+<li><strong>variables</strong> (<code>list[VariableCollector]</code>): list of module-level variables, wrapped by
+    <a href="#VariableCollector"><code>VariableCollector</code></a> .</li>
+<li><strong>classes</strong> (<code>list[ClassCollector]</code>): list of public classes, wrapped by
+    <a href="#ClassCollector"><code>ClassCollector</code></a> .</li>
+<li><strong>functions</strong> (<code>list[FunctionCollector]</code>): list of public functions, wrapped by
+    <a href="#FunctionCollector"><code>FunctionCollector</code></a> .</li>
+<li><strong>out_dir</strong> (<code>pathlib.Path</code>): Output directly.</li>
+<li><strong>filename</strong> (<code>str</code>): Output filename, like <code>index.md</code> , <code>submodule.md</code> .</li>
+<li><strong>relpaths</strong> (<code>dict[str, tuple[str, str]]</code>): Store relational paths. See
+    <code>inari.collectors.ModuleCollector.make_relpaths</code> .</li>
+<li><strong>enable_yaml_header</strong> (<code>bool</code>): a flag for deciding whether to include yaml header.</li>
+</ul>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>mod</strong> (<code>ModuleType</code>): Module to make documents.</li>
+<li><strong>out_dir</strong> (<code>Union[str, Path]</code>): Output directory.</li>
+<li><strong>name_to_path</strong> (<code>dict</code>): See <a href="#BaseCollector"><code>BaseCollector</code></a> .</li>
+<li><strong>out_name</strong> (<code>str</code>): Output file name.</li>
+<li><strong>enable_yaml_header</strong> (<code>bool</code>): a flag for deciding whether to include
+    yaml header.</li>
+</ul>
+<hr />
+<h4 id="ModuleCollector-bases">Base classes<a class="headerlink" href="#ModuleCollector-bases" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="#BaseCollector"><code>BaseCollector</code></a></li>
+</ul>
+<hr />
+<h4 id="ModuleCollector-methods">Methods<a class="headerlink" href="#ModuleCollector-methods" title="Permanent link">&para;</a></h4>
+<p><a href="#ModuleCollector.doc_str" id="ModuleCollector.doc_str"><strong>doc_str</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">doc_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</code></pre></div>
+<p>Create documents from its contents.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><code>str</code>: Created from docstrings and annotations.</li>
+</ul>
+<hr />
+<p><a href="#ModuleCollector.init_classes" id="ModuleCollector.init_classes"><strong>init_classes</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">init_classes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Find public classes defined in the module.</p>
+<hr />
+<p><a href="#ModuleCollector.init_functions" id="ModuleCollector.init_functions"><strong>init_functions</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">init_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Find public functions in the module.</p>
+<hr />
+<p><a href="#ModuleCollector.init_submodules" id="ModuleCollector.init_submodules"><strong>init_submodules</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">init_submodules</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Find submodules.</p>
+<hr />
+<p><a href="#ModuleCollector.init_vars" id="ModuleCollector.init_vars"><strong>init_vars</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">init_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Find variables having docstrings.</p>
+<hr />
+<p><a href="#ModuleCollector.make_links" id="ModuleCollector.make_links"><strong>make_links</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_links</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</code></pre></div>
+<p>Create internal link on back-quoted name.</p>
+<p>To ignore this, append a space like <code>"foo.bar "</code> .</p>
+<hr />
+<p><a href="#ModuleCollector.make_relpaths" id="ModuleCollector.make_relpaths"><strong>make_relpaths</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_relpaths</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Create mapping between object name to relative path.</p>
+<div class="highlight"><pre><span></span><code><span class="sb">`ful.path.to.mod.cls`</span> -&gt; [<span class="sb">`cls`</span>](../../mod.md#cls)
+</code></pre></div>
+<hr />
+<p><a href="#ModuleCollector.make_yaml_header" id="ModuleCollector.make_yaml_header"><strong>make_yaml_header</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">make_yaml_header</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</code></pre></div>
+<p>Make yaml header from given values.</p>
+<hr />
+<p><a href="#ModuleCollector.remove_old_submodules" id="ModuleCollector.remove_old_submodules"><strong>remove_old_submodules</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">remove_old_submodules</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Remove documents and collectors of deleted modules.</p>
+<hr />
+<p><a href="#ModuleCollector.write" id="ModuleCollector.write"><strong>write</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Write documents to files. Directories are created automatically.</p>
+<hr />
+<h3 id="VariableCollector">VariableCollector<a class="headerlink" href="#VariableCollector" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">VariableCollector</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">var</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span>
+    <span class="n">name_to_path</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+    <span class="n">abs_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">doc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,)</span>
+</code></pre></div>
+<p>Module variables and class properties.</p>
+<p><strong>Attributes</strong></p>
+<ul>
+<li><strong>var</strong>: Module-level object or class property, not module/class/function.</li>
+<li><strong>name</strong> (<code>str</code>): Name of the object.</li>
+</ul>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>var</strong> (<code>object</code>): Target object.</li>
+<li><strong>name_to_path</strong> (<code>dict[str, str]</code>): See <a href="#BaseCollector"><code>BaseCollector</code></a> .</li>
+<li><strong>abs_path</strong> (<code>str</code>): See <a href="#BaseCollector"><code>BaseCollector</code></a> .</li>
+<li><strong>name</strong> (<code>str</code>): Fallback of <code>var.__name__</code> .</li>
+<li><strong>doc</strong> (<code>str</code>): Fallback of <code>inspect.getdoc(var)</code> .</li>
+</ul>
+<hr />
+<h4 id="VariableCollector-bases">Base classes<a class="headerlink" href="#VariableCollector-bases" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="#BaseCollector"><code>BaseCollector</code></a></li>
+</ul>
+<hr />
+<h4 id="VariableCollector-methods">Methods<a class="headerlink" href="#VariableCollector-methods" title="Permanent link">&para;</a></h4>
+<p><a href="#VariableCollector.doc_str" id="VariableCollector.doc_str"><strong>doc_str</strong></a></p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">doc_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span>
+</code></pre></div>
+<p>Create documents from its contents.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><code>str</code>: Created from docstrings and annotations.</li>
+</ul>
+<h2 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">&para;</a></h2>
+<h3 id="is_var">is_var<a class="headerlink" href="#is_var" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">is_var</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span>
+</code></pre></div>
+<p>Utility for filtering unexpected objects.</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../cli-py/" class="md-footer__link md-footer__link--prev" aria-label="Previous: inari.cli" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              inari.cli
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../mkdocs_plugin-py/" class="md-footer__link md-footer__link--next" aria-label="Next: inari.mkdocs_plugin" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              inari.mkdocs_plugin
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.82b56eb2.min.js"></script>
+      
+    
+  </body>
+</html>

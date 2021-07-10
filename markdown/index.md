@@ -1,4 +1,5 @@
 # inari
+
 Write docstrings in Markdown!
 
 [This API documents](./api) are created by `inari` itself.
@@ -13,12 +14,13 @@ poetry run mkdocs build
 
 ## Features
 
-* Minimum configuration.
-* No dependencies by default(but [MkDocs](https://www.mkdocs.org/) is recommended!).
-* [CLI](./getting-started#use-cli) and [MkDocs Plugin](./getting-started#use-mkdocs-plugin) .
-* Cross reference in API documents.
+- Minimum configuration.
+- No dependencies by default(but [MkDocs](https://www.mkdocs.org/) is recommended!).
+- [CLI](./getting-started#use-cli) and [MkDocs Plugin](./getting-started#use-mkdocs-plugin) .
+- Cross reference in API documents.
 
 ## Install
+
 ```shell
 pip install inari[mkdocs]
 ```
@@ -94,16 +96,16 @@ inari sample docs
 
 `inari` makes this Markdown file:
 
-~~~markdown
+````markdown
 <!-- docs/sample-py.md -->
+
 # Module sample
 
 This is a sample module.
 
-
 ## Variables
 
-* **variable**{: #variable } (`int`):  Docstrings for module-level variables.
+- **variable**{: #variable } (`int`): Docstrings for module-level variables.
 
 ## Classes
 
@@ -117,14 +119,13 @@ Class docstrings.
 
 **Attributes**
 
-* **baz** (`str`): Docstrings for attributes.
+- **baz** (`str`): Docstrings for attributes.
 
 **Args**
 
-* **b** (`str`): Arguments for initializing.
+- **b** (`str`): Arguments for initializing.
 
-
-------
+---
 
 #### Methods {: #SampleClass-methods }
 
@@ -136,14 +137,15 @@ def method(self, bar: int) -> str
 
 Method docstrings.
 
-Cross reference available. [`func `](./#func)
+Cross reference available. [`func `](#func)
 
 **Args**
 
-* **bar** (`int`)
+- **bar** (`int`)
+
 **Returns**
 
-* `str`
+- `str`
 
 ## Functions
 
@@ -157,15 +159,13 @@ Docstrings for functions.
 
 **Args**
 
-* **foo** (`str`): First argument.
-* **bar** (`int`): Second argument.
+- **foo** (`str`): First argument.
+- **bar** (`int`): Second argument.
 
 **Returns**
 
-* `str`: Type of return value.
-
-~~~
-
+- `str`: Type of return value.
+````
 
 ## License
 

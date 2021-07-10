@@ -1,6 +1,16 @@
-"""inari --- Write docstrings in Markdown!"""
+"""inari - Write docstrings in Markdown!"""
 
 
-from .structures import ModStruct, VarStruct, FuncStruct, ClsStruct
+from .collectors import (
+    ModuleCollector,
+    VariableCollector,
+    FunctionCollector,
+    ClassCollector,
+)
 
-__all__ = ["ModStruct", "VarStruct", "FuncStruct", "ClsStruct"]
+__all__ = [
+    "ModuleCollector",
+    "VariableCollector",
+    "FunctionCollector",
+    "ClassCollector",
+]

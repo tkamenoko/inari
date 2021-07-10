@@ -4,9 +4,10 @@ You can use any Markdown syntax, and `inari` provides some additional features.
 
 ## List Arguments/Attributes
 
-To list arguments or attributes, use `*`. `inari` emphasises these name automatically.
+`inari` emphasizes names of listed arguments automatically.
 
 Example:
+
 ```python
 
 def func(alpha: str, beta: str) -> str:
@@ -30,10 +31,11 @@ def func(alpha: str, beta: str) -> str:
 
 That will be converted to this:
 
-~~~markdown
+````markdown
 ## Functions
 
 ### func
+
 ```python
 def func(alpha: str, beta: str) -> str
 ```
@@ -42,23 +44,23 @@ Sample function.
 
 **Args**
 
-* **alpha** (`str`): Explain `alpha` .
-* **beta** (`str`): Explain `beta` .
+- **alpha** (`str`): Explain `alpha` .
+- **beta** (`str`): Explain `beta` .
 
 **Returns**
 
-* `str`: Return type.
-
-~~~
+- `str`: Return type.
+````
 
 ## Cross Reference
 
-`inari` generates cross reference in API documents. `module.submodule.function` will be converted to appropriate relative link like ``[`function `](../submodule#function)`` . 
+`inari` generates cross reference in API documents. `module.submodule.function` will be converted to appropriate relative link like `` [`function `](submodule.md#function) `` .
 
 !!! note
-    If you installed `inari` without `MkDocs` , you have to install [`Python-Markdown`](https://python-markdown.github.io/) and enable [Attribute Lists](https://python-markdown.github.io/extensions/attr_list/) extention to create hash anchors. 
+If you installed `inari` without `MkDocs` , you have to install [`Python-Markdown`](https://python-markdown.github.io/) and enable [Attribute Lists](https://python-markdown.github.io/extensions/attr_list/) extension to create hash anchors.
 
 Example:
+
 ```python
 # `module/submodule.py`
 def func(alpha: str, bata: str) -> str:
@@ -78,12 +80,12 @@ class SampleClass:
 
 ```
 
-`inari` make hyperlink like this:
+`inari` makes hyperlink like this:
 
-~~~markdown
+````markdown
 <!-- docs/module/submodule-py.md -->
-# Module module.submodule
 
+# Module module.submodule
 
 ## Functions
 
@@ -93,12 +95,11 @@ class SampleClass:
 def func(alpha: str, bata: str) -> str
 ```
 
-Link to some method like [`SampleClass.some_method `](../anothermodule-py#SampleClass.some_method)
-
+Link to some method like [`SampleClass.some_method `](anothermodule-py.md#SampleClass.some_method)
 
 <!-- docs/module/anothermodule-py.md -->
-# Module module.anothermodule
 
+# Module module.anothermodule
 
 ## Classes
 
@@ -108,10 +109,9 @@ Link to some method like [`SampleClass.some_method `](../anothermodule-py#Sample
 class SampleClass()
 ```
 
-Make reference like [`func `](../submodule-py#func)
+Make reference like [`func `](submodule-py.md#func)
 
-
-------
+---
 
 #### Methods {: #SampleClass-methods }
 
@@ -120,5 +120,4 @@ Make reference like [`func `](../submodule-py#func)
 ```python
 def some_method(self)
 ```
-
-~~~
+````

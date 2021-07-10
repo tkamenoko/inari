@@ -9,12 +9,18 @@ pip install inari
 ## Use CLI
 
 ```shell
-inari <module-name> <out-dir> [-n <out-name>]
+inari <module-name> <out-dir> [-n <out-name>] [-y]
 ```
 
-* `module-name` : Target module to make documents.
-* `out-dir` : Directory to put documents.
-* `out-name` : Top level directory/file name. `module-name` is used by default.
+### Arguments
+
+- `module-name` : Target module to make documents.
+- `out-dir` : Directory to put documents.
+
+### Options
+
+- `--name (-n)` : Top level directory/file name. `module-name` is used by default.
+- `--enable-yaml-header(-y)` : A flag for deciding whether to include yaml header. Default: `False`.
 
 ## Use MkDocs Plugin
 
@@ -39,12 +45,11 @@ site_name: My Docs
 docs_dir: "docs" # same as default
 
 plugins:
-    - search # MkDocs default plugin
-    - inari:
-        module: <module-name> # required
-        out-name: api # optional. Default: <module-name>
-        # no `out-dir` option because `inari` uses `docs_dir` in the config.
-
+  - search # MkDocs default plugin
+  - inari:
+      module: <module-name> # required
+      out-name: api # optional. Default: <module-name>
+      # no `out-dir` option because `inari` uses `docs_dir` in the config.
 ```
 
 After that, running `mkdocs build` will generate your API documents in `docs/api` .
