@@ -1,12 +1,11 @@
 ---
 title: inari.collectors
-module_digest: e4dbc8e9a5bc77a90db63b71565ea940
+module_digest: b1a4bc06d33d25bba77a2fb361ca1671
 ---
 
 # Module inari.collectors
 
 collectors -  Store module members, and build markdown documents from docstrings.
-
 
 ## Classes
 
@@ -20,16 +19,14 @@ Base class for collecting objects with docstrings.
 
 **Attributes**
 
-* **name_to_path** (`dict[str, str]`):
-    Mapping of `{"module.name.class": "module/name#class"}` .
-* **doc** (`str`): Docstrings of the object.
-* **abs_path** (`str`): Absolute path of the object. Root is `out_dir` .
+- **name_to_path** (`dict[str, str]`): Mapping of `{"module.name.class": "module/name#class"}` .
+- **doc** (`str`): Docstrings of the object.
+- **abs_path** (`str`): Absolute path of the object.
 
 **Args**
 
-* **abs_path** (`str`): Absolute path of the object.
-* **name_to_path** (`dict[str, str]`): Mapping of name and path.
-
+- **abs_path** (`str`): Absolute path of the object.
+- **name_to_path** (`dict[str, str]`): Mapping of name and path.
 
 ------
 
@@ -42,6 +39,10 @@ def doc_str(self) -> str
 ```
 
 Create documents from its contents.
+
+**Returns**
+
+- `str`: Created from docstrings and annotations.
 
 ------
 
@@ -56,24 +57,22 @@ Class with methods and properties. Attribute docs should be written in class
 
 **Attributes**
 
-* **cls** (`type`): Target class.
-* **variables** (`list[VariableCollector]`): Class properties.
-* **methods** (`list[FunctionCollector]`): Methods of the class.
-* **hash_** (`str`): Used for HTML id.
+- **cls** (`type`): Target class.
+- **variables** (`list[VariableCollector]`): Class properties.
+- **methods** (`list[FunctionCollector]`): Methods of the class.
+- **hash_** (`str`): Used for HTML id.
 
 **Args**
 
-* **cls** (`type`): Class to make documents.
-* **abs_path** (`str`): See [`BaseCollector `](#BaseCollector) .
-* **name_to_path** (`dict[str, str]`): See [`BaseCollector `](#BaseCollector) .
-
+- **cls** (`type`): Class to make documents.
+- **abs_path** (`str`): See [`BaseCollector `](#BaseCollector) .
+- **name_to_path** (`dict[str, str]`): See [`BaseCollector `](#BaseCollector) .
 
 ------
 
 #### Base classes {: #ClassCollector-bases }
 
 * [`BaseCollector `](#BaseCollector)
-
 
 ------
 
@@ -87,6 +86,10 @@ def doc_str(self) -> str
 
 Create documents from its contents.
 
+**Returns**
+
+- `str`: Created from docstrings and annotations.
+
 ------
 
 [**init_methods**](#ClassCollector.init_methods){: #ClassCollector.init_methods }
@@ -95,7 +98,6 @@ Create documents from its contents.
 def init_methods(self) -> None
 ```
 
-
 ------
 
 [**init_variables**](#ClassCollector.init_variables){: #ClassCollector.init_variables }
@@ -103,7 +105,6 @@ def init_methods(self) -> None
 ```python
 def init_variables(self) -> None
 ```
-
 
 ------
 
@@ -117,22 +118,20 @@ Functions and methods.
 
 **Attributes**
 
-* **function** (`Callable[..., Any]`): Target function.
-* **hash_** (`str`): Used for HTML id.
+- **function** (`Callable[..., Any]`): Target function.
+- **hash_** (`str`): Used for HTML id.
 
 **Args**
 
-* **f** (`Callable[..., Any]`): Target function.
-* **abs_path** (`str`): See [`BaseCollector `](#BaseCollector) .
-* **name_to_path** (`dict[str, str]`): See [`BaseCollector `](#BaseCollector) .
-
+- **f** (`Callable[..., Any]`): Target function.
+- **abs_path** (`str`): See [`BaseCollector `](#BaseCollector) .
+- **name_to_path** (`dict[str, str]`): See [`BaseCollector `](#BaseCollector) .
 
 ------
 
 #### Base classes {: #FunctionCollector-bases }
 
 * [`BaseCollector `](#BaseCollector)
-
 
 ------
 
@@ -146,6 +145,10 @@ def doc_str(self) -> str
 
 Create documents from its contents.
 
+**Returns**
+
+- `str`: Created from docstrings and annotations.
+
 ------
 
 ### ModuleCollector {: #ModuleCollector }
@@ -154,7 +157,7 @@ Create documents from its contents.
 class ModuleCollector(
     self,
     mod: ModuleType,
-    out_dir: os.PathLike[str],
+    out_dir: Union[str, os.PathLike[str]],
     name_to_path: Optional[dict[str, str]] = None,
     out_name: Optional[str] = None,
     enable_yaml_header: bool = False,)
@@ -164,37 +167,35 @@ Module docs, submodules, classes, functions, and variables.
 
 **Attributes**
 
-* **mod** (`ModuleType`): Module to make documents.
-* **submodules** (`dict[str, ModuleCollector]`): key-value pair of paths and submodules,
+- **mod** (`ModuleType`): Module to make documents.
+- **submodules** (`dict[str, ModuleCollector]`): key-value pair of paths and submodules,
     wrapped by [`ModuleCollector `](#ModuleCollector) .
-* **variables** (`list[VariableCollector]`): list of module-level variables, wrapped by
+- **variables** (`list[VariableCollector]`): list of module-level variables, wrapped by
     [`VariableCollector `](#VariableCollector) .
-* **classes** (`list[ClassCollector]`): list of public classes, wrapped by
+- **classes** (`list[ClassCollector]`): list of public classes, wrapped by
     [`ClassCollector `](#ClassCollector) .
-* **functions** (`list[FunctionCollector]`): list of public functions, wrapped by
+- **functions** (`list[FunctionCollector]`): list of public functions, wrapped by
     [`FunctionCollector `](#FunctionCollector) .
-* **out_dir** (`pathlib.Path`): Output directly.
-* **filename** (`str`): Output filename, like `index.md` , `submodule.md` .
-* **relpaths** (`dict[str, tuple[str, str]]`): Store relational paths. See
+- **out_dir** (`pathlib.Path`): Output directly.
+- **filename** (`str`): Output filename, like `index.md` , `submodule.md` .
+- **relpaths** (`dict[str, tuple[str, str]]`): Store relational paths. See
     `inari.collectors.ModuleCollector.make_relpaths` .
-* **enable_yaml_header** (`bool`): a flag for deciding whether to include yaml header.
+- **enable_yaml_header** (`bool`): a flag for deciding whether to include yaml header.
 
 **Args**
 
-* **mod** (`ModuleType`): Module to make documents.
-* **out_dir** (`Union[str,Path]`): Output directory.
-* **name_to_path** (`dict`): See [`BaseCollector `](#BaseCollector) .
-* **out_name** (`str`): Output file name.
-* **enable_yaml_header** (`bool`): a flag for deciding whether to include
+- **mod** (`ModuleType`): Module to make documents.
+- **out_dir** (`Union[str, Path]`): Output directory.
+- **name_to_path** (`dict`): See [`BaseCollector `](#BaseCollector) .
+- **out_name** (`str`): Output file name.
+- **enable_yaml_header** (`bool`): a flag for deciding whether to include
     yaml header.
-
 
 ------
 
 #### Base classes {: #ModuleCollector-bases }
 
 * [`BaseCollector `](#BaseCollector)
-
 
 ------
 
@@ -207,6 +208,10 @@ def doc_str(self) -> str
 ```
 
 Create documents from its contents.
+
+**Returns**
+
+- `str`: Created from docstrings and annotations.
 
 ------
 
@@ -324,24 +329,22 @@ Module variables and class properties.
 
 **Attributes**
 
-* **var** : Module-level object or class property, not module/class/function.
-* **name** (`str`): Name of the object.
+- **var**: Module-level object or class property, not module/class/function.
+- **name** (`str`): Name of the object.
 
 **Args**
 
-* **var** (`object`): Target object.
-* **name_to_path** (`dict[str, str]`): See [`BaseCollector `](#BaseCollector) .
-* **abs_path** (`str`): See [`BaseCollector `](#BaseCollector) .
-* **name** (`str`): Fallback of `var.__name__` .
-* **doc** (`str`): Fallback of `inspect.getdoc(var)` .
-
+- **var** (`object`): Target object.
+- **name_to_path** (`dict[str, str]`): See [`BaseCollector `](#BaseCollector) .
+- **abs_path** (`str`): See [`BaseCollector `](#BaseCollector) .
+- **name** (`str`): Fallback of `var.__name__` .
+- **doc** (`str`): Fallback of `inspect.getdoc(var)` .
 
 ------
 
 #### Base classes {: #VariableCollector-bases }
 
 * [`BaseCollector `](#BaseCollector)
-
 
 ------
 
@@ -354,6 +357,10 @@ def doc_str(self) -> str
 ```
 
 Create documents from its contents.
+
+**Returns**
+
+- `str`: Created from docstrings and annotations.
 
 ## Functions
 
