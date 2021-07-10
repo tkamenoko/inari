@@ -4,7 +4,7 @@ You can use any Markdown syntax, and `inari` provides some additional features.
 
 ## List Arguments/Attributes
 
-To list arguments or attributes, use `*`. `inari` emphasizes these name automatically.
+`inari` emphasizes names of listed arguments automatically.
 
 Example:
 
