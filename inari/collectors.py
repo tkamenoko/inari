@@ -46,7 +46,7 @@ class BaseCollector:
     * name_to_path (`dict[str, str]`):
         Mapping of `{"module.name.class": "module/name#class"}` .
     * doc (`str`): Docstrings of the object.
-    * abs_path (`str`): Absolute path of the object. Root is `out_dir` .
+    * abs_path (`str`): Absolute path of the object.
 
     """
 
@@ -324,6 +324,9 @@ class ModuleCollector(BaseCollector):
         ~~~
 
         """
+        current_page = self.abs_path
+        if not current_page.endswith("-py"):
+            current_page = f"{current_page}/index".replace("//", "/")
         for name, path in self.name_to_path.items():
             if "#" in path:
                 relpath, hash_ = path.split("#")
@@ -333,7 +336,7 @@ class ModuleCollector(BaseCollector):
             if not relpath.endswith("-py"):
                 relpath = f"{relpath}/index".replace("//", "/")
 
-            relpath = get_relative_path(self.abs_path, relpath)
+            relpath = get_relative_path(current_page, relpath)
 
             if relpath:
                 relpath = relpath + ".md"

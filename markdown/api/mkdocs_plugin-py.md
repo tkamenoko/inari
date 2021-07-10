@@ -5,7 +5,6 @@ module_digest: 6b726e50f73aa227388d65a8d794e4aa
 
 # Module inari.mkdocs_plugin
 
-
 ## Classes
 
 ### Plugin {: #Plugin }
@@ -16,13 +15,11 @@ class Plugin()
 
 MkDocs Plugin class.
 
-
 ------
 
 #### Base classes {: #Plugin-bases }
 
 * `mkdocs.BasePlugin`
-
 
 ------
 
@@ -33,7 +30,6 @@ MkDocs Plugin class.
 ```python
 def on_config(self, config: Config, **kw: Any) -> Config
 ```
-
 
 ------
 
@@ -58,7 +54,6 @@ def on_serve(
     **kw: Any
     ) -> LiveReloadServer
 ```
-
 
 ------
 
