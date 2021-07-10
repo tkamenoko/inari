@@ -424,9 +424,11 @@ class ModuleCollector(BaseCollector):
     def _write(self) -> None:
         os.makedirs(self.out_dir, exist_ok=True)
         self.remove_old_submodules()
-        current_digest = hashlib.md5(
-            inspect.getsource(self.mod).encode("utf-8")
-        ).hexdigest()
+        try:
+            source = inspect.getsource(self.mod)
+        except OSError:
+            source = ""
+        current_digest = hashlib.md5(source.encode("utf-8")).hexdigest()
 
         if os.path.isfile(self.out_dir / self.filename):
             with open(
