@@ -55,16 +55,16 @@ _func_expected_doc = """
 
     **Args**
 
-    * **foo** (`str`): Lorem ipsum.
-    * **bar** (`int`): *italic*
-    * **baz** (`bool`): **emphasize**
-    * **spam** (`str`): Multiline description
+    - **foo** (`str`): Lorem ipsum.
+    - **bar** (`int`): *italic*
+    - **baz** (`bool`): **emphasize**
+    - **spam** (`str`): Multiline description
         should be indented.
-    * **egg** (`bytes`): `backtick`
+    - **egg** (`bytes`): `backtick`
 
     **Returns**
 
-    * `dict[str, str]`: Return type.
+    - `dict[str, str]`: Return type.
     """
 _func_expected_doc = cleandoc(_func_expected_doc)
 
@@ -75,8 +75,8 @@ class TargetClass(object):
 
     **Attributes**
 
-    * num (`int`): number.
-    * foo (`str`): string.
+    + num (`int`): number.
+    + foo (`str`): string.
 
     """
 
@@ -94,19 +94,19 @@ class TargetClass(object):
 
     **Attributes**
 
-    * **num** (`int`): number.
-    * **foo** (`str`): string.
+    - **num** (`int`): number.
+    - **foo** (`str`): string.
 
     **Args**
 
-    * **num** (`int`): number.
-    * **foo** (`str`): string.
+    - **num** (`int`): number.
+    - **foo** (`str`): string.
 
     ------
 
     #### Instance attributes {: #TargetClass-attrs }
 
-    * **instance_attr**{: #TargetClass.instance_attr } (`str`): Should be documented.
+    - **instance_attr**{: #TargetClass.instance_attr } (`str`): Should be documented.
 
     ------
 
@@ -122,11 +122,11 @@ class TargetClass(object):
 
     **Args**
 
-    * **args** (`str`): Variadic arguments.
+    - **args** (`str`): Variadic arguments.
 
     **Returns**
 
-    * `list[str]`: Return given args.
+    - `list[str]`: Return given args.
     """.strip()
 
     def __init__(self, num: int, foo: str) -> None:
@@ -157,7 +157,7 @@ class TargetClass(object):
 
         **Returns**
 
-        * `list[str]`: Return given args.
+        - `list[str]`: Return given args.
         """
         return [*args]
 
@@ -173,7 +173,7 @@ target_variable = "lorem"
 
 _var_doc = """(`str`): variable docs."""
 _var_expected_docs = (
-    "* **target_variable**{: #target_variable } (`str`): variable docs."
+    "- **target_variable**{: #target_variable } (`str`): variable docs."
 )
 
 
@@ -186,7 +186,7 @@ _mod_expected_docs = """
 
     ## Variables
 
-    * **target_variable**{: #target_variable } (`str`): variable docs.
+    - **target_variable**{: #target_variable } (`str`): variable docs.
 
     ## Classes
 
@@ -200,19 +200,19 @@ _mod_expected_docs = """
 
     **Attributes**
 
-    * **num** (`int`): number.
-    * **foo** (`str`): string.
+    - **num** (`int`): number.
+    - **foo** (`str`): string.
 
     **Args**
 
-    * **num** (`int`): number.
-    * **foo** (`str`): string.
+    - **num** (`int`): number.
+    - **foo** (`str`): string.
 
     ------
 
     #### Instance attributes {: #TargetClass-attrs }
 
-    * **instance_attr**{: #TargetClass.instance_attr } (`str`): Should be documented.
+    - **instance_attr**{: #TargetClass.instance_attr } (`str`): Should be documented.
 
     ------
 
@@ -228,11 +228,11 @@ _mod_expected_docs = """
 
     **Args**
 
-    * **args** (`str`): Variadic arguments.
+    - **args** (`str`): Variadic arguments.
 
     **Returns**
 
-    * `list[str]`: Return given args.
+    - `list[str]`: Return given args.
 
     ## Functions
 
@@ -248,16 +248,16 @@ _mod_expected_docs = """
 
     **Args**
 
-    * **foo** (`str`): Lorem ipsum.
-    * **bar** (`int`): *italic*
-    * **baz** (`bool`): **emphasize**
-    * **spam** (`str`): Multiline description
+    - **foo** (`str`): Lorem ipsum.
+    - **bar** (`int`): *italic*
+    - **baz** (`bool`): **emphasize**
+    - **spam** (`str`): Multiline description
         should be indented.
-    * **egg** (`bytes`): `backtick`
+    - **egg** (`bytes`): `backtick`
 
     **Returns**
 
-    * `dict[str, str]`: Return type.
+    - `dict[str, str]`: Return type.
     """
 
 _mod_expected_docs = cleandoc(_mod_expected_docs)

@@ -11,19 +11,20 @@ def join_fragments(fragments: Iterable[str]) -> str:
 
 
 def modify_attrs(doc: str, attributes: str = "") -> str:
-    attr_head = r"^\*\s+(?P<name>[^\s():`[\]]+)\s*(?P<type>\(`[^():`]+`\))?\s*"
+    attr_head = r"^[\-+*]\s+(?P<name>[^\s():`[\]]+)?\s*(?P<type>\(?`[^():`]+`\)?)?\s*"
     attr_tail = r"(?P<tail>:\s*(?P<description>.+))?$"
 
     def replacer(m: re.Match[str]) -> str:
         name = m.group("name")
-        type_ = m.group("type")
+        type_ = m.group("type") or ""
         have_tail = m.group("tail")
-        description = m.group("description")
+        description = m.group("description") or ""
 
-        if not have_tail:
-            return f"* **{name}**{attributes} {type_}"
+        modified_name = f"**{name}**{attributes}" if name else ""
+        head = " ".join([x for x in ["-", modified_name, type_] if x])
+        tail = f": {description}" if have_tail else ""
 
-        return f"* **{name}**{attributes} {type_}: {description}"
+        return head + tail
 
     result = re.sub(
         attr_head + attr_tail,

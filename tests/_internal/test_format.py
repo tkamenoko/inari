@@ -11,32 +11,32 @@ class Fixtures(NamedTuple):
 
 
 simple = Fixtures(
-    raw_description="* var (`object`): Target object.",
+    raw_description="- var (`object`): Target object.",
     attributes="",
-    result="* **var** (`object`): Target object.",
+    result="- **var** (`object`): Target object.",
 )
 attr_and_emphasize = Fixtures(
     raw_description="* variables (`list[VariableCollector]`):"
     + " Class properties. **IMPORTANT!**",
     attributes="{: #ClassItself }",
-    result="* **variables**{: #ClassItself } (`list[VariableCollector]`): Class "
+    result="- **variables**{: #ClassItself } (`list[VariableCollector]`): Class "
     + "properties. **IMPORTANT!**",
 )
 multiline = Fixtures(
     raw_description="* var (`object`): Target object.\n"
-    + "* var (`object`): `backtick`\n\n"
+    + "+ var (`object`): `backtick`\n\n"
     + "**Returns**\n"
     + "* `str`: Return type.\n",
     attributes="",
-    result="* **var** (`object`): Target object.\n"
-    + "* **var** (`object`): `backtick`\n\n"
+    result="- **var** (`object`): Target object.\n"
+    + "- **var** (`object`): `backtick`\n\n"
     + "**Returns**\n"
-    + "* `str`: Return type.\n",
+    + "- `str`: Return type.\n",
 )
 no_description = Fixtures(
     raw_description="* no_description(`str`)",
     attributes="",
-    result="* **no_description** (`str`)",
+    result="- **no_description** (`str`)",
 )
 
 
