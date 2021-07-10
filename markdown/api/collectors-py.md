@@ -1,6 +1,6 @@
 ---
 title: inari.collectors
-module_digest: b1a4bc06d33d25bba77a2fb361ca1671
+module_digest: 2c453b932da09cb916fb885f366acbe0
 ---
 
 # Module inari.collectors
