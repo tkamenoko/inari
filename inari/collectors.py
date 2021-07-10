@@ -197,6 +197,9 @@ class ModuleCollector(BaseCollector):
             # no submodules.
             self.submodules = {}
 
+        for submodule in self.submodules.values():
+            submodule._prepare_docs()
+
     def init_classes(self) -> None:
         """Find public classes defined in the module."""
         mod_classes = [
@@ -254,11 +257,10 @@ class ModuleCollector(BaseCollector):
         ]
 
     def doc_str(self) -> str:
-        self.init_vars()
-        self.init_classes()
-        self.init_functions()
-        self.make_relpaths()
+        self._prepare_docs()
+        return self._doc_str()
 
+    def _doc_str(self) -> str:
         yaml_header = self.make_yaml_header()
 
         mod_head = f"# Module {self.mod.__name__}"
@@ -402,13 +404,21 @@ class ModuleCollector(BaseCollector):
             os.remove(self.out_dir / unused_filename)
         self.submodules = new_modules
 
-    def write(self) -> None:
-        """Write documents to files. Directories are created automatically."""
+    def _prepare_docs(self) -> None:
         importlib.reload(self.mod)
         self.init_submodules()
-        # write submodules.
-        for submod in self.submodules.values():
-            submod.write()
+        self.init_vars()
+        self.init_classes()
+        self.init_functions()
+        self.make_relpaths()
+
+    def write(self) -> None:
+        """Write documents to files. Directories are created automatically."""
+
+        self._prepare_docs()
+        self._write()
+
+    def _write(self) -> None:
         os.makedirs(self.out_dir, exist_ok=True)
         self.remove_old_submodules()
         current_digest = hashlib.md5(
@@ -435,7 +445,11 @@ class ModuleCollector(BaseCollector):
             with open(
                 self.out_dir / self.filename, mode="w", newline="\n", encoding="utf-8"
             ) as index:
-                index.write(self.doc_str())
+                index.write(self._doc_str())
+
+        # write submodules.
+        for submod in self.submodules.values():
+            submod._write()
 
 
 class VariableCollector(BaseCollector):
