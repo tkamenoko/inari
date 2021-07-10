@@ -129,7 +129,7 @@ class ModuleCollector(BaseCollector):
         **Args**
 
         * mod (`ModuleType`): Module to make documents.
-        * out_dir (`Union[str,Path]`): Output directory.
+        * out_dir (`Union[str, Path]`): Output directory.
         * name_to_path (`dict`): See `inari.collectors.BaseCollector` .
         * out_name (`str`): Output file name.
         * enable_yaml_header (`bool`): a flag for deciding whether to include
@@ -406,6 +406,9 @@ class ModuleCollector(BaseCollector):
         """Write documents to files. Directories are created automatically."""
         importlib.reload(self.mod)
         self.init_submodules()
+        # write submodules.
+        for submod in self.submodules.values():
+            submod.write()
         os.makedirs(self.out_dir, exist_ok=True)
         self.remove_old_submodules()
         current_digest = hashlib.md5(
@@ -433,9 +436,6 @@ class ModuleCollector(BaseCollector):
                 self.out_dir / self.filename, mode="w", newline="\n", encoding="utf-8"
             ) as index:
                 index.write(self.doc_str())
-        # write submodules.
-        for submod in self.submodules.values():
-            submod.write()
 
 
 class VariableCollector(BaseCollector):
@@ -629,11 +629,17 @@ class ClassCollector(BaseCollector):
             base_list = reduce(lambda x, y: x + y, [list(s) for s in bases])
             parents = [x for x in base_set if base_list.count(x) == 1]
             base_names = []
-            root = inspect.getmodule(self.cls).__name__.split(".", 1)[0]
+            class_module = inspect.getmodule(self.cls)
+            if not class_module:
+                raise TypeError(f"A module of {self.cls.__name__} was not found.")
+            root_name = class_module.__name__.split(".", 1)[0]
             for p in parents:
-                mod_name = inspect.getmodule(p).__name__
+                parent_module = inspect.getmodule(p)
+                if not parent_module:
+                    raise TypeError(f"A module of {p.__name__} was not found.")
+                mod_name = parent_module.__name__
                 mod_root = mod_name.split(".", 1)[0]
-                if mod_root == root:
+                if mod_root == root_name:
                     base_name = f"* `{mod_name}.{p.__name__}`"
                 else:
                     base_name = f"* `{mod_root}.{p.__name__}`"

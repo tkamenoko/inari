@@ -3,7 +3,7 @@ String formatters for internal use.
 """
 
 import re
-from typing import Iterable
+from collections.abc import Iterable
 
 
 def join_fragments(fragments: Iterable[str]) -> str:
