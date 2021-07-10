@@ -12,10 +12,15 @@ pip install inari
 inari <module-name> <out-dir> [-n <out-name>] [-y]
 ```
 
+### Arguments
+
 - `module-name` : Target module to make documents.
 - `out-dir` : Directory to put documents.
-- `out-name(-n)` : Top level directory/file name. `module-name` is used by default.
-- `enable-yaml-header(-y)` : A flag for deciding whether to include yaml header. Default: `False`.
+
+### Options
+
+- `--name (-n)` : Top level directory/file name. `module-name` is used by default.
+- `--enable-yaml-header(-y)` : A flag for deciding whether to include yaml header. Default: `False`.
 
 ## Use MkDocs Plugin
 
